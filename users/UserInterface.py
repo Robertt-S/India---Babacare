@@ -1,10 +1,11 @@
 class IUser(): #interface comum
-    def __init__(self,nome,email,cpf,contato,endereco):
+    def __init__(self,nome :str,email: str,cpf: str,contato:str,endereco:str,foto):
         self._nome = nome
         self._email = email
         self._cpf = cpf
         self._contato = contato
         self._endereco = endereco
+        self._foto = foto
 
 #region GETTER DOS ATRIBUTOS
 
@@ -18,7 +19,7 @@ class IUser(): #interface comum
     
     @property
     def getCpf(self):
-        return self._cpf
+        return self._cpf;
     
     @property
     def getContato(self):
@@ -26,11 +27,15 @@ class IUser(): #interface comum
         
     @property
     def getEndereco(self):
-        return self.endereco
+        return self._endereco
+    
+    @property
+    def getFoto(self):
+        return self._foto
     
 #endregion
 
-# region SETTER DOS ATRIBUTOS MODIFICÁVEIS
+#region SETTER DOS ATRIBUTOS MODIFICÁVEIS
     def setEmail(self,novoEmail):
         self._email = novoEmail
 
@@ -41,3 +46,4 @@ class IUser(): #interface comum
         self._endereco = novoEndereco
 
 #endregion
+    
