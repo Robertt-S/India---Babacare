@@ -1,7 +1,7 @@
 class Avaliacao:
-    def __init__(self, nome: str, avaliacao: float, descricao: str):
+    def __init__(self, nome: str, nota: float, descricao: str):
         self.nome = nome
-        self.avaliacao = avaliacao
+        self.nota = nota
         self.descricao = descricao
     
 #region GETTERS
@@ -11,8 +11,8 @@ class Avaliacao:
         return self.nome
     
     @property
-    def getAvaliacao(self):
-        return self.avaliacao
+    def getNota(self):
+        return self.nota
     
     @property
     def getDescricao(self):
@@ -23,8 +23,8 @@ class Avaliacao:
 #region SETTERS
 
     @property
-    def setAvaliacao(self, novaAvaliacao):
-        self.avaliacao = novaAvaliacao
+    def setNota(self, novaNota):
+        self.nota = novaNota
 
     @property
     def setDescricao(self, novaDescricao):
