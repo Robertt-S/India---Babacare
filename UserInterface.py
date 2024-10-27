@@ -1,6 +1,6 @@
 from __future__ import annotations
 #precisa importar annotations para que o Python permita que eu referencie IUser dentro dela própria (faço isso para ter o autor das avaliacoes)
-from Monolithic import Avaliacao
+from TypeAvaliacao import Avaliacao
 
 class IUser(): #interface comum
 

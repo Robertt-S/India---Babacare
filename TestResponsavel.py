@@ -1,4 +1,4 @@
-from ..Monolithic import Responsavel
+from UserResponsavel import Responsavel
 import pytest
 
 class TestResp:
