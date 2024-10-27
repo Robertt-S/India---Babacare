@@ -1,8 +1,9 @@
 from __future__ import annotations
 #precisa importar annotations para que o Python permita que eu referencie IUser dentro dela própria (faço isso para ter o autor das avaliacoes)
-from ..types.TypeAvaliacao import Avaliacao
+from Monolithic import Avaliacao
 
 class IUser(): #interface comum
+
     def __init__(self,nome :str,email: str,cpf: str,contato:str,endereco:str,foto):
         self._nome = nome
         self._email = email
@@ -10,8 +11,8 @@ class IUser(): #interface comum
         self._contato = contato
         self._endereco = endereco
         self._foto = foto
-        self._avaliacao: list[Avaliacao] = [] 
-
+        self._avaliacao: list[Avaliacao] = []
+    
 #region GETTER DOS ATRIBUTOS
 
     @property
@@ -43,9 +44,9 @@ class IUser(): #interface comum
         return self._avaliacao
     
     @property
-    def getAvaliacao(self, autor: IUser):
+    def getAvaliacao(self, id: int):
         for i in self._avaliacao:
-            if i.getAutor(i) == autor:
+            if i.getId(i) == id:
                 return i
     
 #endregion
@@ -68,9 +69,9 @@ class IUser(): #interface comum
         return 0
 #Uma pessoa pode avaliar um perfil apenas 1 vez, entao se ja houver avaliacao dessa pessoa, retorna -1 e nao adiciona outra. Senao, retorna 0 e adiciona a avaliacao
 
-    def rmvAvaliacao(self, autor: IUser):
+    def rmvAvaliacao(self, id: int):
         for i in self._avaliacao:
-            if i.getAutor(i) == autor:
+            if i.getId(i) == id:
                 self._avaliacao.remove(i)
                 break
             

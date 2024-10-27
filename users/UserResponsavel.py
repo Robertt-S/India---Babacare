@@ -1,4 +1,4 @@
-import users.UserInterface as UserInterface;
+from . import UserInterface as UserInterface;
 
 class Responsavel(UserInterface.IUser):
 

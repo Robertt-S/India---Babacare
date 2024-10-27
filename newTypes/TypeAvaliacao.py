@@ -1,12 +1,15 @@
-from ..users.UserInterface import IUser
-
 class Avaliacao:
-    def __init__(self, autor: IUser, nota: float, descricao: str):
+    def __init__(self, id: int, autor: str, nota: float, descricao: str):
+        self.id = id
         self.autor = autor
         self.nota = nota
         self.descricao = descricao
     
 #region GETTERS
+
+    @property
+    def getId(self):
+        return self.id
 
     @property
     def getAutor(self):
