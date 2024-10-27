@@ -16,3 +16,5 @@ class TestResp:
         assert Resp.getCpf == self.cpf
         assert Resp.getContato == self.contato
         assert Resp.getEndereco == self.endereco
+
+    
