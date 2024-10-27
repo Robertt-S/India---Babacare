@@ -1,3 +1,5 @@
+from __future__ import annotations
+#precisa importar annotations para que o Python permita que eu referencie IUser dentro dela própria (faço isso para ter o autor das avaliacoes)
 from ..types.TypeAvaliacao import Avaliacao
 
 class IUser(): #interface comum
@@ -36,7 +38,15 @@ class IUser(): #interface comum
     def getFoto(self):
         return self._foto
     
+    @property
+    def getListaAvaliacao(self):
+        return self._avaliacao
     
+    @property
+    def getAvaliacao(self, autor: IUser):
+        for i in self._avaliacao:
+            if i.getAutor(i) == autor:
+                return i
     
 #endregion
 
@@ -51,11 +61,16 @@ class IUser(): #interface comum
         self._endereco = novoEndereco
 
     def addAvaliacao(self, novaAvaliacao: Avaliacao):
-        self._avaliacao.append(novaAvaliacao)
-
-    def rmvAvaliacao(self, nomeAvaliacao):
         for i in self._avaliacao:
-            if i.getNome(i) == nomeAvaliacao:
+            if i.getAutor(i) == novaAvaliacao.autor:
+                return -1
+        self._avaliacao.append(novaAvaliacao)
+        return 0
+#Uma pessoa pode avaliar um perfil apenas 1 vez, entao se ja houver avaliacao dessa pessoa, retorna -1 e nao adiciona outra. Senao, retorna 0 e adiciona a avaliacao
+
+    def rmvAvaliacao(self, autor: IUser):
+        for i in self._avaliacao:
+            if i.getAutor(i) == autor:
                 self._avaliacao.remove(i)
                 break
             

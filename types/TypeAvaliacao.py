@@ -1,14 +1,16 @@
+from ..users.UserInterface import IUser
+
 class Avaliacao:
-    def __init__(self, nome: str, nota: float, descricao: str):
-        self.nome = nome
+    def __init__(self, autor: IUser, nota: float, descricao: str):
+        self.autor = autor
         self.nota = nota
         self.descricao = descricao
     
 #region GETTERS
 
     @property
-    def getNome(self):
-        return self.nome
+    def getAutor(self):
+        return self.autor
     
     @property
     def getNota(self):
