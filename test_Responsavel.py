@@ -10,7 +10,7 @@ class TestResp:
     contato = "4002-8922"
     endereco = "Rua dos Bobos, 0"
 
-    def test_confirmBasicData(self):
+    def test_Resp_confirmBasicData(self):
         Resp = Responsavel("Thiago", "thiago.capuano@unifesp.br", "123.456.789-69", "4002-8922", "Rua dos Bobos, 0", None)
         assert Resp.getNome == self.nome
         assert Resp.getEmail == self.email
@@ -18,13 +18,13 @@ class TestResp:
         assert Resp.getContato == self.contato
         assert Resp.getEndereco == self.endereco
 
-    def test_confirmAvaliacao(self):
+    def test_Resp_confirmAvaliacao(self):
         Resp = Responsavel(self.nome, self.email, self.cpf, self.contato, self.endereco, None)
         Av = Avaliacao(1, "João", 10, "Muito bom")
         Resp.addAvaliacao(Av)
         assert Resp.getAvaliacao(1) == Av
 
-    def test_confirmAvaliacaoRmv(self):
+    def test_Resp_confirmAvaliacaoRmv(self):
         Resp = Responsavel(self.nome, self.email, self.cpf, self.contato, self.endereco, None)
         Av = Avaliacao(1, "João", 10, "Muito bom")
         Resp.addAvaliacao(Av)
@@ -32,7 +32,7 @@ class TestResp:
         Resp.rmvAvaliacao(1)
         assert Resp.getListaAvaliacao == []
 
-    def test_confirmNota(self):
+    def test_Resp_confirmNota(self):
         Resp = Responsavel(self.nome, self.email, self.cpf, self.contato, self.endereco, None)
         Av1 = Avaliacao(1, "João", 10, "Muito bom")
         Av2 = Avaliacao(2, "Maria", 0, "Horrível")

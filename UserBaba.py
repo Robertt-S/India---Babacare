@@ -2,7 +2,7 @@ import UserInterface as UserInterface;
 
 class Baba(UserInterface.IUser):
     def __init__(self,nome,email,cpf,contato,endereco,foto):
-        super().__init__(self,nome,email,cpf,contato,endereco,foto)
+        super().__init__(nome,email,cpf,contato,endereco,foto)
         self._certificados = []
         self._habilidades = []
 
@@ -21,8 +21,8 @@ class Baba(UserInterface.IUser):
     def rmvCertificado(self, certificados):
         self._certificados.pop(certificados)
         
-    def addCertificado(self, habilidades):
+    def addHabilidade(self, habilidades):
         self._habilidades.append(habilidades)
 
-    def rmvCertificado(self, habilidades):
+    def rmvHabilidade(self, habilidades):
         self._habilidades.pop(habilidades)

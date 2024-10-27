@@ -4,7 +4,7 @@ from TypeAvaliacao import Avaliacao
 
 class IUser(): #interface comum
 
-    def __init__(self,nome :str,email: str,cpf: str,contato:str,endereco:str,foto):
+    def __init__(self,nome :str, email: str, cpf: str, contato:str, endereco:str, foto):
         self._nome = nome
         self._email = email
         self._cpf = cpf
