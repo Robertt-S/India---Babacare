@@ -1,4 +1,5 @@
 from UserResponsavel import Responsavel
+from TypeAvaliacao import Avaliacao
 import pytest
 
 class TestResp:
@@ -17,4 +18,8 @@ class TestResp:
         assert Resp.getContato == self.contato
         assert Resp.getEndereco == self.endereco
 
-    
+    def test_confirmAvaliacao(self):
+        Resp = Responsavel(self.nome, self.email, self.cpf, self.contato, self.endereco, None)
+        Av = Avaliacao(1, "João", 10, "Muito bom")
+        Resp.addAvaliacao(Av)
+        assert Resp.getAvaliacao(Resp, 1) == Av
