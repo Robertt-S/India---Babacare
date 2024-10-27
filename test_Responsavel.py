@@ -22,4 +22,22 @@ class TestResp:
         Resp = Responsavel(self.nome, self.email, self.cpf, self.contato, self.endereco, None)
         Av = Avaliacao(1, "João", 10, "Muito bom")
         Resp.addAvaliacao(Av)
-        assert Resp.getAvaliacao(Resp, 1) == Av
+        assert Resp.getAvaliacao(1) == Av
+
+    def test_confirmAvaliacaoRmv(self):
+        Resp = Responsavel(self.nome, self.email, self.cpf, self.contato, self.endereco, None)
+        Av = Avaliacao(1, "João", 10, "Muito bom")
+        Resp.addAvaliacao(Av)
+        assert Resp.getAvaliacao(1) == Av
+        Resp.rmvAvaliacao(1)
+        assert Resp.getListaAvaliacao == []
+
+    def test_confirmNota(self):
+        Resp = Responsavel(self.nome, self.email, self.cpf, self.contato, self.endereco, None)
+        Av1 = Avaliacao(1, "João", 10, "Muito bom")
+        Av2 = Avaliacao(2, "Maria", 0, "Horrível")
+        Resp.addAvaliacao(Av1)
+        Resp.addAvaliacao(Av2)
+        assert Resp.getAvaliacao(1) == Av1
+        assert Resp.getAvaliacao(2) == Av2
+        assert Resp.getUserNota() == 5

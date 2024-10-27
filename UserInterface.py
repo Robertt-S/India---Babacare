@@ -43,10 +43,9 @@ class IUser(): #interface comum
     def getListaAvaliacao(self):
         return self._avaliacao
     
-    @property
     def getAvaliacao(self, id: int):
         for i in self._avaliacao:
-            if i.getId(i) == id:
+            if i.getId == id:
                 return i
     
 #endregion
@@ -63,7 +62,7 @@ class IUser(): #interface comum
 
     def addAvaliacao(self, novaAvaliacao: Avaliacao):
         for i in self._avaliacao:
-            if i.getAutor(i) == novaAvaliacao.autor:
+            if i.getAutor == novaAvaliacao.autor:
                 return -1
         self._avaliacao.append(novaAvaliacao)
         return 0
@@ -71,7 +70,7 @@ class IUser(): #interface comum
 
     def rmvAvaliacao(self, id: int):
         for i in self._avaliacao:
-            if i.getId(i) == id:
+            if i.getId == id:
                 self._avaliacao.remove(i)
                 break
             
@@ -82,7 +81,7 @@ class IUser(): #interface comum
             count = 0
             sum = 0
             for i in self._avaliacao:
-                sum = sum + i.getNota()
+                sum = sum + i.getNota
                 count+=1
             return sum/count
     #se for um usuário novo, devolve -1. Senão a média das notas
