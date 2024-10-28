@@ -19,11 +19,11 @@ class TestAvaliacao(unittest.TestCase):
         self.assertEqual(self.avaliacao.getDescricao, "Ótimo serviço")
 
     def test_setNota(self):
-        self.avaliacao.setNota = 3.7
+        self.avaliacao.setNota(3.7)
         self.assertEqual(self.avaliacao.nota, 3.7)
 
     def test_setDescricao(self):
-        self.avaliacao.setDescricao = "Serviço satisfatório"
+        self.avaliacao.setDescricao("Serviço satisfatório")
         self.assertEqual(self.avaliacao.descricao, "Serviço satisfatório")
 
 if __name__ == '__main__':
