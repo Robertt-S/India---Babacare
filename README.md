@@ -34,6 +34,19 @@ Vc tbm pode conferir se esta  codando na venv com cnrtl + shift + P, digitar pyt
 
 OBS: se algm erro de script ocorrer é preciso alterar a politica de execuçaõ de script do windows para unrestricted. Abra o link de ajuda da mensagem de erro se necessario. 
 
+
+# Se quiser pular as etapas de secret key, aparentemente não é necessaria então basta fazer igual o robert fez:
+
+git clone link_do_github
+
+pip install -r requirements
+
+python manage.py runserver (verifique se o servidor esta rodando)
+
+
+# Caso vc queira gravar a secret key localmente então continue apartir daqui: 
+
+
 # Instalar django: 
 
 python.exe -m pip install --upgrade pip
@@ -45,15 +58,7 @@ pip install python-dotenv
 django-admin startproject setup .  
 (Com o ponto final após setup)
 
-Alterando o timezone para brasil:
 
-setup/settings.py na linha 106 trocar por: 
-
-pt-br
-
-e no timezone trocar UTC por:
-
-America/Sao_Paulo
 
 
 # Variaveis de ambiente .env :
