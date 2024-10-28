@@ -1,10 +1,10 @@
-from __future__ import annotations
+import datetime
 #precisa importar annotations para que o Python permita que eu referencie IUser dentro dela própria (faço isso para ter o autor das avaliacoes)
 from TypeAvaliacao import Avaliacao
 
 class IUser(): #interface comum
 
-    def __init__(self,nome :str, email: str, cpf: str, contato:str, endereco:str, foto):
+    def __init__(self,nome :str, email: str, cpf: str, contato:str, endereco:str, foto, dataNasc: datetime, userId: int):
         self._nome = nome
         self._email = email
         self._cpf = cpf
@@ -12,6 +12,8 @@ class IUser(): #interface comum
         self._endereco = endereco
         self._foto = foto
         self._avaliacao: list[Avaliacao] = []
+        self._dataNasc = dataNasc
+        self._id = userId
     
 #region GETTER DOS ATRIBUTOS
 
@@ -43,6 +45,14 @@ class IUser(): #interface comum
     def getListaAvaliacao(self):
         return self._avaliacao
     
+    @property
+    def getDataNascimento(self):
+        return self._dataNasc
+    
+    @property
+    def getId(self):
+        return self._id
+    
     def getAvaliacao(self, id: int):
         for i in self._avaliacao:
             if i.getId == id:
@@ -66,14 +76,16 @@ class IUser(): #interface comum
                 return -1
         self._avaliacao.append(novaAvaliacao)
         return 0
-#Uma pessoa pode avaliar um perfil apenas 1 vez, entao se ja houver avaliacao dessa pessoa, retorna -1 e nao adiciona outra. Senao, retorna 0 e adiciona a avaliacao
-
+    #   Uma pessoa pode avaliar um perfil apenas 1 vez, entao se ja houver avaliacao dessa pessoa, 
+    #retorna -1 e nao adiciona outra. Senao, retorna 0 e adiciona a avaliacao
     def rmvAvaliacao(self, id: int):
         for i in self._avaliacao:
             if i.getId == id:
                 self._avaliacao.remove(i)
                 break
-            
+  
+#endregion
+    
     def getUserNota(self):
         if(len(self._avaliacao) == 0):
             return -1
@@ -86,5 +98,11 @@ class IUser(): #interface comum
             return sum/count
     #se for um usuário novo, devolve -1. Senão a média das notas
     
-#endregion
-    
+    def getIdade(self):
+        today = datetime.datetime.now()
+        idade = today.year - self._dataNasc.year
+        # se a pessoa já fez aniversário no ano
+        if(today.month, today.day) < (self._dataNasc.month, self._dataNasc.day):
+            idade -= 1
+        
+        return idade
