@@ -27,11 +27,9 @@ class Avaliacao:
 
 #region SETTERS
 
-    @property
     def setNota(self, novaNota):
         self.nota = novaNota
 
-    @property
     def setDescricao(self, novaDescricao):
         self.descricao = novaDescricao
 
