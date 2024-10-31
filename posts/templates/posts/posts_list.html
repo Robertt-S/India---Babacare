@@ -1,9 +1,28 @@
 {% extends 'layout.html' %}
 
+<!--TEXTO NA ABA DO NAVEGADOR-->
 {%block title%}
-    Posts List
+    Posts
 {%endblock%}
 
+<!--CONTEÚDO DO SITE ABAIXO NA BARRA DE ÍCONES-->
 {%block content%}
-    <h1 class="fancake">Posts List</h1>
+    <section>
+    
+    <h1 class="fancake">Posts</h1>
+
+    {% for post in posts %}
+        <article class="post">
+            <!--<h2>{{ post.title }}</h2>-->
+            <h2>
+                <a href="{% url 'posts:page' slug=post.slug %}">
+                    {{ post.title }}
+                </a>
+            </h2>
+            <p>{{ post.date }}</p>
+            <p>{{ post.body }}</p>
+        </article>
+    {% endfor %}
+    
+</section>
 {%endblock%}

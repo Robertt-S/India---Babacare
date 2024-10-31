@@ -1,0 +1,262 @@
+==================== Setup ====================
+Criar um enviroment:
+    py -m venv venv
+
+Ativar enviroment
+    source venv/Scripts/activate
+    source venv/bin/activate
+
+    deactivate
+
+Instalar os recurso
+    py -m pip install Django
+    (pode atualizar o pip se quiser)
+
+==================== Comandos Server ====================
+
+Dentro do env, PARA INICIAR O SERVER
+    py manage.py runserver
+    (clique no ip do server segurando Ctrl)
+    ctrl+c no terminal para cessar o server
+
+==================== urls.py ====================
+
+    Neste arquivo dentro de urlpatterns, cada "path" colocado será um sufixo
+adicionado ao final do ip do server. Por exemplo:
+        http://127.0.0.1:8000/ é a home
+        http://127.0.0.1:8000/about/ é o sobre do site
+        etc
+
+    no método path, são passados 2 argumento:
+    path( 'sufixo do ip', método que será chamado quando acessado o ip com sufixo ). 
+Exemplo:
+    path('about/', views.about), 
+    (quando acessado http://127.0.0.1:8000/about/, um método no arquivo views será chamado
+    que fará o processo de quando acessar o ip, "request")
+
+==================== views.py ====================
+
+   Os métodos contidos nessa classe são as respostas de quando o usuário
+acessa o ip com sufixo.
+
+    def homepage(request):
+    #return HttpResponse('Hello World! I\'m home')
+    return render(request, 'home.html')
+
+    no primeiro return (comentado), se o user acessa o ip, ele só verá uma mensagem
+    no segundo return, quando acessado a home do site, o arquivo html é acessado, assim
+ele é mandado para um template do site
+
+==================== Templates ====================
+
+    Aqui estão os arquivos html que funcionam como o front-end do site, aquilo que o 
+usuário verá
+
+==================== Templates ====================
+HTML
+
+    <title></title> - o que estiver escrito neste bloco aparece na aba do site (lá em cima)
+    <link rel="stylesheet" href="{% static 'css/style.css'%}"> - referência de onde
+o arquivo html tira as informações sobre o estilo da página
+    <h1></h1> - mensagem que aparecerá (não necessáriamente tem que ser h1, neste caso 
+foram usadas a variáveis h1 e p, para escrever no site [ <p></p> ])
+
+Exemplo:
+    'nav' e 'a' são variáveis
+    onde nav é um local definido onde vai aparecer coisas definidas por 'a'
+    e 'a' é um botão por conta de "href" q direciona para home, about e posts
+    o que está dentro do bloco <a></a> aparecerá no site como um botão
+    <nav>
+        <a href="/">🏠</a> | 
+        <a href="/about">😁</a> |
+        <a href="/posts">📰</a>
+    </nav>
+
+    Para que tudo seja usado, o Django tem uma área no arquivo "setup/setting.py" que fará
+referência à pasta de templates. Na área "TEMPLATES" depois em DIRS[]
+
+CSS
+    ctrl + f5 para atualizar mudanças no style.css
+==================== Static ====================
+
+    Neste diretório estarão arquivos estáticos, isto é, arquivos que não sofrerão mudanças
+a não ser que por desejo do admin ou do programador do app. Estilos da página, frases ou
+fontes de texto
+
+    Para o Django reconhecer estes arquivos, no arquivo "setup/setting.py", após "STATIC_URL",
+foi criado uma lista de diretórios, para o Django reconhecer,(STATICFILES_DIRS)
+
+    {% load static %} é adicionado aos arquivos html para "puxar" as informações dos arquivos 
+"estáticos".  Por isso no block <link></link> o href, referencia {%static 'nome do arquivo'%}
+
+==================== Posts ====================
+
+    Apps são pedaços de um projeto, com o intuito de diminuir a complexidade do projeto,
+tipo SCRUM basicamente, mas em código. Eles são modulares, isto é, ele são como, literal,
+peças, então é possível copiar o app de um projeto para o outro, ele funcionam independen-
+mente.
+
+py manage.py startapp 'nome do app'
+
+referencia o views.py do setup
+    [em posts/urls.py]
+        path('', views.posts_list),
+bota um link(sufixo) para posts
+    [em setup/url.py]
+        path('posts/', include('posts.urls'))
+
+    include fala para o Django olhar dentro da pasta posts, 
+e ver os urls dentro do arquivo url.py
+
+referencia os templates de posts
+    def posts_list(request):
+        return render(request, 'posts/posts_list.html')
+
+==================== layout.html ====================
+
+    Este arquivo funciona como template para outros html
+    Funciona, de certa forma, como um interface e implementação, em Orientação
+Orientada à Objetos
+
+[em layout.html]
+    {% block title %}
+            Django App
+    {% endblock %}
+
+    Este bloco tem nome de title e termina em endblock, entre essas linhas, "Django App"
+aparecerá por definição, caso não seja alterado
+
+[em home.html]
+    {% extends 'layout.html' %} diz que o arquivo "implementa/extende" layout.html
+
+    {%block title%}
+        Home            substitui no layout.html
+    {%endblock%}
+
+==================== models.py ====================
+
+    Models modelam informações e cada informação terá uma coluna na base de dados
+    Classes --(migrate)-> colunas na base de dados
+
+    class Post(models.Model):
+    title = models.CharField(max_length=75)     título do post
+    body = models.TextField()                   área de input de texto
+    slug = models.SlugField()                   sufixo após posts (http.../posts/'slug')
+    date = models.DateField(auto_now_add=True)  data do post (quando postado, automatico dia e data)
+
+1 - migrar os models padrões do Django
+    py manage.py migrate
+
+2 - migrar o model criado
+    py manage.py makemigrations
+    (Serve também para atualizar os models)
+    
+Aí ele cria a migration, no posts/migration/numeroDaMigração.py
+Manda para o banco de dados
+    py manage.py migrate
+
+Métodos criados no model, na classe, não precisam migrar
+
+========================================
+
+ORM - Object Relational Mapping
+    Intermediador do código python e do banco de dados
+
+Para abrir o menu interativo
+    py manage.py shell
+    from posts.models import Post
+
+Cria uma instancia de Post
+    p = Post()
+Seta um titulo e salva no BD
+    p.title = "My First Post!"
+    p.save()
+    Post.objects.all() - quantos objetos no BD
+
+Para sair
+    exit()
+
+==================== Django Admin ====================
+
+Acesse o site mas com o sufixo "/admin/"
+    path('admin/', admin.site.urls),
+
+Criar username e password (superUser)
+    py manage.py createsuperuser
+
+    Username (leave blank to use 'pc'): [coloque um username]
+    Email address: [não precisa colocar email, só dê ENTER]
+    Password: [A senha deve ter 8 caracteres]
+
+==================== admin.py ====================
+
+    Neste arquivo estarão itens que gostariamos de ver no 'admin/', basta apenas
+registrar os models
+    admin.site.register(Post)
+
+[em posts/views.py]
+    Passamos todos os posts para o html, usando a função em views
+
+[em posts_list.hmtl]
+    é feito um for para cada Post no BD 
+    <article></article> - é uma variavel que pode repetir basicamente
+    tem um class="post", para futuramente adicionar um style para o post
+
+    <h2> vai receber o título do post
+    <p> 'parágrafo' recebe a data e o texto do post (body)
+
+==================== adicionando sufixos / SLUGS ====================
+
+[em posts/urls.py]
+Dando nome aos urls
+    path('', views.posts_list, name="posts"),
+
+[em layout.html]
+    <a href="{% url 'posts' %}">📰</a>
+
+    Estamos passando como referencia o nome dos urls posts no posts/urls.py,
+href = "Eu quero como referência..."
+url = "esse url..."
+'posts' = "que tem esse nome"
+
+========================================
+
+[em posts/urls.py]
+Path converters
+    path('<slug:slug>', views.post_page, name="page"),
+<slug: slug> - 1º slug é o path converter e nesse caso o parâmetro é slug também, o nome do atributo da classe Post
+post_page - método que vai ser criado em views.py
+page - é o nome do url
+
+[em posts/views.py]
+    def post_page(request, slug):
+      return HttpResponse(slug)
+Para fazer o teste se quando a url é acessada, o slug é printado no console do site
+
+[em posts/templates/posts_list.html]
+    em <h2>{{ post.title }}</h2> queremos passar um link em vez do titulo
+
+    <h2>
+        <a href="{% url 'page' slug=post.slug %}">
+            {{ post.title }}
+        </a>
+    </h2>
+
+    portanto passamos uma referencia à url 'page' citada em urls.py e o slug do objeto post
+
+[em posts/urls.py]
+    #esses urls estão dentro do app posts
+    app_name = 'posts'
+
+Assim quando os urls dos posts são chamados, devemos usar {% url 'posts:nomeDoUrl' %}
+
+[em posts/views.py]
+    def post_page(request, slug):
+        post = Post.objects.get(slug=slug)
+        return render(request, 'posts/post_page.html', {'post': post})
+    
+Quando chamada essa função, vai retornar o site do respectivo post, conforme o slug passado
+
+[em posts/templates.post_page.html]
+    É criada a estrutura do post
+

@@ -18,7 +18,6 @@ from django.contrib import admin
 from django.urls import path, include
 from . import views
 
-# when a request to these specific pages are made, views will process the request
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.homepage),

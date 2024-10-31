@@ -1,1 +1,1 @@
-console.log("Html script working")
+console.log("Html script working");

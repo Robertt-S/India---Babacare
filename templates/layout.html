@@ -2,6 +2,7 @@
 {% load static %}
 <html lang="en">
 <head>
+    
 <style>
 @font-face {
     font-family: "myFirstFont";
@@ -11,6 +12,7 @@
     font-family: "myFirstFont";
 }
 </style>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
@@ -23,9 +25,15 @@
 </head>
 <body>
     <nav>
-        <a href="/">🏠</a> | 
-        <a href="/about">😁</a> |
-        <a href="/posts">📰</a>
+        <a href="/">
+            <span role="img" aria-label="Home">🏠</span>
+        </a> | 
+        <a href="/about">
+            <span role="img" aria-label="About">😁</span>
+        </a> |
+        <a href="{% url 'posts:list' %}">
+            <span role="img" aria-label="Posts">📰</span>
+        </a>
     </nav>
     <b class="fancake"></b>
     <main>

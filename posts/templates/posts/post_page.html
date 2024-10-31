@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+
+<!--TEXTO NA ABA DO NAVEGADOR-->
+{%block title%}
+    {{ post.title }}
+{%endblock%}
+
+<!--CONTEÚDO DO SITE ABAIXO NA BARRA DE ÍCONES-->
+{%block content%}
+    <section>
+        <h1 class="fancake">{{ post.title }}</h1>
+        <p>{{ post.date }}</p>
+        <p>{{ post.body }}</p>
+    
+    </section>
+{%endblock%}
