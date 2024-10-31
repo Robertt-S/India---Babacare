@@ -1,0 +1,40 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    min-height: 100vh;
+    background-color: #FFEBCD ;
+    color: 	#0a1620;
+    font-size: 3rem;
+    display: flex;
+    flex-flow: column;
+}
+
+nav {
+    padding: 1rem;
+    background-color: #8B4513;
+    color: white;
+    font-size: 2.5rem;
+}
+
+main {
+    flex-grow: 1;
+    display: grid;
+    place-content: center;
+}
+
+h1, p{
+    text-align: center;
+}
+
+a {
+    text-decoration: none;
+    color: #e63946;
+}
+
+a:hover {
+    opacity: .85;
+}

@@ -1,5 +1,5 @@
 """
-URL configuration for setup project.
+URL configuration for babacare project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.1/topics/http/urls/
@@ -15,8 +15,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from . import views
 
+# when a request to these specific pages are made, views will process the request
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.homepage),
+    path('about/', views.about),
+    # we want to look inside our posts app, and look at the url file inside this posts app
+    path('posts/', include('posts.urls'))
 ]
