@@ -39,7 +39,7 @@ OBS: se algm erro de script ocorrer é preciso alterar a politica de execuçaõ 
 
 git clone link_do_github
 
-pip install -r requirements
+pip install -r requirements.txt
 
 python manage.py runserver (verifique se o servidor esta rodando)
 
