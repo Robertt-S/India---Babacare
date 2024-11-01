@@ -21,7 +21,8 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.homepage),
-    path('about/', views.about),
-    # we want to look inside our posts app, and look at the url file inside this posts app
-    path('posts/', include('posts.urls'))
+    path('about/', views.about),   
+    path('posts/', include('posts.urls')),   
+    path('users/', include('users.urls')), 
+    
 ]

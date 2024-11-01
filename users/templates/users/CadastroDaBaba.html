@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+
+
+{% block content %}
+
+    <form action="{% url 'users:Babas' %}" method="post">
+        {%  csrf_token %}
+        </div class="container">
+            <h1>Cadastro da Babá</h1>
+            Nome<input name="nome"class="form-control-sm" type="text">
+            Email<input name="email"class="form-control-sm" type="text">
+            CPF<input name="cpf"class="form-control-sm" type="text">
+            <button class="form-control-sm">Enviar</button>
+        </div>
+    </form>
+{% endblock %}

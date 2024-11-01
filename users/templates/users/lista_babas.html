@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+
+
+
+{% block content %}
+    <h1>Lista de Babás no Banco de Dados</h1>
+ 
+    </div class="container">
+        <table>
+            <tr>
+                <th>Id </th>
+                <th>Nome </th>
+                <th>Email </th>
+                <th>CPF </th>
+            </tr>
+            {% for baba in babas%}
+            <tr>
+                <td> {{baba.id_baba}} </td>
+                <td> {{baba.nome}} </td>  
+                <td> {{baba.email}} </td>
+                <td> {{baba.cpf}} </td>                   
+            </tr>
+            {% endfor %}
+        </table>
+
+     </div>
+   
+{% endblock %}
