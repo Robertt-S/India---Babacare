@@ -1,28 +1,33 @@
 {% extends 'layout.html' %}
 
-
+{% block title %}
+    Lista dos responsáveis
+{% endblock %}
 
 {% block content %}
-    <h1>Lista de Pais no Banco de Dados</h1>
- 
-    </div class="container">
-        <table>
-            <tr>
-                <th>Id </th>
-                <th>Nome </th>
-                <th>Email </th>
-                <th>CPF </th>
-            </tr>
-            {% for responsavel in responsaveis%}
-            <tr>
-                <td> {{responsavel.id_baba}} </td>
-                <td> {{responsavel.nome}} </td>  
-                <td> {{responsavel.email}} </td>
-                <td> {{responsavel.cpf}} </td>                   
-            </tr>
-            {% endfor %}
-        </table>
+    <section>
+        <cadastro>
+            <h1>Lista de Pais no Banco de Dados</h1>
+        </cadastro>
+    
+        </div class="container">
+            <table>
+                <tr>
+                    <th>Id </th>
+                    <th>Nome </th>
+                    <th>Email </th>
+                    <th>CPF </th>
+                </tr>
+                {% for responsavel in responsaveis%}
+                <tr>
+                    <td> {{responsavel.id_baba}} </td>
+                    <td> {{responsavel.nome}} </td>  
+                    <td> {{responsavel.email}} </td>
+                    <td> {{responsavel.cpf}} </td>                   
+                </tr>
+                {% endfor %}
+            </table>
 
-     </div>
-   
+        </div>
+    </section>   
 {% endblock %}

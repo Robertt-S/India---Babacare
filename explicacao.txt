@@ -5,6 +5,7 @@ Criar um enviroment:
 Ativar enviroment
     source venv/Scripts/activate
     source venv/bin/activate
+    .\venv\Scripts\activate
 
     deactivate
 
@@ -106,8 +107,9 @@ bota um link(sufixo) para posts
         path('posts/', include('posts.urls'))
 
     include fala para o Django olhar dentro da pasta posts, 
-e ver os urls dentro do arquivo url.py
+e ver os urls dentro do arquivo urls.py
 
+[em posts/views.py]
 referencia os templates de posts
     def posts_list(request):
         return render(request, 'posts/posts_list.html')
@@ -172,6 +174,7 @@ Seta um titulo e salva no BD
     p.title = "My First Post!"
     p.save()
     Post.objects.all() - quantos objetos no BD
+    Post.objects.all().delete() - limpa o BD
 
 Para sair
     exit()
@@ -192,7 +195,7 @@ Criar username e password (superUser)
 
     Neste arquivo estarão itens que gostariamos de ver no 'admin/', basta apenas
 registrar os models
-    admin.site.register(Post)
+    admin.site.register(Post) -> no lugar de Post coloca-se o nome do model criado
 
 [em posts/views.py]
     Passamos todos os posts para o html, usando a função em views

@@ -5,12 +5,14 @@ class Baba(models.Model):
     nome = models.TextField(max_length=255)
     email = models.TextField(max_length=255)
     cpf = models.TextField(max_length=255)
+    slug = models.SlugField(default="", null=False)
+  
 
 class Responsavel(models.Model):
     id_responsavel = models.AutoField(primary_key=True)
     nome = models.TextField(max_length=255)
     email = models.TextField(max_length=255)
     cpf = models.TextField(max_length=255)
-
+    slug = models.SlugField(default="", null=False)
 
 

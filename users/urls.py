@@ -8,6 +8,8 @@ app_name = 'users'
 urlpatterns = [
   path('baba/',views.CadastroDaBaba,name='CadastroDaBaba'),
   path('responsavel/',views.CadastroDoResponsavel,name='CadastroDoResponsavel'),
-  path('lista_responsavel/',views.Responsaveis,name='Responsaveis'),
-  path('lista_baba/', views.Babas, name='Babas')
+  path('cadresponsavel/',views.aposCadastroResp,name='cadResponsaveis'),
+  path('cadbaba/', views.aposCadastroBabas, name='cadBabas'),
+  path('lista_resposavel/', views.Responsaveis, name='listaResponsaveis'),
+  path('lista_baba/', views.Babas, name='listaBabas'),
 ]

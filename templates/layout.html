@@ -4,13 +4,17 @@
 <head>
     
 <style>
-@font-face {
-    font-family: "myFirstFont";
-    src: url("../static/fonts/Fancake.ttf");
-}
-.fancake{
-    font-family: "myFirstFont";
-}
+    @font-face {
+        font-family: 'myFirstFont';
+        src: url("../static/fonts/Fancake.ttf") format('truetype');
+        font-weight: normal;
+        font-height: normal;
+    }
+    .fancake{
+        font-family: "myFirstFont";
+    }
+
+
 </style>
 
     <meta charset="UTF-8">
@@ -24,7 +28,7 @@
     <script src="{% static 'js/main.js' %}" defer></script>
 </head>
 <body>
-    <nav>
+    <nav class="Fancake">
         <a href="/">
             <span role="img" aria-label="Home">🏠</span>
         </a> | 
@@ -33,12 +37,29 @@
         </a> |
         <a href="{% url 'posts:list' %}">
             <span role="img" aria-label="Posts">📰</span>
+        </a> |
+        {% comment %} o que vem depois de url é o nome do path em urls {% endcomment %}
+        <a href="{% url 'users:listaBabas'%}">
+            <span role="img" aria-label="Baba">🧸</span>
+        </a> |
+        <a href="{% url 'users:listaResponsaveis' %}">
+            <span role="img" aria-label="Responsavel">👪</span>
+        </a> |
+        <a href="{% url 'users:CadastroDaBaba'%}">
+            Cadastro Baba
+        </a> |
+        <a href="{% url 'users:CadastroDoResponsavel'%}">
+            Cadastro Responsavel
         </a>
+        
+        
     </nav>
-    <b class="fancake"></b>
+    <b></b>
     <main>
         {%block content%}
         {%endblock%}
     </main>
+    
 </body>
+
 </html>
