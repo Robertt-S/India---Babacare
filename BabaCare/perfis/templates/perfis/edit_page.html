@@ -6,9 +6,10 @@
 
 {%block content%}
     <h1>Edit Profile</h1>
-    <form method=POST class="edit-form">
+    <form action="" method=POST class="edit-form" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form }}
+        <img src="{{ perfil.foto.url }}">
         <br/>
         <input type="submit" value="Update" class="edit-button" style="font-size: 0.8em;">
     </form>

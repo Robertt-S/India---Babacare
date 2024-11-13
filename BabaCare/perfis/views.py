@@ -13,7 +13,8 @@ def edit_page(request, perfil_id):
     #vai ver na tabela de perfis e buscar aquela com pk igual a que a gente clica na pagina
     perfil = Perfil_Baba.objects.get(pk=perfil_id)
     #form para editar
-    form = EditProfileForm(request.POST or None, instance=perfil)
+    #instance=perfil, na hora de editar, ele mostra o texto que já está gravado no perfil
+    form = EditProfileForm(data=(request.POST or None),files=(request.FILES or None), instance = perfil)
     if form.is_valid():
         form.save()
         return redirect('perfis:my_page')
