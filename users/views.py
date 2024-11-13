@@ -42,7 +42,6 @@ def aposCadastroResp(request):
     # e passo como parâmetros pro render()
     return render(request,'users/lista_responsaveis.html', responsaveis)
 
-
 def Babas(request):
 
     # Plot Baba

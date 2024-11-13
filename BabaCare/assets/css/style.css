@@ -1,0 +1,97 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: myFont;
+    src: url(../fonts/LTMakeup-Regular.otf);
+}
+
+body {
+    min-height: 100vh; /*altura minima de um elemento*/
+    background-color: #FFEBCD ;
+    color: 	#0a1620;
+    font-size: 3rem;
+    font-family: myFont;
+}
+
+nav {
+    padding: 0.2em; /* em: tamanho da fonte do elemento pai */
+    background-color: #8B4513;
+    color: white;
+    font-size: 2rem; /* rem: tamanho comparado à fonte do elemento pai */
+}
+
+main {
+    padding: 2rem; /*distancia entre o conteudo e as bordas de conteudo */
+}
+
+section {
+    display: flex; /*tamanho da tela, flex: "auto-ajuste"*/
+    flex-flow: column; /*conteudo é mostrado em coluna*/
+    gap: 1rem; /*espaço entre linhas e colunas*/
+    text-align: left;
+}
+
+h1 {
+    padding: 0em;
+    font-size: 3rem;
+    text-align: center;
+    font-family: myFont;
+}
+
+h2 {
+    font-size: 2.5rem; /*tamanho da fonte*/
+}
+
+p {
+    font-size: 1rem;
+}
+
+/* Título da página */
+cadastro {
+    font-size: 0.45em;
+    text-align: center;
+    font-family: myFont;
+}
+
+/*caixa de input*/
+input {
+    color: black;
+    display: block;
+}
+
+.container { 
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+/*indíces da lista de usuários*/
+th {
+    font-family: myFont;
+    font-size: 2rem;
+}
+
+td {
+    font-size: 2rem;
+}
+
+
+a {
+    text-decoration: none;
+    color: #e63946;
+    font-family: myFont;
+}
+
+a:hover {
+    opacity: .75;
+}
+
+.banner {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+}

@@ -9,9 +9,19 @@ Ativar enviroment
 
     deactivate
 
+    npm init
+    npm i bootstrap@5.3.3
+
 Instalar os recurso
     py -m pip install Django
     (pode atualizar o pip se quiser)
+
+Criar um projeto
+    django-admin startproject setup <-- nome do projeto
+
+    cd setup
+
+    py manage.py runserver
 
 ==================== Comandos Server ====================
 
@@ -98,6 +108,10 @@ peças, então é possível copiar o app de um projeto para o outro, ele funcion
 mente.
 
 py manage.py startapp 'nome do app'
+
+[em setup/settings]
+    na parte de INSTALLED_APPS, incluir 'nomedoapp', para q o django reconheça mudanças
+na main setup e nos apps
 
 referencia o views.py do setup
     [em posts/urls.py]
@@ -260,6 +274,448 @@ Assim quando os urls dos posts são chamados, devemos usar {% url 'posts:nomeDoU
     
 Quando chamada essa função, vai retornar o site do respectivo post, conforme o slug passado
 
-[em posts/templates.post_page.html]
+[em posts/templates/post_page.html]
     É criada a estrutura do post
 
+==================== Imagens ====================
+
+[em setup/setting.py]
+    MEDIA_URL = 'media/'
+
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')    
+
+    diretório das imagens
+
+[em setup/urls.py]
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+    basicamente dizendo para o app onde podemos encontrar imagens
+
+dentro do ambiente (venv)
+pip install Pillow
+
+[em posts/models.py]
+    foto = models.ImageField(default='Sfoto.jpg', blank=True)
+
+    adiciona um atributo à classe q tem uma foto default se não adicionada e não exige foto
+
+[em posts/templates/post_page.html]
+    <img 
+        class="banner"
+        src="{{ post.foto.url}}" 
+        alt="{{ post.title }}"
+    />
+
+Coloca a foto embaixo do título e um class="banner" para adicionar personalização no css
+
+==================== Relembrando como é o setup de um app e sua página ====================
+
+    Apps são pedaços de um projeto, com o intuito de diminuir a complexidade do projeto,
+tipo SCRUM basicamente, mas em código. Eles são modulares, isto é, ele são como, literal,
+peças, então é possível copiar o app de um projeto para o outro, ele funcionam independen-
+mente.
+
+py manage.py startapp 'nome do app'
+
+[em setup/settings]
+    na parte de INSTALLED_APPS, incluir 'nomedoapp', para q o django reconheça mudanças
+na main setup e nos apps
+
+[em users/urls.py]
+    setta os urlpatterns = []
+        path('slug on ip', views.nomeFuncaoEmViews, name="nome do path")
+
+[em setup/urls.py]
+    path('users/', include('users.urls'))
+    para o Django reconhecer os urls do users
+
+[em users/views.py]
+    def nomeFuncaoEmViews(request):
+        return render( request, "users/paginaParaQualSeraRedirecionado.html")
+
+Criar pasta templates no app
+[em users/templates/paginaParaQualSeraRedirecionado.html]
+    Copia os outros templates e muda o que for repetido
+
+==================== Form para se registrar ====================
+
+[em users/views.py]
+    from django.contrib.auth.forms import UserCreationForm
+
+    def register_view(request):
+        form = UserCreationForm()
+        return render(request, "users/paginaParaQualSeraRedirecionado.html", {"form": form} )
+
+Basicamente estamos passando o form do view para esse html
+
+[em users/templates/paginaParaQualSeraRedirecionado.html]
+    essa "ação" vai voltar para esse mesmo site e com que metodo vai lançar esse form
+    o class é só pra enfeitar no css
+    <form class="form-with-validation" action="/users/register" method="post">
+        {%csrf_token%}
+        {{ form }}
+        <button class="form-submit">Submit</button>
+    </form>
+
+        o Django também fornece um jeito de validar as informações para cadastro
+    Cross Site Request Forgery (CSRF)
+    para verificar se essas informações são do nosso site ou não
+
+[em users/views.py]
+    from django.shortcuts import render, redirect
+
+        def register_view(request):
+            form = UserCreationForm()
+            return render(request, "users/paginaParaQualSeraRedirecionado.html", {"form": form} )
+
+                    |
+                    \/
+
+        def register_view(request):
+            if request.method == "POST":
+                form = UserCreationForm(request.POST)  # o form foi enviado com informação
+                if form.is_valid():  # se form é valido, salva ele e redireciona para a lista de posts
+                    form.save()
+                    return redirect("posts:list")
+            else:  # posts não enviado
+                form = UserCreationForm()
+            return render(request, "users/paginaParaQualSeraRedirecionado.html", {"form": form} )
+
+==================== Login e autenticação ====================
+
+[em users/urls.py]
+    path('login/', views.login_view, name="login)
+
+[em users/views.py]
+    from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+
+    def login_view(request):
+        if request.method == "POST":
+            return redirect("users:login")
+        else:  # getRequest
+            form = AuthenticationForm()
+        
+        return render(request, "users/login.html,{"form":form})
+
+[em users/templates/login.html]        
+    igual ao template padrão
+                                                        |
+    <form class="form-with-validation" action="/users/login" method="post">
+        {%csrf_token%}
+        {{ form }}
+        <button class="form-submit">Submit</button>
+    </form>
+
+[em users/views.py]
+    def login_view(request):
+        if request.method == "POST":
+            form = AuthenticationForm(data=request.POST)
+            if form.is_valid():
+                #LOGIN HERE
+                return redirect("users:login")
+        else:  # getRequest
+            form = AuthenticationForm()
+        
+        return render(request, "users/login.html,{"form":form})
+
+                |       TEST
+                \/
+
+    from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+    from django.contrub.auth import login
+
+    def login_view(request):
+        if request.method == "POST":
+            form = AuthenticationForm(data=request.POST)
+            if form.is_valid():
+                #LOGIN HERE
+                login(request, form.get_user())
+                return redirect("posts:list")
+        else:  # getRequest
+            form = AuthenticationForm()
+        
+        return render(request, "users/login.html,{"form":form})
+
+                    adicionando um variavel no registro
+
+        def register_view(request):
+            if request.method == "POST":
+                form = UserCreationForm(request.POST)  # o form foi enviado com informação
+                if form.is_valid():  # se form é valido, salva ele e redireciona para a lista de posts
+        -->         login(request, form.save())
+                    return redirect("posts:list")
+            else:  # posts não enviado
+                form = UserCreationForm()
+            return render(request, "users/paginaParaQualSeraRedirecionado.html", {"form": form} )
+
+            TESTAR -> se logado por aqui, loga também no /admin/
+
+==================== Autorização ====================
+
+Páginas protegidas para quem não está logado
+
+[em users/urls.py]
+     path('logout/', views.logout_view, name="logout)
+
+[em users/views.py]
+    from django.contrib.auth import login, logout
+
+    def logout_view(request):
+        if request.method == "POST":
+            logout(request)
+            return redirect("posts:list)
+
+[em static/style.css]
+
+    classe logout
+    .logout {
+        display : inline-block;
+    }
+
+    class logout button
+    .logout-button {
+        font-size: 2.5rem;
+        background-color: rgb(0,0,0,0);
+        border: none;
+    }
+
+    .logout-button:hover {
+        opacity: .75;
+    }
+
+[em templates/layout.html]
+    onde coloca um novo botão, este botão fará o logout
+
+    <form class="logout" action="{ url 'users:logout' }" method="post">
+        {% csrf_token %}
+        <button class="logout-button" aria-label="User Logout" title="User Logout>
+            emoji
+        </button>
+    </form>
+
+    Criando pagina que precisa de login
+
+[em posts/urls.py]
+    É preciso colocar em cima do <slug: slug>
+    path('new-post/',views.post_new ,name="new-post")
+
+[em posts/views.py]
+    def post_new(request):
+        return render(request, 'posts/post_new.html')
+
+[em posts/template/post_new.html]
+    Copia do post_page
+
+    deleta tudo dentro de <section>
+    <section>
+        <h1>New Post</h1>
+    </section>
+
+[em templates/layout.html]
+    <a href="{% url 'posts:new-post' %}>
+        <span role="img" aria-label="New Post" title="New Post>EMOJI</span>
+    </a>
+
+    qualquer um consegue ver esse botão, então agora vamos fazer com que apenas usuários logados vejam esse botão
+
+[em posts/views.py]
+    from django.contrib.auth.decorators import login_required
+
+    esse @ checa se quando a função executa, o user está logado, senão manda eles pro url em parenteses
+    @login_required(login_url="/user/login/")
+    def post_new(request):
+
+    ele manda para o html de login e no url aparece:
+    ip/users/login/?next=/posts/new-post/
+    isso quer dizer que assim que o login for efetuado, ele será redirecionado para o post/new-post
+
+[em users/templates/login.html]
+    {{form}}
+
+    {% if request.GET.next %}  se existe um request depois...
+        <input type="hidden" name="next" value="{{ request.GET.next }}" />
+    {% endif %} 
+
+[em users/views.py]
+    def login_view(request):
+        if request.method == "POST":
+            form = AuthenticationForm(data=request.POST)
+            if form.is_valid():
+                #LOGIN HERE
+                login(request, form.get_user())
+                return redirect("posts:list")                <---
+        else:  # getRequest
+            form = AuthenticationForm()
+        
+        return render(request, "users/login.html,{"form":form})
+
+quando a gente loga, não importa como, vamos para a lista de posts
+
+    def login_view(request):
+        if request.method == "POST":
+            form = AuthenticationForm(data=request.POST)
+            if form.is_valid():
+                #LOGIN HERE
+                login(request, form.get_user())
+                if 'next' in request.POST:
+                return redirect(request.POST.get('next') )      <--
+                # 'next' nesse caso é o valor do input no hidden do login.html
+                else:
+                    return redirect("posts:list")               <--
+
+        else:  # getRequest
+            form = AuthenticationForm()
+        return render(request, "users/login.html,{"form":form})
+
+Ou manda pra onde queria, ou loga e manda direto pra lista de posts
+
+===== Barra de navegação condicional =====
+
+[em templates/layout.html]
+    em cima dos botões pra verificar se ta logado ou não
+
+    {% if user.is_authenticated %}
+        novo post e logout buttons
+    {% else %}
+        register e login
+    {% endif %}
+
+==================== Form Personalizado ====================
+
+[em posts/forms.py]
+    from django import forms
+    from . import models   -> usa o model do Post
+
+    class CreatePost(forms.ModelForm):
+        class Meta:  --> tem que ser Meta, classe aninhada dentro de CreatePost
+            model = models.Post
+            fields = ['title', 'body,'slug','banner'] -> o que será pego dos inputs
+
+[em posts/views.py]
+    from . import forms
+
+    def post_new(request):   -> continuar implementação deste metodo
+        form = forms.CreatePost()
+        return render(request, 'posts/post_new.html', {'form':form})
+
+[em posts/templates/post_new.html]
+    nesse html tem o padrão do layout +
+    <section>
+        <h1>New Post</h1>
+    </section>
+
+            |
+            \/
+
+    <section>
+        <h1>New Post</h1>
+        # class -> css , enctype -> imagem (é do html) , url -> nome do url no app_name=posts
+        <form class="form-with-validation" action="{% url 'posts:new_post' %}" method="post" enctype="multipart/form-data"
+            {%csrf_token%}
+            {{ form }}
+            <button class="form-submit">Add Post</button>
+        </form>
+    </section>
+
+[em posts/views.py]
+    from django.shortcuts import render, redirect
+    @login_required(login_url="/user/login/")
+    def post_new(request):
+        if request.method == 'POST':
+            form = forms.CreatePost(requst.POST, request.FILES)
+            if form.is_valid():
+                # save with user
+                return redirect('posts:list')
+        else:
+            form = forms.CreatePost()
+        return render(request, 'posts/post_new.html', {'form':form})
+
+DELETE ALL POSTS OR IT WILL BREAK;
+
+Colocando o autor do post como o user
+Relação de BD (1 usr pode criar, n posts)
+[em posts/models.py]
+    from django.contrib.auth.models import User
+    class Post ...
+        ...
+        ...
+        se esses User for deletado da tabela de Users, deleta todas os posts dele
+        author = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
+
+[em posts/templates/posts_list.html]
+    </h2>
+    <p> {{post.date}} by {{post.author}}</p>
+
+[em posts/views.py]
+    @login_required(login_url="/user/login/")
+    def post_new(request):
+        if request.method == 'POST':
+            form = forms.CreatePost(requst.POST, request.FILES)
+            if form.is_valid():
+                newpost = form.save(commit=False)    <--
+                newpost.author = request.user
+                newpost.save()
+                return redirect('posts:list')
+        else:
+            form = forms.CreatePost()
+        return render(request, 'posts/post_new.html', {'form':form})
+
+==================== UPDATES ====================
+
+[em setup/settings.py]
+    1 - import os (não precisa mais)
+
+        STATIC_ROOT = BASE_DIR / 'assets'
+        MEDIA_ROOT = BASE_DIR / 'media'
+
+        STATICFILES_DIRS = [
+            BASE_DIR / 'static'
+        ]
+
+        para ver se funcionou:
+        py manage.py collectstatic
+
+        Cria uma pasta nova
+        [em setup/assets]
+
+
+[em setup/settings.py]
+    2 - DEBUG = False (para dar deploy, deixe falso)
+        ALLOWED_HOSTS = ["localhost","127.0.0.1"]
+
+
+[em setup/urls.py]
+    3 - 
+    from django.views.static import serve
+    from django.urls import path, include, re_path -> regex
+
+    # definindo um grupo para midia e outro para static
+    urlpatterns = [
+        re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+        re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
+        ...
+        ...
+    ]
+    #urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+[em users/templates/login.html e register.html]
+    4 - <form class="form-with-validation" action="{% url 'users:login' %}" method="post">
+        <form class="form-with-validation" action="{% url 'users:register' %}" method="post">
+
+
+========== PROJECT DEPLOYMENT ==========
+Kayano
+evandrok1
+
+lucascss
+css123456
+
+yuri
+ysb12345
+
+robert
+rl123456
+
+py -m pip install django-autoslug
+
+slug automatico para perfis

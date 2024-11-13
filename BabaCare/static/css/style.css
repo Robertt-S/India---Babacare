@@ -1,0 +1,257 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: myFont;
+    src: url(../fonts/LTMakeup-Regular.otf);
+}
+
+body {
+    min-height: 100vh; /*altura minima de um elemento*/
+    background-color: #FFEBCD ;
+    color: 	#0a1620;
+    font-size: 3rem;
+    font-family: myFont;
+}
+
+nav {
+    padding: 0.2em; /* em: tamanho da fonte do elemento pai */
+    background-color: #8B4513;
+    color: white;
+    font-size: 2rem; /* rem: tamanho comparado à fonte do elemento pai */
+    text-align: right;
+}
+
+main {
+    padding: 2rem; /*distancia entre o conteudo e as bordas de conteudo */
+}
+
+section {
+    display: flex; /*tamanho da tela, flex: "auto-ajuste"*/
+    flex-flow: column; /*conteudo é mostrado em coluna*/
+    gap: 1rem; /*espaço entre linhas e colunas*/
+    text-align: left;
+}
+
+h1 {
+    padding: 0em;
+    font-size: 4rem;
+    text-align: left;
+    font-family: myFont;
+}
+
+h2 {
+    font-size: 2.5rem; /*tamanho da fonte*/
+}
+
+p {
+    font-size: 2rem;
+}
+
+/* Título da página */
+cadastro {
+    font-size: 0.45em;
+    text-align: center;
+    font-family: myFont;
+}
+
+/*caixa de input*/
+input {
+    color: black;
+    display: block;
+}
+
+.container { 
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+/*indíces da lista de usuários*/
+th {
+    font-family: myFont;
+    font-size: 2rem;
+}
+
+td {
+    font-size: 2rem;
+}
+
+
+a {
+    text-decoration: none;
+    color: #e63946;
+    font-family: myFont;
+}
+
+a:hover {
+    opacity: .75;
+}
+
+.banner {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+}
+
+/*#region forms*/
+
+.edit-form {
+    font-size: 2rem;
+    padding: 0.5rem;
+    display: flex;
+    flex-flow: column;
+    gap: 0.5rem; /* espaço entre inputs*/
+    max-width: 300px;
+}
+
+
+.form-with-validation {
+    font-size: 2rem;
+    padding: 0.5rem;
+    display: flex;
+    flex-flow: column;
+    gap: 0.5rem; /* espaço entre inputs*/
+    max-width: 50%;
+}
+
+.form-with-validation div {
+    display: flex;
+    flex-flow: column;
+    gap: 0.25rem; /* espaço entre título e helptext*/
+}
+
+.form-with-validation input {
+    padding: 0.25rem;
+    max-width: 300px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.5em;
+}
+
+.form-submit {
+    padding: 0.5rem;
+    border-radius: 10px;
+    width: 125px;
+}
+
+.helptext {
+    font-size: 1.5rem;
+    margin-left: 1rem;
+}
+
+.helptext ul {
+    list-style-type: none;
+}
+
+.errorlist {
+    color: #F00;
+    margin-left: 2rem;
+    font-size: 1.5rem;
+}
+
+.errorlist li::marker {
+    content: '🚨 ';
+}
+
+/*#endregion*/
+
+/*#region popup*/
+
+.popup {
+    margin: 70px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    width: 30%;
+    position: relative;
+    transition: all 5s ease-in-out;
+    font-size: 1.5rem;
+}
+
+.popup h2 {
+    margin-top: 0;
+    color: #333;
+    font-family: Tahoma, Arial, sans-serif;
+}
+
+.popup .close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    transition: all 200ms;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #333;
+}
+
+.popup .close:hover {
+    color: orange;
+}
+
+.popup .content {
+    max-height: 30%;
+    overflow: auto;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+/* These are the rules you are looking for. */
+.overlay {
+    transition: opacity 500ms;
+    opacity: 1;
+    pointer-events: all;
+}
+
+.overlay:target {
+    opacity: 0;
+    pointer-events: none;
+}
+/*#endregion*/
+
+
+
+.edit-button {
+    background-color: #b1443e;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 0.5em;
+    width: 200px;
+    height: 55px;
+    font-family: myFont;
+}
+
+.edit-button:hover {
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    background-color: #b32727d6;
+}
+
+.header {
+    padding: 30px;
+    text-align: center;
+    background: #E0A75E;
+  }
+  
+  .header h1 {
+    text-align: center;
+    font-size: 50px;
+  }
+
+.foto-perfil {
+    max-width: 225px;
+    max-height: 300px;
+}

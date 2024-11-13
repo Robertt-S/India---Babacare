@@ -7,6 +7,7 @@ class Post(models.Model):
     body = models.TextField()                   # text area input
     slug = models.SlugField() 
     date = models.DateTimeField(auto_now_add=True)  # date time is added every time a user post
+    foto = models.ImageField(default='Sfoto.jpg', blank=True)
     
     def __str__(self):
         return self.title

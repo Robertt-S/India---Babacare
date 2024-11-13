@@ -8,7 +8,13 @@
 <!--CONTEÚDO DO SITE ABAIXO NA BARRA DE ÍCONES-->
 {%block content%}
     <section>
-        <h1 class="fancake">{{ post.title }}</h1>
+
+        <h1>{{ post.title }}</h1>
+        <img 
+            class="banner"
+            src="{{ post.foto.url}}" 
+            alt="{{ post.title }}"
+        />
         <p>{{ post.date }}</p>
         <p>{{ post.body }}</p>
     

@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+
+{%block title%}
+    {{ perfil.nome_completo }}
+{%endblock%}
+
+{%block content%}
+    <h1>Edit Profile</h1>
+    <form method=POST class="edit-form">
+        {% csrf_token %}
+        {{ form }}
+        <br/>
+        <input type="submit" value="Update" class="edit-button" style="font-size: 0.8em;">
+    </form>
+
+
+{%endblock%}

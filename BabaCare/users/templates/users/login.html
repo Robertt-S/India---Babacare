@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+
+{%block title%}
+    Login
+{%endblock%}
+
+{%block content%}
+    <h1>Login</h1>
+        {% comment %} summiting this method with 'post' {% endcomment %}
+        <form class="form-with-validation" action="" method=POST>
+            {% csrf_token %}
+
+
+        <div class="form-with-validation">
+            <label for="exampleInputEmail1" class="form-label">Username:</label>
+            <input type="text" class="form-control" name="username" aria-describedby="emailHelp">
+        </div> 
+
+        <div class="form-with-validation">
+            <label for="exampleInputPassword1" class="form-label">Password:</label>
+            <input type="password" class="form-control" name="password">
+        </div> 
+
+        {% comment %} <button class="form-submit">Submit</button> {% endcomment %}
+        <input type="submit" value="Submit" class="form-submit">
+    </form>
+{%endblock%}
+
+
+

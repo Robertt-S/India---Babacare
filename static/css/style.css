@@ -4,6 +4,11 @@
     box-sizing: border-box;
 }
 
+@font-face {
+    font-family: myFont;
+    src: url(../fonts/LTMakeup-Regular.otf);
+}
+
 body {
     min-height: 100vh; /*altura minima de um elemento*/
     background-color: #FFEBCD ;
@@ -33,6 +38,7 @@ h1 {
     padding: 0em;
     font-size: 3rem;
     text-align: center;
+    font-family: myFont;
 }
 
 h2 {
@@ -47,7 +53,7 @@ p {
 cadastro {
     font-size: 0.45em;
     text-align: center;
-    font-family:cursive;
+    font-family: myFont;
 }
 
 /*caixa de input*/
@@ -63,7 +69,12 @@ input {
 
 
 /*indíces da lista de usuários*/
-th,td {
+th {
+    font-family: myFont;
+    font-size: 2rem;
+}
+
+td {
     font-size: 2rem;
 }
 
@@ -71,10 +82,15 @@ th,td {
 a {
     text-decoration: none;
     color: #e63946;
-    font-family:cursive;
+    font-family: myFont;
 }
 
 a:hover {
     opacity: .75;
 }
 
+.banner {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+}

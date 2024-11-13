@@ -6,6 +6,13 @@ class Baba(models.Model):
     email = models.TextField(max_length=255)
     cpf = models.TextField(max_length=255)
     slug = models.SlugField(default="", null=False)
+    foto = models.ImageField(default='Sfoto.jpg', blank=True)
+    
+    def __str__(self):
+        if(self.nome ==None):
+            return "ERROR-BABA NAME IS NULL"
+        else:
+            return str(self.nome)
   
 
 class Responsavel(models.Model):
@@ -14,5 +21,10 @@ class Responsavel(models.Model):
     email = models.TextField(max_length=255)
     cpf = models.TextField(max_length=255)
     slug = models.SlugField(default="", null=False)
+    foto = models.ImageField(default='Sfoto.jpg', blank=True)
 
-
+    def __str__(self):
+        if(self.nome == None):
+            return "ERROR-RESPONSAVEL NAME IS NULL"
+        else:
+            return str(self.nome)

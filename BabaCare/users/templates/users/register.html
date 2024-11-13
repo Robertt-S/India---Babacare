@@ -1,0 +1,18 @@
+{% extends 'layout.html' %}
+
+{%block title%}
+    Register
+{%endblock%}
+{% if form.errors %}
+    <p>There was an error with your form...</p>
+{% endif %}
+{%block content%}
+    <h1>Register a New User</h1>
+    {% comment %} summiting this method with 'post' {% endcomment %}
+    <form class="form-with-validation" action="{% url 'users:register' %}" method=POST>
+        {% csrf_token %}
+        {% comment %} provide that form we created in the function {% endcomment %}
+        {{ form }}
+        <button class="form-submit">Submit</button>
+    </form>
+{%endblock%}

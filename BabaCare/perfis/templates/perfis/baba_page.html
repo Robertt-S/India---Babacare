@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+
+{%block title%}
+    {{ perfilBaba.nome_completo }}
+{%endblock%}
+
+{%block content%}
+{% if user.is_authenticated %}
+
+
+    <section>
+        <h1>Perfil</h1>
+        <p>Nome Completo: {{ perfilBaba.nome_completo }}</p>
+        <img class="foto-perfil" src="{{ perfilBaba.foto.url }}"/>
+        <p>Aniversário: {{ perfilBaba.data_nascimento }}</p>
+        <p>Email: {{ perfilBaba.email }}</p>
+        <p>Endereço: {{ perfilBaba.endereco }}</p>
+        <p>C.P.F: {{ perfilBaba.cpf }}</p>
+        <p>Habilidades: {{ perfilBaba.habilidades }}</p>
+    </section>
+
+    {% else %}
+        <h2>Sorry! You must be logged in to view this page</h2>
+        <a href="{% url 'users:login'%}" style="font-size: 2rem">Login Here</a>
+    {% endif %}
+{%endblock%}
