@@ -16,6 +16,13 @@ Instalar os recurso
     py -m pip install Django
     (pode atualizar o pip se quiser)
 
+
+Salvar os recursos usados no projeto
+    pip freeze > requirements.tx
+
+Baixar dependencias do requirements
+    pip install -r requirements.txt
+
 Criar um projeto
     django-admin startproject setup <-- nome do projeto
 
