@@ -255,3 +255,28 @@ a:hover {
     max-width: 225px;
     max-height: 300px;
 }
+/* Estilo base dos botões */
+.custom-button {
+    .custom-button {
+        font-family: Arial, sans-serif; /* Define a fonte Arial */
+        color: purple; /* Define o texto roxo */
+        background: none; /* Remove o plano de fundo */
+        border: none; /* Remove a borda */
+        cursor: pointer; /* Mostra o ícone de clique */
+        font-size: 16px; /* Tamanho da fonte */
+        padding: 10px 20px; /* Adiciona espaçamento interno */
+        transition: color 0.3s ease, transform 0.2s ease; /* Animações suaves */
+    }
+}
+
+/* Efeito ao passar o mouse */
+.custom-button:hover {
+    color: darkviolet; /* Tom mais escuro de roxo ao passar o mouse */
+    transform: scale(1.05); /* Aumenta ligeiramente o botão */
+}
+
+/* Efeito ao clicar */
+.custom-button:active {
+    background-color: #3e8e41; /* Verde ainda mais escuro */
+    transform: scale(0.98); /* Reduz ligeiramente */
+}

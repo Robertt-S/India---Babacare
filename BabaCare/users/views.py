@@ -42,3 +42,9 @@ def logout_view(request):
     logout(request)
     messages.success(request, ("You're logged out!"))
     return redirect('home')
+
+def baba_page(request):
+    return render(request, 'baba.html')
+
+def responsaveis_page(request):
+    return render(request, 'responsaveis.html')
