@@ -7,7 +7,7 @@
 {%block content%}
     <h1>Login</h1>
         {% comment %} summiting this method with 'post' {% endcomment %}
-        <form class="form-with-validation" action="" method=POST>
+        <form class="form-with-validation" action="{% url 'login'  %}" method=POST>
             {% csrf_token %}
 
 

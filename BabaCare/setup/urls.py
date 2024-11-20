@@ -33,8 +33,8 @@ urlpatterns = [
     #path('users/',include('django.contrib.auth.urls')),
     path('users/',include('users.urls')),
     path('perfis/',include('perfis.urls')),
-    path('login/', v.login_view, name='login'), 
-    path('cadastro/', v.register_user, name='cadastro'),  
+    path('baba/login/', v.login_view, name='login'), 
+    path('baba/cadastro/', v.cadastro, name='cadastro'),  
 ]
 
 #urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
