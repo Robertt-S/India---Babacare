@@ -5,6 +5,16 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Bem-vindo à página Responsáveis</h1>
-    <p>Conteúdo da página Responsáveis será exibido aqui.</p>
+    <div class="welcome-container">
+        <div class="welcome-box">
+            <h2>Seja bem-vindo ao BabaCare!</h2>
+            <p>Encontre a babá ideal pra sua família.</p>
+            <p>O que deseja fazer?</p>
+            <div class="button-group">
+                <!-- Botões apontando para as rotas configuradas -->
+                <a href="{% url 'login' %}" class="btn btn-login">Login</a>
+                <a href="{% url 'cadastro' %}" class="btn btn-cadastro">Cadastro</a>
+            </div>
+        </div>
+    </div>
 {% endblock %}

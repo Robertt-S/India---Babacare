@@ -9,17 +9,22 @@
     src: url(../fonts/LTMakeup-Regular.otf);
 }
 
+@font-face {
+    font-family: BasicFont;
+    src: url(../fonts/Mont-HeavyDEMO.otf);
+}
+
 body {
     min-height: 100vh; /*altura minima de um elemento*/
-    background-color: #FFEBCD ;
+    background-color: #fff ;
     color: 	#0a1620;
     font-size: 3rem;
     font-family: myFont;
 }
 
 nav {
-    padding: 0.2em; /* em: tamanho da fonte do elemento pai */
-    background-color: #8B4513;
+    padding: 0.4em; /* em: tamanho da fonte do elemento pai */
+    background-color: #54b5be;
     color: white;
     font-size: 2rem; /* rem: tamanho comparado à fonte do elemento pai */
     text-align: right;
@@ -255,6 +260,7 @@ a:hover {
     max-width: 225px;
     max-height: 300px;
 }
+
 /* Estilo base dos botões */
 .custom-button {
     .custom-button {
@@ -279,4 +285,57 @@ a:hover {
 .custom-button:active {
     background-color: #3e8e41; /* Verde ainda mais escuro */
     transform: scale(0.98); /* Reduz ligeiramente */
+}
+
+.welcome-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.welcome-box {
+    text-align: center;
+    padding: 30px;
+    border-radius: 15px;
+    background-color: #f3e9b4;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 90%;
+}
+
+.welcome-box h2 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.welcome-box p {
+    margin-bottom: 20px;
+    font-family: BasicFont;
+    font-size: 16px;
+    color: #666;
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.btn {
+    flex: 1;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    color: #fff;
+    background-color: #331d43;
+    text-align: center;
+    font-weight: bold;
+    font-family: BasicFont;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #331d43;
 }
