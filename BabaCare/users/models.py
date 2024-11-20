@@ -64,4 +64,4 @@ class Avaliacao(models.Model):
     
 
     def __str__(self):
-        return self.comentario
+        return self.nome
