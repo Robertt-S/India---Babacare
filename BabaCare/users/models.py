@@ -71,3 +71,18 @@ class Responsavel(models.Model):
 
     def __str__(self):
         return self.nome
+
+
+class Avaliacao(models.Model):
+
+    
+    id = models.AutoField(primary_key=True)
+    nota = models.IntegerField(blank=False, null=False)
+    comentario = models.TextField(blank=True, null=True)
+    data = models.DateField(auto_now=True)
+    baba = models.ForeignKey(Baba, on_delete=models.CASCADE)
+    responsavel = models.ForeignKey(Responsavel, on_delete=models.CASCADE)
+    
+
+    def __str__(self):
+        return self.comentario
