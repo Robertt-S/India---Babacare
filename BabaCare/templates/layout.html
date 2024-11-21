@@ -29,12 +29,13 @@
         <!-- Adicionando os botões "Baba" e "Responsáveis" -->
         <!-- Botões estilizados -->
         <a href="{% url 'users:baba_page' %}">
-            <button class="custom-button">Baba</button>
-        </a>
+            <button class="customizar_botao">Baba</button>
+        </a> |
         <a href="{% url 'users:responsaveis_page' %}">
-            <button class="custom-button">Responsáveis</button>
-        </a>
-
+            <button class="customizar_botao">Responsáveis</button>
+        </a> |
+        
+        
 
         {% if user.is_authenticated %}
             <a href="{% url 'users:logout' %}">
@@ -44,9 +45,6 @@
                 <span role="img" aria-label="Self">🫵</span>
             </a> 
         {% else %}
-            <a href="/users/register">
-                <span role="img" aria-label="Register">🚀</span>
-            </a> |
             <a href="{% url 'users:login' %}">
                 <span role="img" aria-label="Login">🔐</span>
             </a>

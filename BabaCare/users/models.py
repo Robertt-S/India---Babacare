@@ -23,10 +23,10 @@ class BaseUser(models.Model):
         abstract = True  # Class base abstrata
     
     def idade(self):
-        if self.data_nascimento:
+        if self.nascimento:
             hoje = date.today()
-            return hoje.year - self.data_nascimento.year - (
-                (hoje.month, hoje.day) < (self.data_nascimento.month, self.data_nascimento.day)
+            return hoje.year - self.nascimento.year - (
+                (hoje.month, hoje.day) < (self.nascimento.month, self.nascimento.day)
             )
         return None
 

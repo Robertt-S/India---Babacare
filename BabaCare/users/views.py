@@ -4,7 +4,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from users.forms import CadastroFormsBaba, CadastroFormsResponsavel
 from users.models import Baba, Responsavel
-
+from django.utils import timezone
+from datetime import datetime
 
 def login_view(request):
     if request.method == "POST":
@@ -50,6 +51,22 @@ def cadastro_baba(request):
 
             if form["senha_1"].value() != form["senha_2"].value():
                 messages.error(request, 'Senhas não são iguais')
+                return redirect('cadastro_baba')
+            
+            #idade
+            nascimento_str = request.POST.get('nascimento')  
+            try:
+                nascimento1 = datetime.strptime(nascimento_str, '%Y-%m-%d').date() 
+            except (ValueError, TypeError):
+                messages.error(request, 'Data de nascimento inválida. Use o formato AAAA-MM-DD.')
+                return redirect('cadastro_baba')
+
+            # Calcula a idade
+            hoje = timezone.now().date()
+            idade = hoje.year - nascimento1.year - ((hoje.month, hoje.day) < (nascimento1.month, nascimento1.day))
+
+            if idade < 18:
+                messages.error(request, 'Faixa etária não permitida.')
                 return redirect('cadastro_baba')
             
             if Baba.objects.filter(cpf=cpf1).exists():
@@ -111,6 +128,22 @@ def cadastro_responsavel(request):
             if Responsavel.objects.filter(telefone=telefone1).exists():
                 messages.error(request, 'Telefone já cadastrado.')
                 return redirect('cadastro_responsavel')
+            
+            #idade
+            nascimento_str = request.POST.get('nascimento')  
+            try:
+                nascimento1 = datetime.strptime(nascimento_str, '%Y-%m-%d').date() 
+            except (ValueError, TypeError):
+                messages.error(request, 'Data de nascimento inválida. Use o formato AAAA-MM-DD.')
+                return redirect('cadastro_baba')
+
+            # Calcula a idade
+            hoje = timezone.now().date()
+            idade = hoje.year - nascimento1.year - ((hoje.month, hoje.day) < (nascimento1.month, nascimento1.day))
+
+            if idade < 18:
+                messages.error(request, 'Faixa etária não permitida.')
+                return redirect('cadastro_baba')
 
             usuario = Responsavel.objects.create(
                 nome=nome1,
