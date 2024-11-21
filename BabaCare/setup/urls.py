@@ -34,7 +34,8 @@ urlpatterns = [
     path('users/',include('users.urls')),
     path('perfis/',include('perfis.urls')),
     path('baba/login/', v.login_view, name='login'), 
-    path('baba/cadastro/', v.cadastro, name='cadastro'),  
+    path('baba/cadastro/', v.cadastro_baba, name='cadastro_baba'),  #botao da linha azul
+    path('responsavel/cadastro/', v.cadastro_responsavel, name='cadastro_responsavel'), #botao da linha azul
 ]
 
 #urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

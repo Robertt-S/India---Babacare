@@ -2,27 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
-from .forms import RegisterUserForm
-from users.forms import CadastroForms
-from users.models import Baba
-
-# Create your views here.
-# def register_user(request):
-#     if request.method == "POST":
-#         form = RegisterUserForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             username = form.cleaned_data['username']
-#             password = form.cleaned_data['password1']
-#             user = authenticate(username=username, password=password)
-#             login(request, user)
-#             messages.success(request, ("Registration sucessful"))
-#             return redirect('home')
-            
-#     else:
-#         form = RegisterUserForm()
-        
-#     return render(request,'users/register.html', {'form':form})
+from users.forms import CadastroFormsBaba, CadastroFormsResponsavel
+from users.models import Baba, Responsavel
 
 
 def login_view(request):
@@ -51,16 +32,13 @@ def baba_page(request):
 def responsaveis_page(request):
     return render(request, 'responsaveis.html')
 
-def cadastro(request):
-    form = CadastroForms()
+def cadastro_baba(request):
+    form = CadastroFormsBaba()
 
     if request.method == 'POST':
-        form = CadastroForms(request.POST)
+        form = CadastroFormsBaba(request.POST)
 
         if form.is_valid():
-            if form["senha_1"].value() != form["senha_2"].value():
-                messages.error(request, 'Senhas não são iguais')
-                return redirect('cadastro')
 
             nome1=form['nome_cadastro'].value()
             email1=form['email'].value()
@@ -70,9 +48,21 @@ def cadastro(request):
             nascimento1=form['nascimento'].value()
             cpf1=form['cpf'].value()
 
-            if Baba.objects.filter(nome=nome1).exists():
-                messages.error(request, 'Usuário já existente')
-                return redirect('cadastro')
+            if form["senha_1"].value() != form["senha_2"].value():
+                messages.error(request, 'Senhas não são iguais')
+                return redirect('cadastro_baba')
+            
+            if Baba.objects.filter(cpf=cpf1).exists():
+                messages.error(request, 'CPF já cadastrado.')
+                return redirect('cadastro_baba')
+            
+            if Baba.objects.filter(email=email1).exists():
+                messages.error(request, 'Email já cadastrado.')
+                return redirect('cadastro_baba')
+            
+            if Baba.objects.filter(telefone=telefone1).exists():
+                messages.error(request, 'Telefone já cadastrado.')
+                return redirect('cadastro_baba')
 
             usuario = Baba.objects.create(
                 nome=nome1,
@@ -88,4 +78,52 @@ def cadastro(request):
             messages.success(request, 'Cadastro efetuado com sucesso!')
             return redirect('login')
 
-    return render(request, 'users/register.html', {'form': form})
+    return render(request, 'users/register_baba.html', {'form': form})
+
+def cadastro_responsavel(request):
+    form = CadastroFormsResponsavel()
+
+    if request.method == 'POST':
+        form = CadastroFormsResponsavel(request.POST)
+
+        if form.is_valid():
+
+            nome1=form['nome_cadastro'].value()
+            email1=form['email'].value()
+            senha1=form['senha_1'].value()
+            telefone1=form['telefone'].value()
+            endereco1=form['endereco'].value()
+            nascimento1=form['nascimento'].value()
+            cpf1=form['cpf'].value()
+
+            if form["senha_1"].value() != form["senha_2"].value():
+                messages.error(request, 'Senhas não são iguais')
+                return redirect('cadastro_responsavel')
+            
+            if Responsavel.objects.filter(cpf=cpf1).exists():
+                messages.error(request, 'CPF já cadastrado.')
+                return redirect('cadastro_responsavel')
+            
+            if Responsavel.objects.filter(email=email1).exists():
+                messages.error(request, 'Email já cadastrado.')
+                return redirect('cadastro_responsavel')
+            
+            if Responsavel.objects.filter(telefone=telefone1).exists():
+                messages.error(request, 'Telefone já cadastrado.')
+                return redirect('cadastro_responsavel')
+
+            usuario = Responsavel.objects.create(
+                nome=nome1,
+                email=email1,
+                senha=senha1,
+                cpf=cpf1,
+                telefone= telefone1,
+                endereco=endereco1,
+                nascimento=nascimento1
+            )
+            print('banana responsavel')
+            usuario.save()
+            messages.success(request, 'Cadastro efetuado com sucesso!')
+            return redirect('login')
+
+    return render(request, 'users/register_responsavel.html', {'form': form})
