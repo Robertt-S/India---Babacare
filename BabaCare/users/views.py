@@ -6,6 +6,8 @@ from users.forms import CadastroFormsBaba, CadastroFormsResponsavel
 from users.models import Baba, Responsavel
 from django.utils import timezone
 from datetime import datetime
+from validate_docbr import CPF
+
 
 def login_view(request):
     if request.method == "POST":
@@ -35,6 +37,7 @@ def responsaveis_page(request):
 
 def cadastro_baba(request):
     form = CadastroFormsBaba()
+    cpf = CPF()
 
     if request.method == 'POST':
         form = CadastroFormsBaba(request.POST)
@@ -69,9 +72,13 @@ def cadastro_baba(request):
                 messages.error(request, 'Faixa etária não permitida.')
                 return redirect('cadastro_baba')
             
-            if not verificaCPF(cpf1):
+            #if not verificaCPF(cpf1):
+            #    messages.error(request, 'CPF Inválido')
+            #    return redirect('cadastro_baba') 
+
+            if not cpf.validate(cpf1):
                 messages.error(request, 'CPF Inválido')
-                return redirect('cadastro_baba')
+                return redirect('cadastro_baba') 
             
             if Baba.objects.filter(cpf=cpf1).exists():
                 messages.error(request, 'CPF já cadastrado.')
@@ -105,6 +112,7 @@ def cadastro_baba(request):
 
 def cadastro_responsavel(request):
     form = CadastroFormsResponsavel()
+    cpf = CPF()
 
     if request.method == 'POST':
         form = CadastroFormsResponsavel(request.POST)
@@ -150,6 +158,10 @@ def cadastro_responsavel(request):
             if idade < 18:
                 messages.error(request, 'Faixa etária não permitida.')
                 return redirect('cadastro_baba')
+            
+            if not cpf.validate(cpf1):
+                messages.error(request, 'CPF Inválido')
+                return redirect('cadastro_baba') 
 
             usuario = Responsavel.objects.create(
                 email=email1,
@@ -167,7 +179,7 @@ def cadastro_responsavel(request):
 
     return render(request, 'users/register_responsavel.html', {'form': form})
 
-def verificaCPF(cpf):
+'''def verificaCPF(cpf):
     i = 1
     sum = 0
     digit1: int
@@ -187,4 +199,4 @@ def verificaCPF(cpf):
     if (digit1 == 10): digit1 = 0
     if (digit2 == 10): digit2 = 0
     if (chr(digit1 + ord('0')) == cpf[-2] and chr(digit2 + ord('0')) == cpf[-1]): return True
-    else: return False
+    else: return False'''
