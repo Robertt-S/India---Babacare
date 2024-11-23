@@ -1,4 +1,5 @@
 {% extends 'layout.html' %}
+{% load static %}
 
 {%block title%}
     {{ perfilBaba.nome_completo }}
@@ -7,15 +8,19 @@
 {%block content%}
 {% if user.is_authenticated %}
 
-
     <section>
         <h1>Perfil</h1>
-        <p>Nome Completo: {{ perfilBaba.nome_completo }}</p>
-        <img class="foto-perfil" src="{{ perfilBaba.foto.url }}"/>
-        <p>Aniversário: {{ perfilBaba.data_nascimento }}</p>
+        <p>Nome Completo: {{ perfilBaba.nome }}</p>
+        {% if perfilBaba.foto %}
+        <img class="foto-perfil" src="{{ perfilBaba.foto.url }}" alt="Foto de {{ perfilBaba.nome }}">
+        {% else %}
+        <img class="foto-perfil" src="{% static 'media/white-square.png' %}" alt="Imagem padrão">
+        {% endif %}
+        <p>Aniversário: {{ perfilBaba.nascimento }}</p>
         <p>Email: {{ perfilBaba.email }}</p>
         <p>Endereço: {{ perfilBaba.endereco }}</p>
         <p>C.P.F: {{ perfilBaba.cpf }}</p>
+        <p>Biografia: {{ perfilBaba.bioBaba}}
         <p>Habilidades: {{ perfilBaba.habilidades }}</p>
     </section>
 

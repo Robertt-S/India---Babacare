@@ -92,6 +92,8 @@ def cadastro_baba(request):
             print('banana')
             usuario.set_password(senha1)
             usuario.save()
+            usuario.updateSlug()
+            usuario.save()
             messages.success(request, 'Cadastro efetuado com sucesso!')
             return redirect('login')
 

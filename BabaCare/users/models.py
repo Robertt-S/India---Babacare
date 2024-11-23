@@ -51,12 +51,15 @@ class BaseUser(AbstractBaseUser):
     endereco = models.TextField()  
     foto = models.ImageField(upload_to="fotos/%Y/%m/%d/", blank=True)
     criado = models.DateTimeField(auto_now_add=True)
-    slug = AutoSlugField(populate_from='nome',unique_with=('id'))
+    slug = AutoSlugField(populate_from='nome',unique_with=['id'])
     USERNAME_FIELD = "email"
     EMAIL_FIELD = "email"
     REQUIRED_FIELDS = ["nome", "cpf", "nascimento", "telefone", "endereco"]
     
     objects = UserManager()
+
+    def updateSlug(self):
+        self.slug = f"{self.slug}-{self.id}"
 
     def idade(self):
         if self.nascimento:
