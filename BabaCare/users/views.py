@@ -69,6 +69,10 @@ def cadastro_baba(request):
                 messages.error(request, 'Faixa etária não permitida.')
                 return redirect('cadastro_baba')
             
+            if not verificaCPF(cpf1):
+                messages.error(request, 'CPF Inválido')
+                return redirect('cadastro_baba')
+            
             if Baba.objects.filter(cpf=cpf1).exists():
                 messages.error(request, 'CPF já cadastrado.')
                 return redirect('cadastro_baba')
@@ -162,3 +166,25 @@ def cadastro_responsavel(request):
             return redirect('login')
 
     return render(request, 'users/register_responsavel.html', {'form': form})
+
+def verificaCPF(cpf):
+    i = 1
+    sum = 0
+    digit1: int
+    digit2: int
+    for x in cpf:
+        if i == 10: break
+        sum = sum + (i * (ord(x) - ord('0')))
+        i = i + 1
+    digit1 = sum % 11
+    sum = 0
+    i = 0
+    for x in cpf:
+        if i == 10: break
+        sum = sum + (i * (ord(x) - ord('0')))
+        i = i + 1
+    digit2 = sum % 11
+    if (digit1 == 10): digit1 = 0
+    if (digit2 == 10): digit2 = 0
+    if (chr(digit1 + ord('0')) == cpf[-2] and chr(digit2 + ord('0')) == cpf[-1]): return True
+    else: return False
