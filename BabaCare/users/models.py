@@ -2,26 +2,62 @@ from django.db import models
 
 from datetime import date
 from django.core.validators import EmailValidator
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
+class UserManager(BaseUserManager):
+    def create_user(self, email, nome, cpf, nascimento, telefone, endereco, password=None):
+        if not email:
+            raise ValueError("Usuários devem possuir um email")
+        
+        user = self.model(
+            email=self.normalize_email(email),
+            nome=nome,
+            cpf=cpf,
+            nascimento=nascimento,
+            telefone=telefone,
+            endereco=endereco
+        )
 
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+    
+    def create_superuser(self, email, nome, cpf, nascimento, telefone, endereco, password=None):
+        if not email:
+            raise ValueError("Usuários devem possuir um email")
+        
+        user = self.model(
+            email=self.normalize_email(email),
+            nome=nome,
+            cpf=cpf,
+            nascimento=nascimento,
+            telefone=telefone,
+            endereco=endereco
+        )
 
-class BaseUser(models.Model):
+        user.set_password(password)
+        user.is_admin = True
+        user.save(using=self._db)
+        return user
+
+class BaseUser(AbstractBaseUser, models.Model):
     
     id = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=100, null=False, blank=False)
     cpf = models.CharField(max_length=11, unique=True)  
     nascimento = models.DateField(null=True, blank=True)
     email = models.EmailField(unique=True, validators=[EmailValidator()])  
-    senha = models.CharField(max_length=128)
     telefone = models.CharField(max_length=15)   
     endereco = models.TextField()  
     bio = models.TextField(null=False, blank=False)
     foto = models.ImageField(upload_to="fotos/%Y/%m/%d/", blank=True)
     criado = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        abstract = True  # Class base abstrata
+    USERNAME_FIELD = "email"
+    EMAIL_FIELD = "email"
+    REQUIRED_FIELDS = ["nome", "cpf", "nascimento", "telefone", "endereco"]
     
+    objects = UserManager()
+
     def idade(self):
         if self.nascimento:
             hoje = date.today()
@@ -29,9 +65,6 @@ class BaseUser(models.Model):
                 (hoje.month, hoje.day) < (self.nascimento.month, self.nascimento.day)
             )
         return None
-
-
-
 
 class Baba(BaseUser):
     class Meta:

@@ -9,9 +9,9 @@ from datetime import datetime
 
 def login_view(request):
     if request.method == "POST":
-        username = request.POST['username']
+        email = request.POST['email']
         password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(request, email=email, password=password)
         if user is not None:
             login(request, user)
             return redirect('home')
@@ -82,15 +82,15 @@ def cadastro_baba(request):
                 return redirect('cadastro_baba')
 
             usuario = Baba.objects.create(
-                nome=nome1,
                 email=email1,
-                senha=senha1,
+                nome=nome1,
                 cpf=cpf1,
+                nascimento=nascimento1,
                 telefone= telefone1,
-                endereco=endereco1,
-                nascimento=nascimento1
+                endereco=endereco1
             )
             print('banana')
+            usuario.set_password(senha1)
             usuario.save()
             messages.success(request, 'Cadastro efetuado com sucesso!')
             return redirect('login')
@@ -146,15 +146,15 @@ def cadastro_responsavel(request):
                 return redirect('cadastro_baba')
 
             usuario = Responsavel.objects.create(
-                nome=nome1,
                 email=email1,
-                senha=senha1,
+                nome=nome1,
                 cpf=cpf1,
+                nascimento=nascimento1,
                 telefone= telefone1,
-                endereco=endereco1,
-                nascimento=nascimento1
+                endereco=endereco1
             )
             print('banana responsavel')
+            usuario.set_password(senha1)
             usuario.save()
             messages.success(request, 'Cadastro efetuado com sucesso!')
             return redirect('login')
