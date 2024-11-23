@@ -1,8 +1,8 @@
 from django.db import models
-
 from datetime import date
 from django.core.validators import EmailValidator
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from autoslug import AutoSlugField
 
 class UserManager(BaseUserManager):
     def create_user(self, email, nome, cpf, nascimento, telefone, endereco, password=None):
@@ -40,7 +40,7 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-class BaseUser(AbstractBaseUser, models.Model):
+class BaseUser(AbstractBaseUser):
     
     id = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=100, null=False, blank=False)
@@ -49,9 +49,9 @@ class BaseUser(AbstractBaseUser, models.Model):
     email = models.EmailField(unique=True, validators=[EmailValidator()])  
     telefone = models.CharField(max_length=15)   
     endereco = models.TextField()  
-    bio = models.TextField(null=False, blank=False)
     foto = models.ImageField(upload_to="fotos/%Y/%m/%d/", blank=True)
     criado = models.DateTimeField(auto_now_add=True)
+    slug = AutoSlugField(populate_from='nome',unique_with=('id'))
     USERNAME_FIELD = "email"
     EMAIL_FIELD = "email"
     REQUIRED_FIELDS = ["nome", "cpf", "nascimento", "telefone", "endereco"]
@@ -67,6 +67,10 @@ class BaseUser(AbstractBaseUser, models.Model):
         return None
 
 class Baba(BaseUser):
+    
+    bioBaba = models.TextField(null=False, blank=False)
+    habilidades = models.TextField(max_length=255,default="")
+
     class Meta:
         db_table = 'users_babas'  
         verbose_name = 'Babá'
@@ -77,6 +81,9 @@ class Baba(BaseUser):
     
     
 class Responsavel(BaseUser):
+    
+    bioResp = models.TextField(null=False, blank=False)
+    
     class Meta:
         db_table = 'users_responsaveis'  
         verbose_name = 'Responsável'
@@ -87,7 +94,6 @@ class Responsavel(BaseUser):
     
 class Avaliacao(models.Model):
 
-    
     id = models.AutoField(primary_key=True)
     nota = models.IntegerField(blank=False, null=False)
     comentario = models.TextField(blank=True, null=True)
@@ -95,6 +101,5 @@ class Avaliacao(models.Model):
     baba = models.ForeignKey(Baba, on_delete=models.CASCADE)
     responsavel = models.ForeignKey(Responsavel, on_delete=models.CASCADE)
     
-
     def __str__(self):
-        return self.nome
+        return self.id

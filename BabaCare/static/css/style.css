@@ -414,3 +414,20 @@ a:hover {
     font-family: BasicFont;
     font-size: 16px;
 }
+
+.user-list {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.user-list-item {
+    list-style-type: none;
+    font-size: 20px;
+    padding: 12px 8px 12px 40px;
+    background: #eee;
+}
+
+.user-list-item:nth-child(odd) {
+    background: #f9f9f9
+}

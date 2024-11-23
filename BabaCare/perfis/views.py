@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect
-from .models import Perfil_Baba
+#from .models import Perfil_Baba
+from users.models import Baba as Perfil_Baba
 from .forms import EditProfileForm
 
 # Create your views here.
 
 def baba_list(request):
-    perfils = Perfil_Baba.objects.all() 
-    return render(request, 'perfis/baba_list.html', {'perfis': perfils})
+    perfis = Perfil_Baba.objects.all()
+    return render(request, 'perfis/baba_list.html', {'perfis': perfis})
 
 # passa o id do perfil também
 def edit_page(request, perfil_id):

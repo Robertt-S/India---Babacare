@@ -3,8 +3,6 @@
 {%block title%}
     Lista de Babás
 {%endblock%}
-
-
     
 {%block content%}
 
@@ -13,19 +11,16 @@
         <h1>Babás</h1>
 
         {% for baba in perfis %}
-        <article>
+        <ul class="user-list">
             
-            <h2>
+            <li class="user-list-item">
+                {{ baba.id }}
                 <a href="{% url 'perfis:page_baba' slug=baba.slug %}">
-                    {{ baba.nome_completo }}
-            </a>
-            </h2>
-            
-            <p>{{ baba.data_nascimento }}</p>
-            <p>{{ baba.email }}</p>
-            <p>{{ baba.endereco }}</p>
+                    {{ baba.nome }}
+                </a>
+            </li>
 
-        </article>
+        </ul>
         {% endfor %}
     </section>
 
