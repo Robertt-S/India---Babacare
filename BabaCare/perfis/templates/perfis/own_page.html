@@ -6,19 +6,17 @@
 
 {%block content%}
     {% if user.is_authenticated %}
-    
-        {%if eu == perfil.owner %}
-
+        {%if eu_id == perfil.id %}
             <section>
 
                 <h1>Seu perfil</h1>
-                <p>Nome Completo: {{ perfil.nome_completo }}</p>
-                <img class="foto-perfil" src="{{ perfil.foto.url }}"/>
-                <p>Aniversário: {{ perfil.data_nascimento }}</p>
+                <p>Nome Completo: {{ perfil.nome }}</p>
+                {% comment %} <img class="foto-perfil" src="{{ perfil.foto.url }}"/> {% endcomment %}
+                <p>Aniversário: {{ perfil.nascimento }}</p>
                 <p>Email: {{ perfil.email }}</p>
                 <p>Endereço: {{ perfil.endereco }}</p>
-                <p>Habilidades: {{ perfil.habilidades }}</p>
-                <p>Contato: {{ perfil.contato }}</p>
+                {% comment %} <p>Habilidades: {{ perfil.habilidades }}</p> {% endcomment %}
+                <p>Contato: {{ perfil.telefone }}</p>
 
                 <a class="edit-button" href="{% url 'perfis:edit_page' perfil.id %}">
                     Editar perfil

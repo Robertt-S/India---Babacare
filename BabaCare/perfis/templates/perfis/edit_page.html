@@ -9,7 +9,7 @@
     <form action="" method=POST class="edit-form" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form }}
-        <img src="{{ perfil.foto.url }}">
+        {% comment %} <img src="{{ perfil.foto.url }}"> {% endcomment %}
         <br/>
         <input type="submit" value="Update" class="edit-button" style="font-size: 0.8em;">
     </form>

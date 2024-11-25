@@ -24,9 +24,9 @@ def edit_page(request, perfil_id):
 
 def my_page(request):
     if request.user.is_authenticated:
-        eu = request.user
-        perfil = Perfil_Baba.objects.get(owner=eu.id) 
-        return render(request,'perfis/own_page.html',{'perfil': perfil,'eu':eu})
+        eu_id = request.user.id
+        perfil = Perfil_Baba.objects.get(id=eu_id) 
+        return render(request,'perfis/own_page.html',{'perfil': perfil,'eu_id':eu_id})
 
 def page_baba(request,slug):
     perfilB = Perfil_Baba.objects.get(slug=slug) 
