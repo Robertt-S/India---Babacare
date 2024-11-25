@@ -7,6 +7,8 @@ from users.models import Baba, Responsavel
 from django.utils import timezone
 from datetime import datetime
 from validate_docbr import CPF
+import dns.resolver
+
 
 
 def login_view(request):
@@ -54,6 +56,11 @@ def cadastro_baba(request):
 
             if form["senha_1"].value() != form["senha_2"].value():
                 messages.error(request, 'Senhas não são iguais')
+                return redirect('cadastro_baba')
+            
+            
+            if not verificar_registros_mx(email1):
+                messages.error(request, 'O domínio do e-mail não é válido ou não aceita mensagens.')
                 return redirect('cadastro_baba')
             
             #idade
@@ -130,6 +137,12 @@ def cadastro_responsavel(request):
             if form["senha_1"].value() != form["senha_2"].value():
                 messages.error(request, 'Senhas não são iguais')
                 return redirect('cadastro_responsavel')
+        
+            
+            if not verificar_registros_mx(email1):
+                messages.error(request, 'O domínio do e-mail não é válido ou não aceita mensagens.')
+                return redirect('cadastro_responsavel')
+        
             
             if Responsavel.objects.filter(cpf=cpf1).exists():
                 messages.error(request, 'CPF já cadastrado.')
@@ -200,3 +213,11 @@ def cadastro_responsavel(request):
     if (digit2 == 10): digit2 = 0
     if (chr(digit1 + ord('0')) == cpf[-2] and chr(digit2 + ord('0')) == cpf[-1]): return True
     else: return False'''
+    
+def verificar_registros_mx(email):
+    try:
+        dominio = email.split('@')[-1]  
+        mx_records = dns.resolver.resolve(dominio, 'MX')
+        return True if mx_records else False
+    except (dns.resolver.NoAnswer, dns.resolver.NXDOMAIN, dns.exception.Timeout):
+        return False

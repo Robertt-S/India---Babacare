@@ -1,6 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
+from django.core.validators import validate_email
            
 class CadastroFormsBaba(forms.Form):
     nome_cadastro=forms.CharField(
@@ -18,6 +19,7 @@ class CadastroFormsBaba(forms.Form):
         label='Email',
         required=True,
         max_length=100,
+        validators=[validate_email],
         widget=forms.EmailInput(
             attrs={
                 'class': 'form-control',
@@ -113,6 +115,7 @@ class CadastroFormsResponsavel(forms.Form):
         label='Email',
         required=True,
         max_length=100,
+        validators=[validate_email],
         widget=forms.EmailInput(
             attrs={
                 'class': 'form-control',
