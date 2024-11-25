@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from django import forms
-from .models import Perfil_Baba
+from users.models import Baba as Perfil_Baba
 
 from django.views.generic.edit import UpdateView
 
@@ -9,12 +9,11 @@ from django.views.generic.edit import UpdateView
 class EditProfileForm(ModelForm):
     class Meta:
         model = Perfil_Baba
-        fields = ('email','contato','endereco','habilidades','foto')
+        fields = ('email','telefone','endereco','foto')
         labels = {
             'email': 'Email',
             'contato': 'Telefone',
             'endereco': 'Endereço',
-            'habilidades': 'Habilidades',
             'foto': '',
         }
         
