@@ -18,7 +18,7 @@ Instalar os recurso
 
 
 Salvar os recursos usados no projeto
-    pip freeze > requirements.tx
+    pip freeze > requirements.txt
 
 Baixar dependencias do requirements
     pip install -r requirements.txt
