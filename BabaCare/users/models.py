@@ -52,6 +52,7 @@ class BaseUser(AbstractBaseUser):
     foto = models.ImageField(upload_to="fotos/%Y/%m/%d/", blank=True)
     criado = models.DateTimeField(auto_now_add=True)
     slug = AutoSlugField(populate_from='nome',unique_with=['id'])
+    isBaba = models.BooleanField(null=True, blank=True)
     USERNAME_FIELD = "email"
     EMAIL_FIELD = "email"
     REQUIRED_FIELDS = ["nome", "cpf", "nascimento", "telefone", "endereco"]
@@ -73,6 +74,7 @@ class Baba(BaseUser):
     
     bioBaba = models.TextField(null=False, blank=False)
     habilidades = models.TextField(max_length=255,default="")
+    isBaba = True
 
     class Meta:
         db_table = 'users_babas'  
@@ -86,6 +88,7 @@ class Baba(BaseUser):
 class Responsavel(BaseUser):
     
     bioResp = models.TextField(null=False, blank=False)
+    isBaba = False
     
     class Meta:
         db_table = 'users_responsaveis'  

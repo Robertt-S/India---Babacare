@@ -109,6 +109,7 @@ def cadastro_baba(request):
             )
             print('banana')
             usuario.set_password(senha1)
+            usuario.isBaba = True
             usuario.save()
             usuario.updateSlug()
             usuario.save()
@@ -186,6 +187,9 @@ def cadastro_responsavel(request):
             )
             print('banana responsavel')
             usuario.set_password(senha1)
+            usuario.isBaba = False
+            usuario.save()
+            usuario.updateSlug()
             usuario.save()
             messages.success(request, 'Cadastro efetuado com sucesso!')
             return redirect('login')
