@@ -19,19 +19,19 @@ body {
     background-color: #fff ;
     color: 	#0a1620;
     font-size: 3rem;
-    font-family: myFont;
 }
 
 nav {
     padding: 0.4em; /* em: tamanho da fonte do elemento pai */
     background-color: #54b5be;
     color: white;
-    font-size: 2rem; /* rem: tamanho comparado à fonte do elemento pai */
+    font-size: 1.75rem; /* rem: tamanho comparado à fonte do elemento pai */
     text-align: right;
 }
 
 main {
     padding: 2rem; /*distancia entre o conteudo e as bordas de conteudo */
+    font-family: myFont;
 }
 
 section {
@@ -88,8 +88,7 @@ td {
 
 a {
     text-decoration: none;
-    color: #e63946;
-    font-family: myFont;
+    color: #331d43;
 }
 
 a:hover {

@@ -18,7 +18,10 @@ def login_view(request):
         user = authenticate(request, email=email, password=password)
         if user is not None:
             login(request, user)
-            return redirect('home')
+            if user.isBaba == True:
+                return redirect('users:home_baba')
+            else:
+                return redirect('home')
         else:
             messages.success(request, ("Houve um erro ao logar!"))
             return redirect('users:login')
@@ -196,6 +199,7 @@ def cadastro_responsavel(request):
 
     return render(request, 'users/register_responsavel.html', {'form': form})
 
+
 '''def verificaCPF(cpf):
     i = 1
     sum = 0
@@ -225,3 +229,9 @@ def verificar_registros_mx(email):
         return True if mx_records else False
     except (dns.resolver.NoAnswer, dns.resolver.NXDOMAIN, dns.exception.Timeout):
         return False
+    
+def home_baba(request):
+    return render(request, 'users/home_baba.html')
+    
+def home_responsavel(request):
+    return render(request,'users/home_responsavel.html')

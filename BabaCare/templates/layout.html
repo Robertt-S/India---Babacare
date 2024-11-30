@@ -16,42 +16,45 @@
 </head>
 <body>
     <nav>
-        <a href="{% url 'home' %}">
-            <span role="img" aria-label="Home">🏠</span>
-        </a> | 
-        <a href="/about">
-            <span role="img" aria-label="About">😁</span>
-        </a> |
-        <a href="{% url 'perfis:lista_babas' %}">
-            <span role="img" aria-label="Perfis">👤</span>
-        </a> |
+        {% if user.isBaba == true %}
+            <a href="{% url 'home' %}">
+                <span role="img" aria-label="Home">Home</span>
+            </a> | 
+            <a href="/about">
+                <span role="img" aria-label="About">About</span>
+            </a> |
+            <a href="{% url 'perfis:lista_babas' %}">
+                <span role="img" aria-label="Perfis">Perfis</span>
+            </a> |
 
-        <!-- Adicionando os botões "Baba" e "Responsáveis" -->
-        <!-- Botões estilizados -->
-        <a href="{% url 'users:baba_page' %}">
-            <button class="customizar_botao">Baba</button>
-        </a> |
-        <a href="{% url 'users:responsaveis_page' %}">
-            <button class="customizar_botao">Responsáveis</button>
-        </a> |
+            <!-- Adicionando os botões "Baba" e "Responsáveis" -->
+            <!-- Botões estilizados? -->
+            <a href="{% url 'users:baba_page' %}">
+                <button class="custom-button">Baba</button>
+            </a> |
+            <a href="{% url 'users:responsaveis_page' %}">
+                <button class="customizar_botao">Responsáveis</button>
+            </a> |
+        {% endif %}
         
         
 
         {% if user.is_authenticated %}
             <a href="{% url 'users:logout' %}">
-                <span role="img" aria-label="Logout">👋</span>
+                <span role="img" aria-label="Logout">Logout</span>
             </a> |
             <a href="{% url 'perfis:my_page' %}">
-                <span role="img" aria-label="Self">🫵</span>
+                <span role="img" aria-label="Self">Own page</span>
             </a> 
         {% else %}
-            <a href="{% url 'users:login' %}">
-                <span role="img" aria-label="Login">🔐</span>
+            <a href="{% url 'login' %}">
+                <span role="img" aria-label="Login">Login</span>
             </a>
         {% endif %}
     </nav>
     <b></b>
     <main>
+
         {% if messages %}
             {% for message in messages %}
             <div id="popup1" class="overlay">
@@ -63,6 +66,7 @@
             </div>
             {% endfor %}
         {% endif %}
+
         {% block content %}
         {% endblock %}
     </main>

@@ -69,6 +69,7 @@ class BaseUser(AbstractBaseUser):
                 (hoje.month, hoje.day) < (self.nascimento.month, self.nascimento.day)
             )
         return None
+    
 
 class Baba(BaseUser):
     
