@@ -8,6 +8,7 @@ from django.utils import timezone
 from datetime import datetime
 from validate_docbr import CPF
 import dns.resolver
+import requests
 
 
 
@@ -21,7 +22,7 @@ def login_view(request):
             if user.isBaba == True:
                 return redirect('users:home_baba')
             else:
-                return redirect('home')
+                return redirect('users:home_responsavel')
         else:
             messages.success(request, ("Houve um erro ao logar!"))
             return redirect('users:login')
@@ -54,6 +55,7 @@ def cadastro_baba(request):
             senha1=form['senha_1'].value()
             telefone1=form['telefone'].value()
             endereco1=form['endereco'].value()
+            numero1=form['numero'].value()
             nascimento1=form['nascimento'].value()
             cpf1=form['cpf'].value()
 
@@ -102,13 +104,20 @@ def cadastro_baba(request):
                 messages.error(request, 'Telefone já cadastrado.')
                 return redirect('cadastro_baba')
 
+            # Cálculo da Latitude e Longitude
+            tupla_lat_lon = coordenadasCep(endereco1, numero1)
+            lat1, long1 = tupla_lat_lon
+
             usuario = Baba.objects.create(
                 email=email1,
                 nome=nome1,
                 cpf=cpf1,
                 nascimento=nascimento1,
                 telefone= telefone1,
-                endereco=endereco1
+                endereco=endereco1,
+                numero=numero1,
+                lat=lat1,
+                long=long1
             )
             print('banana')
             usuario.set_password(senha1)
@@ -135,6 +144,7 @@ def cadastro_responsavel(request):
             senha1=form['senha_1'].value()
             telefone1=form['telefone'].value()
             endereco1=form['endereco'].value()
+            numero1=form['numero'].value()
             nascimento1=form['nascimento'].value()
             cpf1=form['cpf'].value()
 
@@ -143,9 +153,9 @@ def cadastro_responsavel(request):
                 return redirect('cadastro_responsavel')
         
             
-            if not verificar_registros_mx(email1):
-                messages.error(request, 'O domínio do e-mail não é válido ou não aceita mensagens.')
-                return redirect('cadastro_responsavel')
+            # if not verificar_registros_mx(email1):
+            #     messages.error(request, 'O domínio do e-mail não é válido ou não aceita mensagens.')
+            #     return redirect('cadastro_responsavel')
         
             
             if Responsavel.objects.filter(cpf=cpf1).exists():
@@ -180,13 +190,22 @@ def cadastro_responsavel(request):
                 messages.error(request, 'CPF Inválido')
                 return redirect('cadastro_baba') 
 
+        
+            # Cálculo da Latitude e Longitude    
+            tupla_lat_lon = coordenadasCep(endereco1, numero1)
+            lat1, long1 = tupla_lat_lon
+
+
             usuario = Responsavel.objects.create(
                 email=email1,
                 nome=nome1,
                 cpf=cpf1,
                 nascimento=nascimento1,
                 telefone= telefone1,
-                endereco=endereco1
+                endereco=endereco1,
+                numero=numero1,
+                lat=lat1,
+                long=long1
             )
             print('banana responsavel')
             usuario.set_password(senha1)
@@ -235,3 +254,56 @@ def home_baba(request):
     
 def home_responsavel(request):
     return render(request,'users/home_responsavel.html')
+
+
+def consultaViacep(cep):
+    url = f"https://viacep.com.br/ws/{cep}/json/"
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        if "erro" not in data:
+            return data  # Retorna os dados do endereço
+        else:
+            return None  # CEP não encontrado
+    else:
+        return None  # Erro na requisição
+     
+def coordGoogleMaps(endereco, numero, google_api_key):
+    # Formatação do endereço para API do Google
+    endereco_completo = f"{numero} {endereco['logradouro']}, {endereco['localidade']}, {endereco['uf']}, {endereco['cep']}, Brazil"
+    
+    # URL da Google Geocoding API
+    url = "https://maps.googleapis.com/maps/api/geocode/json"
+    
+    # Parâmetros passados
+    params = {
+        "address": endereco_completo,
+        "key": google_api_key
+    }
+    
+    # Faz a requisição
+    response = requests.get(url, params=params)
+    
+    # Verifica se a requisição foi bem-sucedida
+    if response.status_code == 200:
+        data = response.json()
+        if data["status"] == "OK":
+            # Obtém a latitude e longitude do primeiro resultado
+            location = data["results"][0]["geometry"]["location"]
+            return location["lat"], location["lng"]
+        else:
+            return "Endereço não encontrado."
+    else:
+        return f"Erro na requisição: {response.status_code}"
+    
+def coordenadasCep(cep, numero):
+    # Consultar ViaCEP para obter o endereço completo
+    endereco = consultaViacep(cep)
+    
+    if endereco:
+        # Obter latitude e longitude com o Google Maps API
+        lat_lon = coordGoogleMaps(endereco, numero, "INSIRA_SUA_KEY_AQUI") # <--------------------------------- INSERIR KEY DO GOOGLE MAPS API
+        return lat_lon
+    else:
+        return "CEP não encontrado."
+

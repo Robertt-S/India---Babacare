@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from autoslug import AutoSlugField
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, nome, cpf, nascimento, telefone, endereco, password=None):
+    def create_user(self, email, nome, cpf, nascimento, telefone, endereco, numero, password=None):
         if not email:
             raise ValueError("Usuários devem possuir um email")
         
@@ -15,14 +15,15 @@ class UserManager(BaseUserManager):
             cpf=cpf,
             nascimento=nascimento,
             telefone=telefone,
-            endereco=endereco
+            endereco=endereco,
+            numero=numero
         )
 
         user.set_password(password)
         user.save(using=self._db)
         return user
     
-    def create_superuser(self, email, nome, cpf, nascimento, telefone, endereco, password=None):
+    def create_superuser(self, email, nome, cpf, nascimento, telefone, endereco, numero, password=None):
         if not email:
             raise ValueError("Usuários devem possuir um email")
         
@@ -32,7 +33,8 @@ class UserManager(BaseUserManager):
             cpf=cpf,
             nascimento=nascimento,
             telefone=telefone,
-            endereco=endereco
+            endereco=endereco,
+            numero=numero
         )
 
         user.set_password(password)
@@ -48,11 +50,14 @@ class BaseUser(AbstractBaseUser):
     nascimento = models.DateField(null=True, blank=True)
     email = models.EmailField(unique=True, validators=[EmailValidator()])  
     telefone = models.CharField(max_length=15)   
-    endereco = models.TextField()  
+    endereco = models.TextField()
+    numero = models.TextField(null=True, blank=True)  
     foto = models.ImageField(upload_to="fotos/%Y/%m/%d/", blank=True)
     criado = models.DateTimeField(auto_now_add=True)
     slug = AutoSlugField(populate_from='nome',unique_with=['id'])
     isBaba = models.BooleanField(null=True, blank=True)
+    lat = models.FloatField(null=True,blank=True)
+    long = models.FloatField(null=True,blank=True)
     USERNAME_FIELD = "email"
     EMAIL_FIELD = "email"
     REQUIRED_FIELDS = ["nome", "cpf", "nascimento", "telefone", "endereco"]

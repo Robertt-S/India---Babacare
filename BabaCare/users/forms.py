@@ -75,13 +75,25 @@ class CadastroFormsBaba(forms.Form):
     )
     
     endereco = forms.CharField(
-        label='Endereço',
+        label='CEP',
         required=True,
         max_length=500,
-        widget=forms.Textarea(
+        widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'Rua Patati e Patata, 500',
+                'placeholder': '12345-678',
+            }
+        ),
+    )
+    
+    numero = forms.CharField(
+        label='Número da Residência',
+        required=True,
+        max_length=500,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Digite o número da residência',
             }
         ),
     )
@@ -171,16 +183,28 @@ class CadastroFormsResponsavel(forms.Form):
     )
     
     endereco = forms.CharField(
-        label='Endereço',
+        label='CEP',
         required=True,
-        max_length=500,
-        widget=forms.Textarea(
+        max_length=11,
+        widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'Rua Patati e Patata, 500',
+                'placeholder': '12345-678',
             }
         ),
     )
+    
+    numero = forms.CharField(
+        label='Número da Residência',
+        required=True,
+        max_length=10,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Digite o número da residência',
+            }
+        ),
+    ) 
     
     telefone = forms.CharField(
         label='Telefone',
