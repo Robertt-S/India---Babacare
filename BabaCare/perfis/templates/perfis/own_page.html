@@ -20,6 +20,7 @@
                 <p>Aniversário: {{ perfil.nascimento }}</p>
                 <p>Email: {{ perfil.email }}</p>
                 <p>Endereço: {{ perfil.endereco }}</p>
+                <p>CPF: {{ perfil.cpf }}</p>
                 <p>Contato: {{ perfil.telefone }}</p>
                 <p>Membro desde: {{ perfil.criado|date:"m/Y" }}</p>
                 <p>Biografia: {% if perfil.isBaba %}{{ perfil.bioBaba }}{% else %}{{ perfil.bioResp }}{% endif %}</p>
