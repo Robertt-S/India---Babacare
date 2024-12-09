@@ -102,7 +102,7 @@ class CadastroFormsBaba(forms.Form):
         label='Telefone',
         required=True,
         max_length=20,
-        widget=forms.NumberInput(
+        widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
                 'placeholder': '11233334444',
@@ -210,7 +210,7 @@ class CadastroFormsResponsavel(forms.Form):
         label='Telefone',
         required=True,
         max_length=20,
-        widget=forms.NumberInput(
+        widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
                 'placeholder': '11233334444',
