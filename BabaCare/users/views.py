@@ -106,7 +106,12 @@ def cadastro_baba(request):
 
             # Cálculo da Latitude e Longitude
             tupla_lat_lon = coordenadasCep(endereco1, numero1)
-            lat1, long1 = tupla_lat_lon
+
+            if type(tupla_lat_lon) == tuple:
+                lat1, long1 = tupla_lat_lon
+            else:
+                lat1 = 0
+                long1 = 0
 
             usuario = Baba.objects.create(
                 email=email1,
@@ -193,7 +198,12 @@ def cadastro_responsavel(request):
         
             # Cálculo da Latitude e Longitude    
             tupla_lat_lon = coordenadasCep(endereco1, numero1)
-            lat1, long1 = tupla_lat_lon
+            
+            if type(tupla_lat_lon) == tuple:
+                lat1, long1 = tupla_lat_lon
+            else:
+                lat1 = 0
+                long1 = 0
 
 
             usuario = Responsavel.objects.create(
