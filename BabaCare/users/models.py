@@ -121,10 +121,10 @@ class Servico(models.Model):
 class Avaliacao(models.Model):
 
     id = models.AutoField(primary_key=True)
-    servico = models.ForeignKey(Servico, on_delete=models.CASCADE)
     nota = models.IntegerField(blank=False, null=False)
     comentario = models.TextField(blank=True, null=True)
     data = models.DateField(auto_now=True)
+    servico = models.ForeignKey(Servico, on_delete=models.CASCADE, default=None)
     baba = models.ForeignKey(Baba, on_delete=models.CASCADE)
     responsavel = models.ForeignKey(Responsavel, on_delete=models.CASCADE)
     

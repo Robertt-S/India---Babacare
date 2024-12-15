@@ -1,16 +1,14 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
-from users.forms import CadastroFormsBaba, CadastroFormsResponsavel
-from users.models import Baba, Responsavel
+from users.forms import CadastroFormsBaba, CadastroFormsResponsavel, AvaliacaoForm, ServicoForm
+from users.models import Baba, Responsavel, Avaliacao, Servico
 from django.utils import timezone
 from datetime import datetime
 from validate_docbr import CPF
 import dns.resolver
 import requests
-from .forms import AvaliacaoForm
-
 
 
 def login_view(request):
@@ -229,6 +227,30 @@ def cadastro_responsavel(request):
 
     return render(request, 'users/register_responsavel.html', {'form': form})
 
+def servicos_finalizados(request):
+    user_responsavel = request.user
+    servicos = Servico.objects.filter(responsavel=user_responsavel, finalizado=True)
+    return render(request, 'users/servicos.html', {'servicos': servicos})
+
+def avaliar_servico(request, servico_id):
+    servico = get_object_or_404(Servico, id=servico_id, responsavel=request.user)
+    
+    if Avaliacao.objects.filter(servico=servico).exists():
+        return redirect('users:servicos_finalizados')
+    
+    if request.method == 'POST':
+        form = AvaliacaoForm(request.POST)
+        if form.is_valid():
+            avaliacao = form.save(commit=False)
+            avaliacao.servico = servico
+            avaliacao.baba = servico.baba
+            avaliacao.responsavel = servico.responsavel
+            avaliacao.save()
+            return redirect('users:servicos_finalizados')
+    else:
+        form = AvaliacaoForm()
+    
+    return render(request, 'users/avaliar_servico.html', {'form': form, 'servico': servico})
 
 '''def verificaCPF(cpf):
     i = 1

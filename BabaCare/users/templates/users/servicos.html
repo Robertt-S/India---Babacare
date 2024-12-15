@@ -1,0 +1,8 @@
+{% for servico in servicos %}
+    <p>Serviço ID: {{ servico.id }} - Baba: {{ servico.baba.nome }}</p>
+    {% if not servico.avaliacao_set.exists %}
+        <a href="{% url 'users:avaliar_servico' servico.id %}">Avaliar</a>
+    {% else %}
+        <p>Avaliacao já realizada.</p>
+    {% endif %}
+{% endfor %}
