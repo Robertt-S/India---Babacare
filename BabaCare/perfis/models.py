@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from autoslug import AutoSlugField
+from django.conf import settings
 
 # Create your models here.
 
@@ -22,3 +23,19 @@ class Perfil_Baba(models.Model):
     def __str__(self):
         return self.nome_completo
     
+class Agenda(models.Model):
+    baba = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # Use AUTH_USER_MODEL
+    dia = models.DateField()  # Data disponível
+    periodo = models.CharField(max_length=20, choices=[
+        ('manhã', 'Manhã'),
+        ('tarde', 'Tarde'),
+        ('noite', 'Noite'),
+        ('integral', 'Integral'),
+    ])
+    recorrente = models.BooleanField(default=False)  # Se for recorrente ou não
+    frequencia = models.CharField(max_length=20, blank=True, null=True)  # Ex: "Segunda-feira"
+    inicio_recorrencia = models.DateField(blank=True, null=True)  # Data de início da recorrência
+    fim_recorrencia = models.DateField(blank=True, null=True)  # Data de término da recorrência
+
+    class Meta:
+        unique_together = ('baba', 'dia', 'periodo')

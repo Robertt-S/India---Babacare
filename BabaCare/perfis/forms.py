@@ -4,6 +4,7 @@ from users.models import Baba as Perfil_Baba
 from users.models import Responsavel as Perfil_Responsavel
 
 from django.views.generic.edit import UpdateView
+from .models import Agenda
 
 # "extends"
 
@@ -41,3 +42,36 @@ class EditRespForm(ModelForm):
             'bioResp': 'Biografia',
             'foto': '',
         }
+
+
+class AgendaRecorrenteForm(forms.Form):
+    # Atualizando FREQUENCIAS para incluir todos os dias da semana
+    FREQUENCIAS = [
+        ('Segunda-feira', 'Segunda-feira'),
+        ('Terça-feira', 'Terça-feira'),
+        ('Quarta-feira', 'Quarta-feira'),
+        ('Quinta-feira', 'Quinta-feira'),
+        ('Sexta-feira', 'Sexta-feira'),
+        ('Sábado', 'Sábado'),
+        ('Domingo', 'Domingo'),
+    ]
+
+    PERIODOS = [
+        ('manhã', 'Manhã'),
+        ('tarde', 'Tarde'),
+        ('noite', 'Noite'),
+        ('integral', 'Integral'),
+    ]
+
+    frequencia = forms.MultipleChoiceField(
+        choices=FREQUENCIAS,
+        widget=forms.CheckboxSelectMultiple,
+        required=True,
+    )
+    periodo = forms.MultipleChoiceField(
+        choices=PERIODOS,
+        widget=forms.CheckboxSelectMultiple,
+        required=True,
+    )
+    inicio_recorrencia = forms.DateField(widget=forms.SelectDateWidget())
+    fim_recorrencia = forms.DateField(widget=forms.SelectDateWidget())
