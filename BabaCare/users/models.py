@@ -104,9 +104,24 @@ class Responsavel(BaseUser):
     def __str__(self):
         return self.nome
     
+
+class Servico(models.Model):
+    
+    id = models.AutoField(primary_key=True)
+    data = models.DateField(auto_now=True)
+    hora = models.TimeField(auto_now=True)
+    finalizado = models.BooleanField(default=False)
+    baba = models.ForeignKey(Baba, on_delete=models.CASCADE)
+    responsavel = models.ForeignKey(Responsavel, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.id
+
+
 class Avaliacao(models.Model):
 
     id = models.AutoField(primary_key=True)
+    servico = models.ForeignKey(Servico, on_delete=models.CASCADE)
     nota = models.IntegerField(blank=False, null=False)
     comentario = models.TextField(blank=True, null=True)
     data = models.DateField(auto_now=True)

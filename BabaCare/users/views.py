@@ -9,6 +9,7 @@ from datetime import datetime
 from validate_docbr import CPF
 import dns.resolver
 import requests
+from .forms import AvaliacaoForm
 
 
 
@@ -193,7 +194,7 @@ def cadastro_responsavel(request):
             
             if not cpf.validate(cpf1):
                 messages.error(request, 'CPF Inválido')
-                return redirect('cadastro_baba') 
+                return redirect('cadastro_baba')
 
         
             # Cálculo da Latitude e Longitude    
@@ -316,4 +317,14 @@ def coordenadasCep(cep, numero):
         return lat_lon
     else:
         return "CEP não encontrado."
+
+def avaliacao_view(request):
+    if request.method == 'POST':
+        form = AvaliacaoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('success_url')  # Replace 'success_url' with your success URL
+    else:
+        form = AvaliacaoForm()
+    return render(request, 'avaliacao_form.html', {'form': form})
 
