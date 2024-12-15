@@ -17,7 +17,7 @@ class EditBabaForm(ModelForm):
         fields = ('email','telefone','endereco','bioBaba','habilidades','foto')
         labels = {
             'email': 'Email',
-            'contato': 'Telefone',
+            'telefone': 'Telefone',
             'endereco': 'Endereço',
             'bioBaba': 'Biografia',
             'habilidades': 'Habilidades',
