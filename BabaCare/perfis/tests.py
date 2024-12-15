@@ -43,6 +43,7 @@ class PerfilBabaTests(TestCase):
             'email': 'fulana_silva@hotmail.com',
             'telefone': '1133334444',
             'endereco': '12460158',
+            'numero': '942',
             'bioBaba': 'Experiente',
             'habilidades': 'Muitas',
             'foto': ''
@@ -60,13 +61,6 @@ class PerfilBabaTests(TestCase):
         self.assertEqual(baba1.email, self.baba_edited['email'])
         self.assertEqual(baba1.telefone, self.baba_edited['telefone'])
         self.assertEqual(baba1.endereco, self.baba_edited['endereco'])
+        self.assertEqual(baba1.numero, self.baba_edited['numero'])
         self.assertEqual(baba1.bioBaba, self.baba_edited['bioBaba'])
         self.assertEqual(baba1.habilidades, self.baba_edited['habilidades'])
-
-
-
-        #request = self.factory.post('perfis/edit_page/'+str(baba1.id), self.baba_edited)
-
-        #response = edit_page(request, baba1.id)
-
-        

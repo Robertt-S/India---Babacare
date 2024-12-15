@@ -11,14 +11,17 @@ class EditBabaForm(ModelForm):
     
     bioBaba = forms.CharField(required=False, widget=forms.Textarea)
     habilidades = forms.CharField(required=False, widget=forms.Textarea)
+    endereco = forms.CharField(required=True, label='CEP')
+    numero = forms.CharField(required=True, label='Número da Residência')
     
     class Meta:
         model = Perfil_Baba
-        fields = ('email','telefone','endereco','bioBaba','habilidades','foto')
+        fields = ('email','telefone','endereco','numero','bioBaba','habilidades','foto')
         labels = {
             'email': 'Email',
             'telefone': 'Telefone',
-            'endereco': 'Endereço',
+            'endereco': 'CEP',
+            'numero': 'Número da Residência',
             'bioBaba': 'Biografia',
             'habilidades': 'Habilidades',
             'foto': '',

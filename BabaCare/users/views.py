@@ -312,7 +312,7 @@ def coordenadasCep(cep, numero):
     
     if endereco:
         # Obter latitude e longitude com o Google Maps API
-        lat_lon = coordGoogleMaps(endereco, numero, "INSIRA_SUA_KEY_AQUI") # <--------------------------------- INSERIR KEY DO GOOGLE MAPS API
+        lat_lon = coordGoogleMaps(endereco, numero, "INSIRA_AQUI_SUA_KEY") # <--------------------------------- INSERIR KEY DO GOOGLE MAPS API
         return lat_lon
     else:
         return "CEP não encontrado."
