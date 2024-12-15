@@ -1,0 +1,97 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block title %}
+    Editar Calendário - BabaCare
+{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        {% if eu_id == perfil.id %}
+            <section style="background-color: #fdf5e6; padding: 20px; border-radius: 15px; margin-top: 20px; max-width: 800px; margin-left: auto; margin-right: auto; font-family: Arial, sans-serif; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                <h2 style="color: #333; font-size: 1.4rem; margin-bottom: 10px;">Agenda de Trabalho</h2>
+                {% if perfil.agenda_set.all %}
+                    <ul>
+                        {% for agenda in perfil.agenda_set.all %}
+                            <li>{{ agenda.dia }} - {{ agenda.periodo }}</li>
+                        {% empty %}
+                            <p>Você ainda não cadastrou sua agenda.</p>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>Você ainda não tem uma agenda definida. Adicione abaixo:</p>
+                {% endif %}
+
+                <h3 style="color: #333; font-size: 1.4rem; margin-bottom: 10px;">Agenda Recorrente</h3>
+                <p>Se você trabalha em horários recorrentes, defina os detalhes abaixo:</p>
+
+                <form method="POST" action="{% url 'perfis:agenda_recorrente' %}">
+                    {% csrf_token %}
+                    <div style="background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+
+                        <!-- Seleção de múltiplos dias da semana -->
+                        <div style="margin-bottom: 15px;">
+                            <label for="frequencia" style="display: block; margin-bottom: 5px; font-weight: bold; color: #555; font-size: 0.9rem;">Dia(s) da Semana:</label>
+                            <div style="padding: 15px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); margin-bottom: 20px;">
+                                <label style="font-size: 0.9rem; display: inline-block; position: relative; padding-left: 25px;">
+                                    <input type="checkbox" name="frequencia" value="Segunda-feira" {% if 'Segunda-feira' in form.frequencia.value %}checked{% endif %} style="position: absolute; left: 0; top: 0; z-index: 1;"> Segunda-feira
+                                </label>
+                                <label style="font-size: 0.9rem; display: inline-block; position: relative; padding-left: 25px;">
+                                    <input type="checkbox" name="frequencia" value="Terça-feira" {% if 'Terça-feira' in form.frequencia.value %}checked{% endif %} style="position: absolute; left: 0; top: 0; z-index: 1;"> Terça-feira
+                                </label>
+                                <label style="font-size: 0.9rem; display: inline-block; position: relative; padding-left: 25px;">
+                                    <input type="checkbox" name="frequencia" value="Quarta-feira" {% if 'Quarta-feira' in form.frequencia.value %}checked{% endif %} style="position: absolute; left: 0; top: 0; z-index: 1;"> Quarta-feira
+                                </label>
+                                <label style="font-size: 0.9rem; display: inline-block; position: relative; padding-left: 25px;">
+                                    <input type="checkbox" name="frequencia" value="Quinta-feira" {% if 'Quinta-feira' in form.frequencia.value %}checked{% endif %} style="position: absolute; left: 0; top: 0; z-index: 1;"> Quinta-feira
+                                </label>
+                                <label style="font-size: 0.9rem; display: inline-block; position: relative; padding-left: 25px;">
+                                    <input type="checkbox" name="frequencia" value="Sexta-feira" {% if 'Sexta-feira' in form.frequencia.value %}checked{% endif %} style="position: absolute; left: 0; top: 0; z-index: 1;"> Sexta-feira
+                                </label>
+                                <label style="font-size: 0.9rem; display: inline-block; position: relative; padding-left: 25px;">
+                                    <input type="checkbox" name="frequencia" value="Sábado" {% if 'Sábado' in form.frequencia.value %}checked{% endif %} style="position: absolute; left: 0; top: 0; z-index: 1;"> Sábado
+                                </label>
+                                <label style="font-size: 0.9rem; display: inline-block; position: relative; padding-left: 25px;">
+                                    <input type="checkbox" name="frequencia" value="Domingo" {% if 'Domingo' in form.frequencia.value %}checked{% endif %} style="position: absolute; left: 0; top: 0; z-index: 1;"> Domingo
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Seleção de múltiplos períodos -->
+                        <div style="margin-bottom: 15px;">
+                            <label for="periodo" style="display: block; margin-bottom: 5px; font-weight: bold; color: #555; font-size: 0.9rem;">Período(s):</label>
+                            <div style="padding: 15px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); margin-bottom: 20px;">
+                                <label style="font-size: 0.9rem; display: inline-block; position: relative; padding-left: 25px;">
+                                    <input type="checkbox" name="periodo" value="manhã" {% if 'manhã' in form.periodo.value %}checked{% endif %} style="position: absolute; left: 0; top: 0; z-index: 1;"> Manhã
+                                </label>
+                                <label style="font-size: 0.9rem; display: inline-block; position: relative; padding-left: 25px;">
+                                    <input type="checkbox" name="periodo" value="tarde" {% if 'tarde' in form.periodo.value %}checked{% endif %} style="position: absolute; left: 0; top: 0; z-index: 1;"> Tarde
+                                </label>
+                                <label style="font-size: 0.9rem; display: inline-block; position: relative; padding-left: 25px;">
+                                    <input type="checkbox" name="periodo" value="noite" {% if 'noite' in form.periodo.value %}checked{% endif %} style="position: absolute; left: 0; top: 0; z-index: 1;"> Noite
+                                </label>
+                                <label style="font-size: 0.9rem; display: inline-block; position: relative; padding-left: 25px;">
+                                    <input type="checkbox" name="periodo" value="integral" {% if 'integral' in form.periodo.value %}checked{% endif %} style="position: absolute; left: 0; top: 0; z-index: 1;"> Integral
+                                </label>
+                            </div>
+                        </div>  
+
+                        <!-- Data de início e fim da recorrência -->
+                        <div style="margin-bottom: 15px;">
+                            <label for="inicio_recorrencia" style="display: block; margin-bottom: 5px; font-weight: bold; color: #555; font-size: 0.9rem;">Início da Recorrência:</label>
+                            <input type="date" id="inicio_recorrencia" name="inicio_recorrencia" required style="width: 100%; padding: 10px; border-radius: 5px; box-sizing: border-box; margin-bottom: 15px;"><br>
+
+                            <label for="fim_recorrencia" style="display: block; margin-top: 10px; margin-bottom: 5px; font-weight: bold; color: #555; font-size: 0.9rem;">Fim da Recorrência:</label>
+                            <input type="date" id="fim_recorrencia" name="fim_recorrencia" required style="width: 100%; padding: 10px; border-radius: 5px; box-sizing: border-box;">
+                        </div>
+
+                        <!-- Botão de envio -->
+                        <button type="submit" style="background-color: #ffa726; color: white; border: none; padding: 12px 24px; border-radius: 5px; cursor: pointer; font-size: 1rem; margin-top: 20px;">
+                            Adicionar Agenda
+                        </button>
+                    </div>
+                </form>
+            </section>
+        {% endif %}
+    {% endif %}
+{% endblock %}

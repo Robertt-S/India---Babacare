@@ -64,9 +64,9 @@ def cadastro_baba(request):
                 return redirect('cadastro_baba')
             
             
-            if not verificar_registros_mx(email1):
-                messages.error(request, 'O domínio do e-mail não é válido ou não aceita mensagens.')
-                return redirect('cadastro_baba')
+            #if not verificar_registros_mx(email1):
+            #    messages.error(request, 'O domínio do e-mail não é válido ou não aceita mensagens.')
+            #    return redirect('cadastro_baba')
             
             #idade
             nascimento_str = request.POST.get('nascimento')  
@@ -251,13 +251,13 @@ def cadastro_responsavel(request):
     if (chr(digit1 + ord('0')) == cpf[-2] and chr(digit2 + ord('0')) == cpf[-1]): return True
     else: return False'''
     
-def verificar_registros_mx(email):
+'''def verificar_registros_mx(email):
     try:
         dominio = email.split('@')[-1]  
         mx_records = dns.resolver.resolve(dominio, 'MX')
         return True if mx_records else False
     except (dns.resolver.NoAnswer, dns.resolver.NXDOMAIN, dns.exception.Timeout):
-        return False
+        return False'''
     
 def home_baba(request):
     return render(request, 'users/home_baba.html')
@@ -312,7 +312,7 @@ def coordenadasCep(cep, numero):
     
     if endereco:
         # Obter latitude e longitude com o Google Maps API
-        lat_lon = coordGoogleMaps(endereco, numero, "INSIRA_SUA_KEY_AQUI") # <--------------------------------- INSERIR KEY DO GOOGLE MAPS API
+        lat_lon = coordGoogleMaps(endereco, numero, "INSIRA_AQUI_SUA_KEY") # <--------------------------------- INSERIR KEY DO GOOGLE MAPS API
         return lat_lon
     else:
         return "CEP não encontrado."
