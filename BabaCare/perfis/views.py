@@ -35,6 +35,7 @@ def my_page(request):
         if isbaba: perfil = Perfil_Baba.objects.get(id=eu_id)
         else: perfil= Perfil_Responsavel.objects.get(id=eu_id)
         return render(request,'perfis/own_page.html',{'perfil': perfil,'eu_id':eu_id})
+    
 
 def page_baba(request,slug):
     perfilB = Perfil_Baba.objects.get(slug=slug) 

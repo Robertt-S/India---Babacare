@@ -7,30 +7,27 @@
 
 {%block content%}
     {% if user.is_authenticated %}
-        {%if eu_id == perfil.id %}
-            <section>
+        <section>
+            <h1>Seu perfil</h1>
+            <p>Nome Completo: {{ perfil.nome }}</p>
+            {% if perfil.foto %}
+            <img class="foto-perfil" src="{{ perfil.foto.url }}" alt="Foto de {{ perfil.nome }}">
+            {% else %}
+            <img class="foto-perfil" src="{% static 'media/white-square.png' %}" alt="Imagem padrão">
+            {% endif %}
+            <p>Aniversário: {{ perfil.nascimento }}</p>
+            <p>Email: {{ perfil.email }}</p>
+            <p>Endereço: {{ perfil.endereco }}</p>
+            <p>CPF: {{ perfil.cpf }}</p>
+            <p>Contato: {{ perfil.telefone }}</p>
+            <p>Membro desde: {{ perfil.criado|date:"m/Y" }}</p>
+            <p>Biografia: {% if perfil.isBaba %}{{ perfil.bioBaba }}{% else %}{{ perfil.bioResp }}{% endif %}</p>
+            {% if perfil.isBaba %} <p>Habilidades: {{ perfil.habilidades }}</p> {% endif %}
 
-                <h1>Seu perfil</h1>
-                <p>Nome Completo: {{ perfil.nome }}</p>
-                {% if perfil.foto %}
-                <img class="foto-perfil" src="{{ perfil.foto.url }}" alt="Foto de {{ perfil.nome }}">
-                {% else %}
-                <img class="foto-perfil" src="{% static 'media/white-square.png' %}" alt="Imagem padrão">
-                {% endif %}
-                <p>Aniversário: {{ perfil.nascimento }}</p>
-                <p>Email: {{ perfil.email }}</p>
-                <p>Endereço: {{ perfil.endereco }}</p>
-                <p>CPF: {{ perfil.cpf }}</p>
-                <p>Contato: {{ perfil.telefone }}</p>
-                <p>Membro desde: {{ perfil.criado|date:"m/Y" }}</p>
-                <p>Biografia: {% if perfil.isBaba %}{{ perfil.bioBaba }}{% else %}{{ perfil.bioResp }}{% endif %}</p>
-                {% if perfil.isBaba %} <p>Habilidades: {{ perfil.habilidades }}</p> {% endif %}
+            <a class="edit-button" href="{% url 'perfis:edit_page' perfil.id %}">
+                Editar perfil
+            </a>
 
-                <a class="edit-button" href="{% url 'perfis:edit_page' perfil.id %}">
-                    Editar perfil
-                </a>
-
-            </section>
-        {% endif %} {% comment %} if user == perfil.owner {% endcomment %}
+        </section>
     {%endif%} {% comment %} if user.is_authenticated {% endcomment %}
 {%endblock%}
