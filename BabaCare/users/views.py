@@ -190,11 +190,7 @@ def cadastro_responsavel(request):
                 messages.error(request, 'Faixa etária não permitida.')
                 return redirect('cadastro_responsavel')
             
-            if not cpf.validate(cpf1):
-                if Responsavel.objects.find(cpf=cpf):
-                    messages.error(request, 'CPF já cadastrado')
-                    return redirect('cadastro_responsavel') 
-                    
+            if not cpf.validate(cpf1):                    
                 messages.error(request, 'CPF Inválido')
                 return redirect('cadastro_responsavel') 
 
