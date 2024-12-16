@@ -1,0 +1,45 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{%block title%}
+    Lista de Babás
+{%endblock%}
+    
+{%block content%}
+
+<div class="cabecalho__busca">
+    <div class="busca__fundo">
+        <form action="{% url 'perfis:buscar' %}" method="get">
+            <input class="busca__input" type="text" name="buscar" placeholder="O que você procura?">
+            <button type="submit">
+                <img class="busca__icone" src="{% static 'assets/icones/1x/search.png' %}" alt="ícone de search">
+            </button>
+        </form>
+    </div>
+</div>
+
+{% if user.is_authenticated %}
+    <section>
+        <h1>Babás</h1>
+
+        {% if perfis %}
+            <ul class="user-list">
+                {% for baba in perfis %}
+                    <li class="user-list-item">
+                        {{ baba.id }}
+                        <a href="{% url 'perfis:page_baba' slug=baba.slug %}">
+                            {{ baba.nome }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Nenhuma babá foi encontrada com o termo pesquisado.</p>
+        {% endif %}
+    </section>
+{% else %}
+    <h2>Sorry! You must be logged in to view this page</h2>
+    <a href="/login" style="font-size: 2rem">Login Here</a>
+{% endif %}
+
+{%endblock%}
