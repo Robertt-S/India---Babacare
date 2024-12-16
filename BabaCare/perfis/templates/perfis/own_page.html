@@ -40,10 +40,12 @@
                     </div>
                 </div>
 
-                <!-- Botão para editar calendário -->
-                <div style="text-align: center; margin-top: 20px;">
-                    <a class="edit-calendar" href="{% url 'perfis:agenda_recorrente' %}" style="padding: 10px 20px; background-color: #db3065; color: white; border: none; border-radius: 5px; text-decoration: none;">Editar Calendário</a>
-                </div>
+                {% if perfil.isBaba %}
+                    <!-- Botão para editar calendário -->
+                    <div style="text-align: center; margin-top: 20px;">
+                        <a class="edit-calendar" href="{% url 'perfis:agenda_recorrente' %}" style="padding: 10px 20px; background-color: #db3065; color: white; border: none; border-radius: 5px; text-decoration: none;">Editar Calendário</a>
+                    </div>
+                {% endif %}
             </section>
         {% endif %}
     {% endif %}
