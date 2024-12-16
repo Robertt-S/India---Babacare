@@ -1,9 +1,10 @@
 from django.contrib.messages.middleware import MessageMiddleware
 from django.contrib.sessions.middleware import SessionMiddleware
+from django.urls import reverse
 from django.contrib.messages import get_messages
 from django.contrib.auth.hashers import check_password
 from django.test import TestCase, RequestFactory
-from users.models import Baba, Responsavel
+from users.models import Baba, Responsavel, Servico, Avaliacao
 import users.views as views
 
 #Como os testes rodam independentes entre si, todos os testes precisam criar o usuário antes de poder mexer com ele
@@ -111,3 +112,137 @@ class RespTests(TestCase):
         nomeSlug = nomeSlug.replace(' ', '-')
         slug = nomeSlug+'-'+str(resp1.id)
         self.assertEqual(resp1.slug, slug)
+
+class ServicoTests(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+        self.user = Responsavel.objects.create_user(
+            email='test_responsavel@example.com',
+            password='testpassword',
+            nome='Test Responsável',
+            cpf='12345678901',
+            nascimento='1990-01-01',
+            telefone='1111111111',
+            endereco='12223430',
+            numero='100'
+        )
+        self.baba = Baba.objects.create(
+            email='test_baba@example.com',
+            nome='Test Babá',
+            cpf='23456789012',
+            nascimento='1985-01-01',
+            telefone='2222222222',
+            endereco='12223430',
+            numero='200'
+        )
+        self.servico_finalizado = Servico.objects.create(
+            responsavel=self.user,
+            baba=self.baba,
+            finalizado=True,
+            data='2023-10-01',
+            hora='08:00',
+        )
+        self.servico_pendente = Servico.objects.create(
+            responsavel=self.user,
+            baba=self.baba,
+            finalizado=False,
+            data='2023-10-02',
+            hora='14:00',
+        )
+
+    def test_servicos_finalizados_view(self):
+        self.client.login(email='test_responsavel@example.com', password='testpassword')
+        url = reverse('users:servicos_finalizados')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        servicos = response.context['servicos']
+        self.assertIn(self.servico_finalizado, servicos)
+        self.assertNotIn(self.servico_pendente, servicos)
+
+    def test_avaliar_servico_view_get(self):
+        self.client.login(email='test_responsavel@example.com', password='testpassword')
+        url = reverse('users:avaliar_servico', args=[self.servico_finalizado.id])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '<form')
+        self.assertContains(response, 'name="nota"')
+        self.assertContains(response, 'name="comentario"')
+
+    def test_avaliar_servico_view_post(self):
+        self.client.login(email='test_responsavel@example.com', password='testpassword')
+        url = reverse('users:avaliar_servico', args=[self.servico_finalizado.id])
+        form_data = {
+            'nota': 5,
+            'comentario': 'Excelente serviço!'
+        }
+        response = self.client.post(url, data=form_data)
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(Avaliacao.objects.filter(servico=self.servico_finalizado).exists())
+
+    def test_avaliar_servico_already_evaluated(self):
+        self.client.login(email='test_responsavel@example.com', password='testpassword')
+        Avaliacao.objects.create(
+            servico=self.servico_finalizado,
+            baba=self.baba,
+            responsavel=self.user,
+            nota=5,
+            comentario='Excelente serviço!'
+        )
+        url = reverse('users:avaliar_servico', args=[self.servico_finalizado.id])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse('users:servicos_finalizados'))
+
+class AvaliacaoTests(TestCase):
+    def setUp(self):
+        self.responsavel = Responsavel.objects.create_user(
+            email='responsavel@example.com',
+            password='testpassword',
+            nome='Responsável Teste',
+            cpf='12345678901',
+            nascimento='1980-01-01',
+            telefone='1111111111',
+            endereco='12223430',
+            numero='100'
+        )
+        self.baba = Baba.objects.create(
+            email='baba@example.com',
+            nome='Babá Teste',
+            cpf='23456789012',
+            nascimento='1990-01-01',
+            telefone='2222222222',
+            endereco='12223430',
+            numero='200'
+        )
+        self.servico = Servico.objects.create(
+            responsavel=self.responsavel,
+            baba=self.baba,
+            finalizado=True,
+            data='2023-10-01',
+            hora='08:00',
+        )
+
+    def test_avaliacao_creation(self):
+        avaliacao = Avaliacao.objects.create(
+            servico=self.servico,
+            baba=self.baba,
+            responsavel=self.responsavel,
+            nota=5,
+            comentario='Excelente babá!'
+        )
+        self.assertEqual(avaliacao.nota, 5)
+        self.assertEqual(avaliacao.comentario, 'Excelente babá!')
+        self.assertEqual(avaliacao.baba, self.baba)
+        self.assertEqual(avaliacao.responsavel, self.responsavel)
+        self.assertEqual(avaliacao.servico, self.servico)
+
+    def test_avaliacao_str_method(self):
+        avaliacao = Avaliacao.objects.create(
+            servico=self.servico,
+            baba=self.baba,
+            responsavel=self.responsavel,
+            nota=4,
+            comentario='Muito boa babá.'
+        )
+        expected_str = str(avaliacao.id)
+        self.assertEqual(str(avaliacao), expected_str)
