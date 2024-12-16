@@ -25,7 +25,7 @@ def login_view(request):
                 return redirect('users:home_responsavel')
         else:
             messages.success(request, ("Houve um erro ao logar!"))
-            return redirect('users:login')
+            return redirect('login')
     else:
         return render(request, 'users/login.html')
     
@@ -181,7 +181,7 @@ def cadastro_responsavel(request):
                 nascimento1 = datetime.strptime(nascimento_str, '%Y-%m-%d').date() 
             except (ValueError, TypeError):
                 messages.error(request, 'Data de nascimento inválida. Use o formato AAAA-MM-DD.')
-                return redirect('cadastro_baba')
+                return redirect('cadastro_responsavel')
 
             # Calcula a idade
             hoje = timezone.now().date()
@@ -189,11 +189,15 @@ def cadastro_responsavel(request):
 
             if idade < 18:
                 messages.error(request, 'Faixa etária não permitida.')
-                return redirect('cadastro_baba')
+                return redirect('cadastro_responsavel')
             
             if not cpf.validate(cpf1):
+                if Responsavel.objects.find(cpf=cpf):
+                    messages.error(request, 'CPF já cadastrado')
+                    return redirect('cadastro_responsavel') 
+                    
                 messages.error(request, 'CPF Inválido')
-                return redirect('cadastro_baba') 
+                return redirect('cadastro_responsavel') 
 
         
             # Cálculo da Latitude e Longitude    

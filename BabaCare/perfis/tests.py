@@ -64,3 +64,59 @@ class PerfilBabaTests(TestCase):
         self.assertEqual(baba1.numero, self.baba_edited['numero'])
         self.assertEqual(baba1.bioBaba, self.baba_edited['bioBaba'])
         self.assertEqual(baba1.habilidades, self.baba_edited['habilidades'])
+        
+        
+class PerfilRespTests(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+        self.resp_data = {
+            'nome_cadastro': 'Fulana da Silva',
+            'email': 'fulana_silva@gmail.com',
+            'senha_1': 'fulana@123',
+            'senha_2': 'fulana@123',
+            'telefone': '1122223333',
+            'endereco': '12223430',
+            'numero': '1031',
+            'nascimento': '1990-10-28',
+            'cpf': '45317828791'
+        }
+
+    def test_EditRespPage(self):
+        #As funções SessionMiddleware e MessageMiddleware precisam de um get_response para funcionarem, então criamos esse fake para elas funcionarem
+        def get_response(request):
+            return None
+        
+        #Criação de user babá, vide tests.py da users
+        request = self.factory.post('/cadastro_responsavel/', self.resp_data)
+        SessionMiddleware(get_response).process_request(request)
+        MessageMiddleware(get_response).process_request(request)
+        cadastro_responsavel(request)
+        self.assertTrue(Responsavel.objects.filter(cpf=self.resp_data['cpf']).exists()) #Verificando que a Babá foi realmente criada e está no Banco de Dados
+        resp1 = Responsavel.objects.filter(cpf=self.resp_data['cpf'])[0]
+
+        #Fazendo login de usuário, já que é necessário estar autenticado para fazer as mudanças
+        #O cliente também deve ser usado para fazer o post utilizando sua autenticação
+        cliente = Client()
+        cliente.login(email=resp1.email, password=self.resp_data['senha_1'])
+
+        self.resp_edited = {
+            'email': 'fulana_silva@hotmail.com',
+            'telefone': '1133334444',
+            'endereco': '12460158',
+            'numero': '1031',
+            'foto': ''
+        }
+        request = cliente.post('/perfis/edit_page/'+str(resp1.id)+'/', self.resp_edited)
+        request.user = resp1
+        request.POST = self.resp_edited
+        request.FILES = None
+        #Como a views neste caso não utiliza as messages do django, não é necessário usar os middlewares
+        response = edit_page(request, resp1.id)
+        #Atualizar a variável agora que editamos, pegar de novo na base de dados
+        resp1 = Responsavel.objects.filter(cpf=self.resp_data['cpf'])[0]
+        self.assertEqual(response.status_code, 302) #Código será 302 pois a views retorna um redirect
+        self.assertTrue(response.url.startswith('/perfis/my_page')) #Verificando que o redirect está enviando para o perfil
+        self.assertEqual(resp1.email, self.resp_edited['email'])
+        self.assertEqual(resp1.telefone, self.resp_edited['telefone'])
+        self.assertEqual(resp1.endereco, self.resp_edited['endereco'])
+        self.assertEqual(resp1.numero, self.resp_edited['numero'])
