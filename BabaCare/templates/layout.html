@@ -40,6 +40,16 @@
         
 
         {% if user.is_authenticated %}
+            {% if user.isBaba  == True %}
+                {% comment %} <a href="{% url 'users:home_baba' %}" >Home</a> | {% endcomment %}
+
+            {% else %}
+                {% comment %} <a href="{% url 'users:home_responsavel' %}" >Home</a> | {% endcomment %}
+                <a href="{% url 'users:home_responsavel' %}">
+                    <img src="{% static 'images/Babacare.png' %}" alt="buttonpng" width="60" height="60" align="center"/>
+                </a> |
+            {% endif %}
+
             <a href="{% url 'users:logout' %}">
                 <span role="img" aria-label="Logout">Logout</span>
             </a> |

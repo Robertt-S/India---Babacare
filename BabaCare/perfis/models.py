@@ -18,7 +18,7 @@ class Perfil_Baba(models.Model):
     link = models.CharField(max_length=50,blank=True)
     slug = AutoSlugField(populate_from='link',unique_with=('cpf', 'email','owner'))
     habilidades = models.TextField(max_length=255,default="")
-    foto = models.ImageField(blank=False,upload_to="images/",default='')
+    foto = models.ImageField(blank=False,upload_to="images/",default='../static/images/white-square.png')
     
     def __str__(self):
         return self.nome_completo
