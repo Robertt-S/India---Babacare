@@ -2,7 +2,7 @@
 
 {% block content %}
   <h2>Avaliar Serviço</h2>
-  <p>Serviço ID: {{ servico.id }} - Baba: {{ servico.baba.nome }}</p>
+  <p>Baba: {{ servico.baba.nome }}</p>
 
   <form method="post">
     {% csrf_token %}
