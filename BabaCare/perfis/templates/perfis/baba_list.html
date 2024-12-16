@@ -1,10 +1,27 @@
 {% extends 'layout.html' %}
 
+{% load static %}
+
 {%block title%}
     Lista de Babás
 {%endblock%}
     
 {%block content%}
+
+
+
+<div class="cabecalho__busca">
+    <div class="busca__fundo">
+        <form action="{% url 'perfis:buscar' %}">
+            <input class="busca__input" type="text" name="buscar" placeholder="O que você procura?">
+            <button type="submit">
+                <img class="busca__icone" src="{% static '/assets/search.png' %}" alt="ícone de search">
+            </button>
+        </form>
+    </div>
+</div>
+
+
 
 {% if user.is_authenticated %}
     <section>

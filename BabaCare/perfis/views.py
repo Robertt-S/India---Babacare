@@ -16,6 +16,16 @@ def baba_list(request):
     perfis = Perfil_Baba.objects.all()
     return render(request, 'perfis/baba_list.html', {'perfis': perfis})
 
+def buscar(request):
+    perfis = Perfil_Baba.objects.all()
+
+    if "buscar" in request.GET:
+        nome_a_buscar = request.GET['buscar']
+        if nome_a_buscar:
+            perfis = perfis.filter(nome__icontains=nome_a_buscar)
+
+    return render(request, "perfis/buscar.html", {"perfis": perfis})
+
 # passa o id do perfil também
 def edit_page(request, perfil_id):
     isbaba = request.user.isBaba
@@ -41,6 +51,7 @@ def my_page(request):
         if isbaba: perfil = Perfil_Baba.objects.get(id=eu_id)
         else: perfil= Perfil_Responsavel.objects.get(id=eu_id)
         return render(request,'perfis/own_page.html',{'perfil': perfil,'eu_id':eu_id})
+    
 
 def page_baba(request,slug):
     perfilB = Perfil_Baba.objects.get(slug=slug) 

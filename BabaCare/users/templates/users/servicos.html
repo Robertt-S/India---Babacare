@@ -1,0 +1,20 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block title %}
+    Serviços Finalizados - BabaCare
+{% endblock %}
+
+{% block content %}
+    <h2>Serviços Finalizados</h2>
+    {% if not servicos %}
+        <p>Nenhum serviço finalizado.</p>
+    {% endif %}
+    {% for servico in servicos %}
+        <p>Baba: {{ servico.baba.nome }}</p>
+        {% if not servico.avaliacao_set.exists %}
+            <a href="{% url 'users:avaliar_servico' servico.id %}">Avaliar</a>
+        {% else %}
+            <p>Avaliacao já realizada.</p>
+        {% endif %}
+    {% endfor %}
+{% endblock %}
