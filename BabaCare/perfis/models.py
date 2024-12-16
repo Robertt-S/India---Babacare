@@ -30,7 +30,6 @@ class Agenda(models.Model):
         ('manhã', 'Manhã'),
         ('tarde', 'Tarde'),
         ('noite', 'Noite'),
-        ('integral', 'Integral'),
     ])
     recorrente = models.BooleanField(default=False)  # Se for recorrente ou não
     frequencia = models.CharField(max_length=20, blank=True, null=True)  # Ex: "Segunda-feira"

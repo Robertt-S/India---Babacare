@@ -60,7 +60,6 @@ class AgendaRecorrenteForm(forms.Form):
         ('manhã', 'Manhã'),
         ('tarde', 'Tarde'),
         ('noite', 'Noite'),
-        ('integral', 'Integral'),
     ]
 
     frequencia = forms.MultipleChoiceField(

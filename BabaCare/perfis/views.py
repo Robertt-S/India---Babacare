@@ -2,15 +2,13 @@ from django.shortcuts import render, redirect
 #from .models import Perfil_Baba
 from users.models import Baba as Perfil_Baba
 from users.models import Responsavel as Perfil_Responsavel
-from .forms import EditBabaForm, EditRespForm
+from .forms import EditBabaForm, EditRespForm, AgendaRecorrenteForm
+from datetime import datetime, timedelta
+from datetime import date
+from calendar import monthrange
 from .models import Agenda
-from datetime import timedelta, datetime
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
-from django.http import HttpResponse
-from .forms import AgendaRecorrenteForm
+import calendar
 from django.contrib import messages
-
 
 # Create your views here.
 
@@ -49,8 +47,58 @@ def page_baba(request,slug):
     #{'nome do conjunto de informações': informaçõesPassadas}
     return render(request, 'perfis/baba_page.html', {'perfilBaba': perfilB})
 
+import calendar
+from datetime import datetime
+
+from datetime import datetime
+import calendar
+
+def gerar_calendario(ano, mes, request):
+    # Validar o mês
+    if not 1 <= mes <= 12:
+        raise ValueError("Mês deve estar entre 1 e 12")
+
+    eu_id = request.user.id
+
+    # Calculando o primeiro dia do mês
+    primeiro_dia = datetime(ano, mes, 1)
+    dia_da_semana = primeiro_dia.weekday()  # 0 = segunda-feira, 6 = domingo
+
+    # Obtendo os dias do mês
+    dias_no_mes = calendar.monthrange(ano, mes)[1]
+    
+    # Gerar uma lista de dias do mês com os dias da semana corretamente posicionados
+    calendario = [None] * dia_da_semana + list(range(1, dias_no_mes + 1))
+    
+    # Verificar as agendas da baba para o mês
+    agendas = Agenda.objects.filter(baba_id=eu_id, dia__year=ano, dia__month=mes)
+
+    # Criar um dicionário com os dias e turnos agendados
+    agenda_por_dia = {}
+    for agenda in agendas:
+        if agenda.dia.day not in agenda_por_dia:
+            agenda_por_dia[agenda.dia.day] = []
+        agenda_por_dia[agenda.dia.day].append(agenda.periodo)
+
+    return calendario, dia_da_semana
+
+
+from datetime import datetime
+import calendar
+
+from datetime import datetime
+import calendar
+
+from datetime import datetime
+import calendar
+from .models import Agenda
+
+from collections import defaultdict
+
+from collections import defaultdict
+
 def agenda_recorrente(request):
-    # Buscar o perfil do usuário logado
+
     perfil = request.user
     eu_id = perfil.id  # ID do perfil logado
 
@@ -79,11 +127,12 @@ def agenda_recorrente(request):
             data_ja_cadastrada = False  # Flag para indicar se já existe uma data cadastrada
 
             while data_atual <= fim_recorrencia:
+                # Verifica se a data atual corresponde à frequência selecionada
                 if FREQUENCIAS[data_atual.weekday()] in frequencia:
                     for p in periodo:
                         # Verificar se já existe uma agenda com a mesma data, período e babá
                         if Agenda.objects.filter(baba=baba, dia=data_atual, periodo=p).exists():
-                            data_ja_cadastrada = True  # Se existir, marca a flag como True
+                            data_ja_cadastrada = True  # Marca que a data já está cadastrada
                             break  # Não precisa continuar verificando
 
                         # Se não existir, cria a agenda
@@ -96,8 +145,9 @@ def agenda_recorrente(request):
                             inicio_recorrencia=inicio_recorrencia,
                             fim_recorrencia=fim_recorrencia
                         )
-                if data_ja_cadastrada:
-                    break  # Interrompe o loop se já encontrou a duplicação
+                    
+                    if data_ja_cadastrada:  # Se alguma agenda já foi cadastrada, sai do loop
+                        break  # Interrompe o loop principal, pois não deve continuar com as datas
 
                 data_atual += timedelta(days=1)
 
@@ -108,12 +158,42 @@ def agenda_recorrente(request):
     else:
         form = AgendaRecorrenteForm()
 
-    # Construir o contexto
+    # Captura o mês e o ano da query string (ou usa o mês/ano atual como padrão)
+    mes = int(request.GET.get('mes', datetime.now().month))
+    ano = int(request.GET.get('ano', datetime.now().year))
+
+    # Validar mês
+    if not 1 <= mes <= 12:
+        mes = datetime.now().month
+
+    # Gerar o calendário
+    calendario, dia_da_semana = gerar_calendario(ano, mes, request)
+
+    # Coletar as agendas do banco de dados
+    agendas = Agenda.objects.filter(dia__year=ano, dia__month=mes)  # Filtra pelas datas do mês
+    agendas_por_dia = defaultdict(list)
+    
+    dias_no_mes = len(calendario)
+    dias_faltando = 7 - (dias_no_mes % 7) if dias_no_mes % 7 != 0 else 0
+
+    # Criar uma lista de 'dias vazios' para o template
+    dias_vazios = [None] * dias_faltando
+    for agenda in agendas:
+        agendas_por_dia[agenda.dia.day].append(agenda.periodo)
+
     context = {
+        'calendario': calendario,
+        'dia_da_semana': dia_da_semana,
+        'mes': mes,
+        'ano': ano,
+        'agendas_por_dia': agendas_por_dia,  # Passa o dicionário de dias agendados
+        'dias_da_semana': ["segunda", "terça", "quarta", "quinta", "sexta", "sabado", "domingo"],
+        'meses': ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
+        'anos': range(2023, 2031),
         'form': form,
         'perfil': perfil,
         'eu_id': eu_id,
+        'dias_vazios': dias_vazios
     }
 
     return render(request, 'perfis/agenda_recorrente.html', context)
-
