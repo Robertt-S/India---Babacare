@@ -115,7 +115,7 @@ class Servico(models.Model):
     responsavel = models.ForeignKey(Responsavel, on_delete=models.CASCADE)
     
     def __str__(self):
-        return self.id
+        return (self.id)
 
 
 class Avaliacao(models.Model):
@@ -129,4 +129,4 @@ class Avaliacao(models.Model):
     responsavel = models.ForeignKey(Responsavel, on_delete=models.CASCADE)
     
     def __str__(self):
-        return self.id
+        return str(self.id)

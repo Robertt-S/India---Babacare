@@ -1,9 +1,10 @@
 from django.contrib.messages.middleware import MessageMiddleware
 from django.contrib.sessions.middleware import SessionMiddleware
+from django.urls import reverse
 from django.contrib.messages import get_messages
 from django.contrib.auth.hashers import check_password
 from django.test import TestCase, RequestFactory
-from users.models import Baba, Responsavel
+from users.models import Baba, Responsavel, Servico, Avaliacao
 import users.views as views
 
 #Como os testes rodam independentes entre si, todos os testes precisam criar o usuário antes de poder mexer com ele
