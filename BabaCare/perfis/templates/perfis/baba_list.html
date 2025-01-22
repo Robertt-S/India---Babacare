@@ -2,17 +2,11 @@
 
 {% load static %}
 
-{%block title%}
+{% block title %}
     Lista de Babás
-{%endblock%}
+{% endblock %}
     
-{%block content%}
-
-
-
-
-
-
+{% block content %}
 
 {% if user.is_authenticated %}
     <div class="cabecalho__busca">
@@ -28,24 +22,27 @@
     <section>
         <h1>Babás</h1>
 
-        {% for baba in perfis %}
-        <ul class="user-list">
-            
-            <li class="user-list-item">
-                {{ baba.id }}
-                <a href="{% url 'perfis:page_baba' slug=baba.slug %}">
-                    {{ baba.nome }}
-                </a>
-            </li>
-
-        </ul>
-        {% endfor %}
+        <div class="babas-container">
+            {% for baba in perfis %}
+            <div class="baba-card">
+                <div class="baba-card-header">
+                    {% if baba.foto %}
+                    <img class="baba-photo" src="{{ baba.foto.url }}" alt="Foto de {{ baba.nome }}">
+                    {% else %}
+                    <img class="baba-photo" src="{% static 'images/icone_avatar_padrao.jpg' %}" alt="Imagem padrão">
+                    {% endif %}
+                    <h2 class="baba-name">{{ baba.nome }}</h2>
+                </div>
+                <p class="baba-bio"><strong>Biografia:</strong> {{ baba.bioBaba }}</p>
+                <button class="contratar-button" onclick="location.href='{% url 'perfis:contratar' slug=baba.slug %}'">Contratar</button>
+            </div>
+            {% endfor %}
+        </div>
     </section>
 
 {% else %}
-<h2>Sorry! You must be logged in to view this page</h2>
-<a href="/login" style="font-size: 2rem">Login Here</a>
+    <h2>Sorry! You must be logged in to view this page</h2>
+    <a href="/login" style="font-size: 2rem">Login Here</a>
 {% endif %}
 
-{%endblock%}
-     
+{% endblock %}

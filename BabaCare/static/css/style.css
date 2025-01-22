@@ -430,3 +430,64 @@ a:hover {
 .user-list-item:nth-child(odd) {
     background: #f9f9f9
 }
+
+.babas-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+}
+
+.baba-card {
+    background-color: #f5eecd;
+    border-radius: 15px;
+    padding: 20px;
+    width: 90%; /* Deixa o card bem largo */
+    max-width: 800px; /* Define um limite máximo de largura */
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.baba-card-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.baba-photo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.baba-name {
+    font-size: 2.5rem;
+    color: #331d43;
+    margin: 0;
+}
+
+.baba-bio {
+    font-size: 2rem;
+    color: #333;
+    margin: 15px 0;
+}
+
+.contratar-button {
+    background-color: #331d43;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 1.5rem;
+    align-self: flex-end; /* Alinha o botão à direita */
+}
+
+.contratar-button:hover {
+    background-color: #45235a;
+    font-family: BasicFont;
+
+}

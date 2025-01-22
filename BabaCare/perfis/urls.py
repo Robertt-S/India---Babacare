@@ -10,4 +10,5 @@ urlpatterns = [
     path('<slug:slug>', views.page_baba, name="page_baba"),
     path('agenda_recorrente/', views.agenda_recorrente, name='agenda_recorrente'),
     path('buscar/', views.buscar, name='buscar' ),
+    path('contratar/<slug:slug>/', views.contratar, name='contratar'),
 ]

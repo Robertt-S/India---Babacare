@@ -208,3 +208,6 @@ def agenda_recorrente(request):
     }
 
     return render(request, 'perfis/agenda_recorrente.html', context)
+
+def contratar(request):
+    teste='teste'
