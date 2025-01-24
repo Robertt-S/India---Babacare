@@ -491,3 +491,66 @@ a:hover {
     font-family: BasicFont;
 
 }
+
+/* Barra de navegação - flex container */
+/* Barra de navegação */
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 70px; /* Altura da barra */
+    background-color: #54b5be; /* Cor de fundo */
+    z-index: 1000; /* Garantir que esteja acima do conteúdo */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Opcional: sombra para destaque */
+    display: flex; /* Para alinhar itens horizontalmente */
+    justify-content: space-between; /* Espaço entre logo e links */
+    align-items: center; /* Alinhamento vertical dos itens */
+    padding: 0 20px; /* Espaçamento interno para as laterais */
+}
+
+/* Ajuste para o conteúdo principal */
+main {
+    margin-top: 60px; /* Mesma altura da barra de navegação */
+    padding: 20px; /* Opcional: espaçamento interno */
+}
+
+/* Contêiner da logo */
+.logo-container {
+    display: flex; /* Garante que o link da logo seja tratado como flex */
+    justify-content: flex-start;
+    align-items: center;
+}
+
+/* Logo */
+.logo {
+    height: 60px;  /* Ajuste de altura */
+    width: auto;
+}
+
+/* Links de navegação */
+.nav-links {
+    display: flex; /* Alinhamento horizontal */
+    gap: 15px; /* Espaço entre os links */
+    align-items: center;
+}
+
+/* Estilo dos links */
+.nav-link {
+    font-size: 24px; /* Ajuste do tamanho da fonte */
+    color: #331d43; /* Cor do texto */
+    text-decoration: none; /* Remove o sublinhado */
+    padding: 5px;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #6a4c7a; /* Cor ao passar o mouse */
+}
+
+/* Separador entre os links */
+.separator {
+    color: #331d43;
+    font-size: 18px;
+    padding: 0 5px;
+}

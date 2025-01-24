@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
 
 <html lang="en">
 <head>
@@ -14,63 +13,45 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <script src="{% static 'js/main.js' %}" defer></script>
 </head>
+
 <body>
     <nav>
-        {% if user.isBaba == true %}
-            <a href="{% url 'home' %}">
-                <span role="img" aria-label="Home">Home</span>
-            </a> | 
-            <a href="/about">
-                <span role="img" aria-label="About">About</span>
-            </a> |
-            <a href="{% url 'perfis:lista_babas' %}">
-                <span role="img" aria-label="Perfis">Perfis</span>
-            </a> |
+        <!-- Imagem e texto no lado superior esquerdo -->
+        <a href="{% url 'home' %}" class="logo-container">
+            <img src="{% static 'images/logo_babacare.png' %}" alt="Logo BabaCare" class="logo">
+            <span class="logo-text">BabaCare</span>
+        </a>
 
-            <!-- Adicionando os botões "Baba" e "Responsáveis" -->
-            <!-- Botões estilizados? -->
-            <a href="{% url 'users:baba_page' %}">
-                <button class="custom-button">Baba</button>
-            </a> |
-            <a href="{% url 'users:responsaveis_page' %}">
-                <button class="customizar_botao">Responsáveis</button>
-            </a> |
-        {% endif %}
-        
-        
-
-        {% if user.is_authenticated %}
-            {% if user.isBaba  == True %}
-                {% comment %} <a href="{% url 'users:home_baba' %}" >Home</a> | {% endcomment %}
-
-            {% else %}
-                {% comment %} <a href="{% url 'users:home_responsavel' %}" >Home</a> | {% endcomment %}
-                <a href="{% url 'users:home_responsavel' %}">
-                    <img src="{% static 'images/Babacare.png' %}" alt="buttonpng" width="60" height="60" align="center"/>
-                </a> |
-                <a href="{% url 'perfis:lista_babas' %}">
-                    <button class="custom-button">Perfis</button>
-                </a> |
-                <a href="{% url 'users:servicos_finalizados' %}">
-                    <button class="custom-button">Serviços</button>
-                </a> |
+        <!-- Links de navegação -->
+        <div class="nav-links">
+            {% if user.isBaba == true %}
+                <a href="/about" class="nav-link">About</a>
+                <span class="separator">|</span>
+                <a href="{% url 'users:baba_page' %}" class="nav-link">Baba</a>
+                <span class="separator">|</span>
+                <a href="{% url 'users:responsaveis_page' %}" class="nav-link">Responsáveis</a>
             {% endif %}
 
-            <a href="{% url 'users:logout' %}">
-                <span role="img" aria-label="Logout">Logout</span>
-            </a> |
-            <a href="{% url 'perfis:my_page' %}">
-                <span role="img" aria-label="Self">Own page</span>
-            </a> 
-        {% else %}
-            <a href="{% url 'login' %}">
-                <span role="img" aria-label="Login">Login</span>
-            </a>
-        {% endif %}
+            {% if user.is_authenticated %}
+                {% if user.isBaba == True %}
+                    <!-- Botões ou links específicos para Baba -->
+                {% else %}
+                    <a href="{% url 'users:home_responsavel' %}" class="nav-link">
+                    </a>
+                    <span class="separator">|</span>
+                    <a href="{% url 'perfis:lista_babas' %}" class="nav-link">Perfis</a>
+                    <span class="separator">|</span>
+                    <a href="{% url 'users:servicos_finalizados' %}" class="nav-link">Serviços</a>
+                {% endif %}
+                <span class="separator">|</span>
+                <a href="{% url 'users:logout' %}" class="nav-link">Logout</a>
+                <span class="separator">|</span>
+                <a href="{% url 'perfis:my_page' %}" class="nav-link">Own page</a>
+            {% endif %}
+        </div>
     </nav>
-    <b></b>
-    <main>
 
+    <main>
         {% if messages %}
             {% for message in messages %}
             <div id="popup1" class="overlay">
