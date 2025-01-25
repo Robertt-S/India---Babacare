@@ -80,6 +80,7 @@ class Baba(BaseUser):
     
     bioBaba = models.TextField(null=False, blank=False)
     habilidades = models.TextField(max_length=255,default="")
+    rangeTrabalho = models.FloatField(null=True, blank=True, default = 0.0)
     isBaba = True
 
     class Meta:
