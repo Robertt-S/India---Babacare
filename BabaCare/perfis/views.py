@@ -221,19 +221,32 @@ def contratar_servico(request, id):
     #baba = Baba.objects.filter(id=id).first()
     baba = get_object_or_404(Perfil_Baba, id=id)  # Carrega a babá pela ID
     if request.method == 'POST':
+        print('1')
         form = ContratacaoForm(request.POST)
+        print('2')
         if form.is_valid():
-            # Aqui estamos utilizando explicitamente o modelo Servico
-            servico = Servico(
-                baba=baba,  # Associando a babá ao serviço
-                contratante=request.user.responsavel,  # Associando o contratante ao serviço
-                data_servico=form.cleaned_data['data_servico'],  # Obtendo os dados do formulário
-                periodo=form.cleaned_data['periodo'],  # Obtendo os dados do formulário
-                data_contratacao=now(),  # Definindo a data de contratação com o horário atual
+            print('3')
+            # Aqui estamos utilizando explicitamente o modelo Servico  
+            
+            responsavel = get_object_or_404(Perfil_Responsavel, email=request.user.email)
+            # responsavel = get_object_or_404(Perfil_Responsavel, user=request.user)
+            baba=baba  # Associando a babá ao serviço
+            # contratante=request.user  # Associando o contratante ao serviço
+            data_servico=form.cleaned_data['data_servico']  # Obtendo os dados do formulário
+            periodo=form.cleaned_data['periodo']  # Obtendo os dados do formulário
+            data_contratacao=now()  # Definindo a data de contratação com o horário atual 
+            
+            Servico.objects.create(
+                    baba=baba,
+                    contratante=responsavel,
+                    data_servico=data_servico,
+                    periodo=periodo,
+                    data_contratacao=data_contratacao
             )
-            servico.save()  # Salvando o serviço no banco de dados
+            
+            
             print('primeirooo')
-            return redirect('servico_detalhes', servico.id)  # Redirecionando para a página de detalhes do serviço
+            return redirect('servico_detalhes', Servico.id)  # Redirecionando para a página de detalhes do serviço
         else:
             print('Formulário inválido', form.errors)  # Mostra os erros de validação
     else:

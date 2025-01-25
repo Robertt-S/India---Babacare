@@ -83,6 +83,6 @@ class ContratacaoForm(forms.Form):
         ('noite', 'Noite'),
     ]
 
-    baba = forms.ModelChoiceField(queryset=Perfil_Baba.objects.all(), required=True)  # Campo obrigatório para selecionar a babá
+    # baba = forms.ModelChoiceField(queryset=Perfil_Baba.objects.all(), required=True)  # Campo obrigatório para selecionar a babá
     data_servico = forms.DateField(widget=forms.SelectDateWidget(), required=True)  # Campo obrigatório para selecionar a data
     periodo = forms.ChoiceField(choices=PERIODOS, required=True)  # Campo obrigatório para selecionar o período
