@@ -6,3 +6,4 @@ class Feedback(models.Model):
     title = models.CharField(max_length=100, blank=False)
     score = models.PositiveSmallIntegerField(validators=[MinValueValidator(0), MaxValueValidator(10)])
     description = models.TextField(max_length=500)
+    REQUIRED_FIELDS = ["title", "score", "description"]
