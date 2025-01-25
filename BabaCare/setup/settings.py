@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users',
     'perfis',
+    'feedback',
    # 'rest_framework_swagger',
     'drf_yasg'
 ]
