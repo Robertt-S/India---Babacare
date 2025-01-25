@@ -1,14 +1,15 @@
 from django.shortcuts import render, redirect
-#from .models import Perfil_Baba
 from users.models import Baba as Perfil_Baba
 from users.models import Responsavel as Perfil_Responsavel
 from .forms import EditBabaForm, EditRespForm, AgendaRecorrenteForm
 from datetime import datetime, timedelta
 from datetime import date
+import calendar
 from calendar import monthrange
 from .models import Agenda
-import calendar
 from django.contrib import messages
+from collections import defaultdict
+from math import radians, sin, cos, acos
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import ContratacaoForm
@@ -19,7 +20,16 @@ from django.utils.timezone import now
 # Create your views here.
 
 def baba_list(request):
-    perfis = Perfil_Baba.objects.all()
+    perfil = request.user
+
+    lista_babas = Perfil_Baba.objects.all()
+
+    perfis = []
+
+    for baba in lista_babas:
+        if dentro_do_raio(baba.lat, baba.long, perfil.lat, perfil.long, baba.rangeTrabalho):
+            perfis.append(baba)
+
     return render(request, 'perfis/baba_list.html', {'perfis': perfis})
 
 def buscar(request):
@@ -64,11 +74,6 @@ def page_baba(request,slug):
     #{'nome do conjunto de informações': informaçõesPassadas}
     return render(request, 'perfis/baba_page.html', {'perfilBaba': perfilB})
 
-import calendar
-from datetime import datetime
-
-from datetime import datetime
-import calendar
 
 def gerar_calendario(ano, mes, request):
     # Validar o mês
@@ -100,19 +105,7 @@ def gerar_calendario(ano, mes, request):
     return calendario, dia_da_semana
 
 
-from datetime import datetime
-import calendar
 
-from datetime import datetime
-import calendar
-
-from datetime import datetime
-import calendar
-from .models import Agenda
-
-from collections import defaultdict
-
-from collections import defaultdict
 
 def agenda_recorrente(request):
 
@@ -215,6 +208,7 @@ def agenda_recorrente(request):
 
     return render(request, 'perfis/agenda_recorrente.html', context)
 
+
 @login_required
 
 def contratar_servico(request, id):
@@ -254,3 +248,17 @@ def contratar_servico(request, id):
         form = ContratacaoForm()  # Cria um formulário vazio para GET
 
     return render(request, 'perfis/contratar_servico.html', {'form': form, 'baba': baba})
+
+
+
+###--- Funções de utilidade ---###
+
+def distancia_em_km(lat1, lon1, lat2, lon2):
+    raio_terra = 6371
+
+    return raio_terra * acos(sin(radians(lat1)) * sin(radians(lat2)) +
+                             cos(radians(lat1)) * cos(radians(lat2)) *
+                             cos(radians(lon1) - radians(lon2)))
+
+def dentro_do_raio(lat_baba, long_baba, lat_responsavel, long_responsavel, raio):
+    return distancia_em_km(lat_baba, long_baba, lat_responsavel, long_responsavel) <= raio

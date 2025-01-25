@@ -15,10 +15,12 @@ class EditBabaForm(ModelForm):
     habilidades = forms.CharField(required=False, widget=forms.Textarea)
     endereco = forms.CharField(required=True, label='CEP')
     numero = forms.CharField(required=True, label='Número da Residência')
+    rangeTrabalho = forms.FloatField(required=True, label='Raio de Trabalho (km)')
+
     
     class Meta:
         model = Perfil_Baba
-        fields = ('email','telefone','endereco','numero','bioBaba','habilidades','foto')
+        fields = ('email','telefone','endereco','numero','bioBaba','habilidades','foto', 'rangeTrabalho')
         labels = {
             'email': 'Email',
             'telefone': 'Telefone',
@@ -27,6 +29,7 @@ class EditBabaForm(ModelForm):
             'bioBaba': 'Biografia',
             'habilidades': 'Habilidades',
             'foto': '',
+            'rangeTrabalho': 'Raio de Trabalho (km)',
         }
         
 class EditRespForm(ModelForm):
