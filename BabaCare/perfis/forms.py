@@ -4,7 +4,8 @@ from users.models import Baba as Perfil_Baba
 from users.models import Responsavel as Perfil_Responsavel
 
 from django.views.generic.edit import UpdateView
-from .models import Agenda
+from django.utils.timezone import now
+from .models import Agenda, Servico
 
 # "extends"
 
@@ -74,3 +75,14 @@ class AgendaRecorrenteForm(forms.Form):
     )
     inicio_recorrencia = forms.DateField(widget=forms.SelectDateWidget())
     fim_recorrencia = forms.DateField(widget=forms.SelectDateWidget())
+
+class ContratacaoForm(forms.Form):
+    PERIODOS = [
+        ('manhã', 'Manhã'),
+        ('tarde', 'Tarde'),
+        ('noite', 'Noite'),
+    ]
+
+    baba = forms.ModelChoiceField(queryset=Perfil_Baba.objects.all(), required=True)  # Campo obrigatório para selecionar a babá
+    data_servico = forms.DateField(widget=forms.SelectDateWidget(), required=True)  # Campo obrigatório para selecionar a data
+    periodo = forms.ChoiceField(choices=PERIODOS, required=True)  # Campo obrigatório para selecionar o período

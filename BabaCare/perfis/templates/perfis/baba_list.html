@@ -34,7 +34,7 @@
                     <h2 class="baba-name">{{ baba.nome }}</h2>
                 </div>
                 <p class="baba-bio"><strong>Biografia:</strong> {{ baba.bioBaba }}</p>
-                <button class="contratar-button" onclick="location.href='{% url 'perfis:contratar' slug=baba.slug %}'">Contratar</button>
+                <button class="contratar-button" onclick="location.href='{% url 'perfis:contratar_servico' baba.id %}'">Contratar</button>
             </div>
             {% endfor %}
         </div>
