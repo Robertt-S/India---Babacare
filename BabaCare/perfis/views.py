@@ -9,7 +9,13 @@ from calendar import monthrange
 from .models import Agenda
 import calendar
 from django.contrib import messages
-
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from .forms import ContratacaoForm
+from .models import Baba, Servico
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.utils.timezone import now
 # Create your views here.
 
 def baba_list(request):
@@ -209,5 +215,29 @@ def agenda_recorrente(request):
 
     return render(request, 'perfis/agenda_recorrente.html', context)
 
-def contratar(request):
-    teste='teste'
+@login_required
+
+def contratar_servico(request, id):
+    #baba = Baba.objects.filter(id=id).first()
+    baba = get_object_or_404(Perfil_Baba, id=id)  # Carrega a babá pela ID
+    if request.method == 'POST':
+        form = ContratacaoForm(request.POST)
+        if form.is_valid():
+            # Aqui estamos utilizando explicitamente o modelo Servico
+            servico = Servico(
+                baba=baba,  # Associando a babá ao serviço
+                contratante=request.user.responsavel,  # Associando o contratante ao serviço
+                data_servico=form.cleaned_data['data_servico'],  # Obtendo os dados do formulário
+                periodo=form.cleaned_data['periodo'],  # Obtendo os dados do formulário
+                data_contratacao=now(),  # Definindo a data de contratação com o horário atual
+            )
+            servico.save()  # Salvando o serviço no banco de dados
+            print('primeirooo')
+            return redirect('servico_detalhes', servico.id)  # Redirecionando para a página de detalhes do serviço
+        else:
+            print('Formulário inválido', form.errors)  # Mostra os erros de validação
+    else:
+        print('segundoo')
+        form = ContratacaoForm()  # Cria um formulário vazio para GET
+
+    return render(request, 'perfis/contratar_servico.html', {'form': form, 'baba': baba})
