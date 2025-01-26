@@ -22,7 +22,7 @@ from django.urls import reverse
 
 # Só responsáveis usam esse view
 def baba_list(request):
-    perfil = request.user  
+    perfil_responsavel = request.user  
     users = []
     data_servico = None
     periodo = None
@@ -35,20 +35,17 @@ def baba_list(request):
             
             #
             agendas_disponiveis = Agenda.objects.filter(dia=data_servico, periodo=periodo, disponibilidade=True)
-
             
             for agenda in agendas_disponiveis:
                 baba = agenda.baba
                 users.append(baba)
                 
                 # passando o perfil para pega a biografia da baba
-                perfil = Perfil_Baba.objects.get(pk=baba)
-                lista_pBabas.append(perfil)
-            ''' 
-            for i in lista_babas:
-                if dentro_do_raio(i.lat, i.long, perfil.lat, perfil.long, i.rangeTrabalho):
-                    users.append(i)
-            '''
+                perfil_baba = Perfil_Baba.objects.get(pk=baba)
+                
+                if dentro_do_raio(perfil_baba.lat, perfil_baba.long, perfil_responsavel.lat, perfil_responsavel.long, perfil_baba.rangeTrabalho):
+                    lista_pBabas.append(perfil_baba)
+
     else:
         form = ContratacaoForm()  # Formulário vazio para GET
 
