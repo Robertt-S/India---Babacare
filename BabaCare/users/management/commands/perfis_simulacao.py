@@ -24,7 +24,7 @@ class Command(BaseCommand):
 
             return (center_lat + delta_lat, center_lon + delta_lon)
 
-        for i in range(30, 50):
+        for i in range(20):
             # Generate random lat/long within 50 km radius
             lat, lon = random_location_in_radius(center_lat, center_lon, radius_km)
 
@@ -36,7 +36,8 @@ class Command(BaseCommand):
                 telefone="11999999999",
                 endereco=f"Endereço {i}",
                 numero=str(i),
-                password="password123"
+                password="password123",
+                isBaba=True
             )
             baba.bioBaba = f"Bio for Baba {i}"
             baba.habilidades = "Variadas"
