@@ -20,7 +20,7 @@ from django.utils.timezone import now
 # Create your views here.
 
 def baba_list(request):
-    perfil = request.user  # Supondo que o perfil do usuário logado contém lat/long
+    perfil = request.user  
     perfis = []
     data_servico = None
     periodo = None
@@ -31,10 +31,10 @@ def baba_list(request):
             data_servico = form.cleaned_data['data_servico']
             periodo = form.cleaned_data['periodo']
             
-            # Busca as babás disponíveis na data e período
+            #
             agendas_disponiveis = Agenda.objects.filter(dia=data_servico, periodo=periodo, disponibilidade=True)
 
-            # Filtra babás disponíveis dentro do raio
+            
             for agenda in agendas_disponiveis:
                 baba = agenda.baba
                 perfis.append(baba)
@@ -295,7 +295,7 @@ def gerenciar_servicos(request):
     # Filtra os serviços pendentes e confirmados
     servicos_pendentes = Servico.objects.filter(baba=baba, status='pendente').order_by('-data_contratacao')
     servicos_confirmados = Servico.objects.filter(baba=baba, status='confirmado').order_by('-data_contratacao')
-    contratante_nome= Servico.contratante
+    
     if request.method == 'POST':
         # Ações para aceitar ou negar um serviço
         servico_id = request.POST.get('servico_id')
@@ -316,5 +316,5 @@ def gerenciar_servicos(request):
     return render(request, 'perfis/gerenciar_servicos.html', {
         'servicos_pendentes': servicos_pendentes,
         'servicos_confirmados': servicos_confirmados,
-        'contratante_nome' : contratante_nome,
     })
+

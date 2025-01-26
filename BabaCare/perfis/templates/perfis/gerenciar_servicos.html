@@ -10,8 +10,7 @@
             <li>
                 <strong>Data do Serviço:</strong> {{ servico.data_servico }}<br>
                 <strong>Período:</strong> {{ servico.get_periodo_display }}<br>
-                <strong>Solicitado por:</strong> {{ contratante_nome.nome }}<br>
-                <strong>Contato:</strong> {{ servico.contratante.contato }}<br>
+                <strong>Solicitado por:</strong> {{ servico.contratante.nome }}<br>
 
                 <form method="post" style="display: inline;">
                     {% csrf_token %}
@@ -34,8 +33,7 @@
             <li>
                 <strong>Data do Serviço:</strong> {{ servico.data_servico }}<br>
                 <strong>Período:</strong> {{ servico.get_periodo_display }}<br>
-                <strong>Solicitado por:</strong> {{ servico.contratante.nome_completo }}<br>
-                <strong>Contato:</strong> {{ servico.contratante.contato }}<br>
+                <strong>Solicitado por:</strong> {{ servico.contratante.nome }}<br>
             </li>
         {% endfor %}
     </ul>

@@ -49,8 +49,9 @@
                     <h2 class="baba-name">{{ baba.nome }}</h2>
                 </div>
                 <p class="baba-bio"><strong>Biografia:</strong> {{ baba.bioBaba }}</p>
-                <button class="contratar-button" onclick="location.href='{% url 'perfis:contratar_servico' baba.id %}'">Contratar</button>
-            </div>
+                <form action="{% url 'users:servicos_finalizados' %}" method="get">
+                    <button class="contratar-button" type="submit">Contratar</button>
+                </form>
             {% endfor %}
         </div>
     </section>
