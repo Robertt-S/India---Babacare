@@ -17,14 +17,16 @@ from .models import Baba, Servico
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.utils.timezone import now
+from django.urls import reverse
 # Create your views here.
 
+# Só responsáveis usam esse view
 def baba_list(request):
     perfil = request.user  
     perfis = []
     data_servico = None
     periodo = None
-    lista_babas= []
+    lista_pBabas= []
     if request.method == 'POST':
         form = ContratacaoForm(request.POST)
         if form.is_valid():
@@ -37,17 +39,20 @@ def baba_list(request):
             
             for agenda in agendas_disponiveis:
                 baba = agenda.baba
-                perfis.append(baba)
-                #lista_babas.append(baba)
+                users.append(baba)
+                
+                # passando o perfil para pega a biografia da baba
+                perfil = Perfil_Baba.objects.get(pk=baba)
+                lista_pBabas.append(perfil)
             ''' 
             for i in lista_babas:
                 if dentro_do_raio(i.lat, i.long, perfil.lat, perfil.long, i.rangeTrabalho):
-                    perfis.append(i)
+                    users.append(i)
             '''
     else:
         form = ContratacaoForm()  # Formulário vazio para GET
 
-    return render(request, 'perfis/baba_list.html', {'perfis': perfis, 'form': form, 'data_servico': data_servico, 'periodo': periodo})
+    return render(request, 'perfis/baba_list.html', {'users': users, 'form': form, 'data_servico': data_servico, 'periodo': periodo, 'lista_pBabas':lista_pBabas})
 
 def buscar(request):
     perfis = Perfil_Baba.objects.all()
@@ -256,7 +261,8 @@ def contratar_servico(request, id):
             
             
             print('primeirooo')
-            return redirect('perfis/baba_list.html', Servico.id)  # Redirecionando para a página de detalhes do serviço
+            messages.success(request, 'Contrato de serviço solicitado com sucesso!')
+            return redirect(reverse('home'), Servico.id)  # Redirecionando para a página de detalhes do serviço --> Criar página para visualizar o serviço
         else:
             print('Formulário inválido', form.errors)  # Mostra os erros de validação
     else:
@@ -310,7 +316,7 @@ def gerenciar_servicos(request):
             servico.status = 'cancelado'
             servico.save()
             messages.success(request, f'Serviço no dia {servico.data_servico} foi negado.')
-        return redirect('gerenciar_servicos')
+        return redirect('perfis:gerenciar_servicos') # Nome da url e não o enredeço (o URL)
 
    
     return render(request, 'perfis/gerenciar_servicos.html', {

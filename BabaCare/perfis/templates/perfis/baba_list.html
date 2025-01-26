@@ -38,20 +38,31 @@
 
         <h1>Babás Disponíveis</h1>
         <div class="babas-container">
-            {% for baba in perfis %}
-            <div class="baba-card">
-                <div class="baba-card-header">
-                    {% if baba.foto %}
-                    <img class="baba-photo" src="{{ baba.foto.url }}" alt="Foto de {{ baba.nome }}">
-                    {% else %}
-                    <img class="baba-photo" src="{% static 'images/icone_avatar_padrao.jpg' %}" alt="Imagem padrão">
+            {% for baba in users %}
+                {% for perfilBaba in lista_pBabas %}
+                <div class="baba-card">
+                    <div class="baba-card-header">
+                        {% if baba.foto %}
+                        <img class="baba-photo" src="{{ baba.foto.url }}" alt="Foto de {{ baba.nome }}">
+                        {% else %}
+                        <img class="baba-photo" src="{% static 'images/icone_avatar_padrao.jpg' %}" alt="Imagem padrão">
+                        {% endif %}
+                        <h2 class="baba-name">{{ baba.nome }}</h2>
+                    </div>
+                    {% if perfilBaba.id == baba.id %}
+
+                        <p class="baba-bio"><strong>Biografia:</strong> {{ perfilBaba.bioBaba }}</p>
                     {% endif %}
-                    <h2 class="baba-name">{{ baba.nome }}</h2>
+                    <button class="contratar-button" onclick="location.href='{% url 'perfis:contratar_servico' baba.id %}'">Contratar</button>
                 </div>
+<<<<<<< HEAD
                 <p class="baba-bio"><strong>Biografia:</strong> {{ baba.bioBaba }}</p>
                 <form action="{% url 'users:servicos_finalizados' %}" method="get">
                     <button class="contratar-button" type="submit">Contratar</button>
                 </form>
+=======
+                {% endfor %}
+>>>>>>> 0ca138edbb7eda04d1348b3b04ac334feb7c1302
             {% endfor %}
         </div>
     </section>
