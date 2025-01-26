@@ -1,0 +1,47 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h1>Gerenciamento de Serviços</h1>
+
+<!-- Serviços Pendentes -->
+<h2>Serviços Pendentes</h2>
+{% if servicos_pendentes %}
+    <ul>
+        {% for servico in servicos_pendentes %}
+            <li>
+                <strong>Data do Serviço:</strong> {{ servico.data_servico }}<br>
+                <strong>Período:</strong> {{ servico.get_periodo_display }}<br>
+                <strong>Solicitado por:</strong> {{ contratante_nome.nome }}<br>
+                <strong>Contato:</strong> {{ servico.contratante.contato }}<br>
+
+                <form method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="servico_id" value="{{ servico.id }}">
+                    <button type="submit" name="acao" value="aceitar" class="btn btn-success">Aceitar</button>
+                    <button type="submit" name="acao" value="negar" class="btn btn-danger">Negar</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Não há serviços pendentes.</p>
+{% endif %}
+
+<!-- Serviços Confirmados -->
+<h2>Serviços Confirmados</h2>
+{% if servicos_confirmados %}
+    <ul>
+        {% for servico in servicos_confirmados %}
+            <li>
+                <strong>Data do Serviço:</strong> {{ servico.data_servico }}<br>
+                <strong>Período:</strong> {{ servico.get_periodo_display }}<br>
+                <strong>Solicitado por:</strong> {{ servico.contratante.nome_completo }}<br>
+                <strong>Contato:</strong> {{ servico.contratante.contato }}<br>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Não há serviços confirmados.</p>
+{% endif %}
+
+<a href="{% url 'home' %}" class="btn btn-primary">Voltar</a>
+{% endblock %}

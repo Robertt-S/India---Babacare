@@ -122,8 +122,6 @@ def gerar_calendario(ano, mes, request):
     return calendario, dia_da_semana
 
 
-
-
 def agenda_recorrente(request):
 
     perfil = request.user
@@ -258,7 +256,7 @@ def contratar_servico(request, id):
             
             
             print('primeirooo')
-            return redirect('servico_detalhes', Servico.id)  # Redirecionando para a página de detalhes do serviço
+            return redirect('perfis/baba_list.html', Servico.id)  # Redirecionando para a página de detalhes do serviço
         else:
             print('Formulário inválido', form.errors)  # Mostra os erros de validação
     else:
@@ -280,3 +278,43 @@ def distancia_em_km(lat1, lon1, lat2, lon2):
 
 def dentro_do_raio(lat_baba, long_baba, lat_responsavel, long_responsavel, raio):
     return distancia_em_km(lat_baba, long_baba, lat_responsavel, long_responsavel) <= raio
+
+
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from .models import Servico
+
+@login_required
+def gerenciar_servicos(request):
+    baba = request.user  # Babá autenticada
+    if not baba.isBaba:  # Verifica se o usuário é uma babá
+        return redirect('home')
+
+    # Filtra os serviços pendentes e confirmados
+    servicos_pendentes = Servico.objects.filter(baba=baba, status='pendente').order_by('-data_contratacao')
+    servicos_confirmados = Servico.objects.filter(baba=baba, status='confirmado').order_by('-data_contratacao')
+    contratante_nome= Servico.contratante
+    if request.method == 'POST':
+        # Ações para aceitar ou negar um serviço
+        servico_id = request.POST.get('servico_id')
+        acao = request.POST.get('acao')
+        servico = get_object_or_404(Servico, id=servico_id, baba=baba)
+        
+        if acao == 'aceitar':
+            servico.status = 'confirmado'
+            servico.save()
+            messages.success(request, f'Serviço no dia {servico.data_servico} foi aceito.')
+        elif acao == 'negar':
+            servico.status = 'cancelado'
+            servico.save()
+            messages.success(request, f'Serviço no dia {servico.data_servico} foi negado.')
+        return redirect('gerenciar_servicos')
+
+   
+    return render(request, 'perfis/gerenciar_servicos.html', {
+        'servicos_pendentes': servicos_pendentes,
+        'servicos_confirmados': servicos_confirmados,
+        'contratante_nome' : contratante_nome,
+    })

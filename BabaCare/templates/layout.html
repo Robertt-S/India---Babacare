@@ -33,8 +33,9 @@
             {% endif %}
 
             {% if user.is_authenticated %}
+
                 {% if user.isBaba == True %}
-                    <!-- Botões ou links específicos para Baba -->
+                    <a href="{% url 'perfis:gerenciar_servicos' %}" class="nav-link">Serviços</a>
                 {% else %}
                     <a href="{% url 'users:home_responsavel' %}" class="nav-link">
                     </a>
