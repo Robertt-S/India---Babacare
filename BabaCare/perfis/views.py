@@ -20,17 +20,34 @@ from django.utils.timezone import now
 # Create your views here.
 
 def baba_list(request):
-    perfil = request.user
-
-    lista_babas = Perfil_Baba.objects.all()
-
+    perfil = request.user  # Supondo que o perfil do usuário logado contém lat/long
     perfis = []
+    data_servico = None
+    periodo = None
+    lista_babas= []
+    if request.method == 'POST':
+        form = ContratacaoForm(request.POST)
+        if form.is_valid():
+            data_servico = form.cleaned_data['data_servico']
+            periodo = form.cleaned_data['periodo']
+            
+            # Busca as babás disponíveis na data e período
+            agendas_disponiveis = Agenda.objects.filter(dia=data_servico, periodo=periodo, disponibilidade=True)
 
-    for baba in lista_babas:
-        if dentro_do_raio(baba.lat, baba.long, perfil.lat, perfil.long, baba.rangeTrabalho):
-            perfis.append(baba)
+            # Filtra babás disponíveis dentro do raio
+            for agenda in agendas_disponiveis:
+                baba = agenda.baba
+                perfis.append(baba)
+                #lista_babas.append(baba)
+            ''' 
+            for i in lista_babas:
+                if dentro_do_raio(i.lat, i.long, perfil.lat, perfil.long, i.rangeTrabalho):
+                    perfis.append(i)
+            '''
+    else:
+        form = ContratacaoForm()  # Formulário vazio para GET
 
-    return render(request, 'perfis/baba_list.html', {'perfis': perfis})
+    return render(request, 'perfis/baba_list.html', {'perfis': perfis, 'form': form, 'data_servico': data_servico, 'periodo': periodo})
 
 def buscar(request):
     perfis = Perfil_Baba.objects.all()
@@ -131,7 +148,7 @@ def agenda_recorrente(request):
             frequencia = form.cleaned_data['frequencia']
             inicio_recorrencia = form.cleaned_data['inicio_recorrencia']
             fim_recorrencia = form.cleaned_data['fim_recorrencia']
-
+            
             baba = request.user  # Usuário logado (babá)
             data_atual = inicio_recorrencia
             data_ja_cadastrada = False  # Flag para indicar se já existe uma data cadastrada
@@ -214,6 +231,7 @@ def agenda_recorrente(request):
 def contratar_servico(request, id):
     #baba = Baba.objects.filter(id=id).first()
     baba = get_object_or_404(Perfil_Baba, id=id)  # Carrega a babá pela ID
+
     if request.method == 'POST':
         print('1')
         form = ContratacaoForm(request.POST)

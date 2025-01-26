@@ -19,9 +19,24 @@
             </form>
         </div>
     </div>
-    <section>
-        <h1>Babás</h1>
 
+    <section>
+        <!-- Formulário de Data e Período -->
+        <h2>Selecione a Data e o Período</h2>
+        <form method="post" class="mb-4">
+            {% csrf_token %}
+            <div class="mb-3">
+                {{ form.data_servico.label_tag }}
+                {{ form.data_servico }}
+            </div>
+            <div class="mb-3">
+                {{ form.periodo.label_tag }}
+                {{ form.periodo }}
+            </div>
+            <button type="submit" class="btn btn-primary">Confirmar</button>
+        </form>
+
+        <h1>Babás Disponíveis</h1>
         <div class="babas-container">
             {% for baba in perfis %}
             <div class="baba-card">

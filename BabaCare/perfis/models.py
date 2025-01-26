@@ -33,6 +33,7 @@ class Agenda(models.Model):
         ('tarde', 'Tarde'),
         ('noite', 'Noite'),
     ])
+    disponibilidade = models.BooleanField(default=True)
     recorrente = models.BooleanField(default=False)  # Se for recorrente ou não
     frequencia = models.CharField(max_length=20, blank=True, null=True)  # Ex: "Segunda-feira"
     inicio_recorrencia = models.DateField(blank=True, null=True)  # Data de início da recorrência
