@@ -36,15 +36,15 @@
 
                 {% if user.isBaba == True %}
                     <a href="{% url 'perfis:gerenciar_servicos' %}" class="nav-link">Serviços</a>
-                {% else %}
-                    <a href="{% url 'users:home_responsavel' %}" class="nav-link">
-                    </a>
                     <span class="separator">|</span>
+                {% else %}
+                    <a href="{% url 'users:home_responsavel' %}" class="nav-link"></a>
+                    
                     <a href="{% url 'perfis:lista_babas' %}" class="nav-link">Perfis</a>
                     <span class="separator">|</span>
                     <a href="{% url 'users:servicos_finalizados' %}" class="nav-link">Serviços</a>
+                    <span class="separator">|</span>
                 {% endif %}
-                <span class="separator">|</span>
                 <a href="{% url 'perfis:my_page' %}" class="nav-link">Sua página</a>
                 <span class="separator">|</span>
                 <a href="{% url 'users:logout' %}" class="nav-link">Logout</a>

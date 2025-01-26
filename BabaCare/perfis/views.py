@@ -17,6 +17,7 @@ from .models import Baba, Servico
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.utils.timezone import now
+from django.urls import reverse
 # Create your views here.
 
 def baba_list(request):
@@ -256,7 +257,8 @@ def contratar_servico(request, id):
             
             
             print('primeirooo')
-            return redirect('perfis/baba_list.html', Servico.id)  # Redirecionando para a página de detalhes do serviço
+            messages.success(request, 'Contrato de serviço solicitado com sucesso!')
+            return redirect(reverse('home'), Servico.id)  # Redirecionando para a página de detalhes do serviço --> Criar página para visualizar o serviço
         else:
             print('Formulário inválido', form.errors)  # Mostra os erros de validação
     else:
@@ -310,7 +312,7 @@ def gerenciar_servicos(request):
             servico.status = 'cancelado'
             servico.save()
             messages.success(request, f'Serviço no dia {servico.data_servico} foi negado.')
-        return redirect('gerenciar_servicos')
+        return redirect('perfis:gerenciar_servicos') # Nome da url e não o enredeço (o URL)
 
    
     return render(request, 'perfis/gerenciar_servicos.html', {

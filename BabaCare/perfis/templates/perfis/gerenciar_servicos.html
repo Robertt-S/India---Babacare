@@ -1,4 +1,9 @@
 {% extends 'layout.html' %}
+
+{%block title%}
+    Gerenciamento
+{%endblock%}
+
 {% block content %}
 <h1>Gerenciamento de Serviços</h1>
 
@@ -16,8 +21,8 @@
                 <form method="post" style="display: inline;">
                     {% csrf_token %}
                     <input type="hidden" name="servico_id" value="{{ servico.id }}">
-                    <button type="submit" name="acao" value="aceitar" class="btn btn-success">Aceitar</button>
-                    <button type="submit" name="acao" value="negar" class="btn btn-danger">Negar</button>
+                    <button type="submit" name="acao" value="aceitar" class="btn btn-success" href="{% url 'users:servicos_finalizados' %}">Aceitar</button>
+                    <button type="submit" name="acao" value="negar" class="btn btn-danger" href="{% url 'users:servicos_finalizados' %}">Negar</button>
                 </form>
             </li>
         {% endfor %}
@@ -34,8 +39,8 @@
             <li>
                 <strong>Data do Serviço:</strong> {{ servico.data_servico }}<br>
                 <strong>Período:</strong> {{ servico.get_periodo_display }}<br>
-                <strong>Solicitado por:</strong> {{ servico.contratante.nome_completo }}<br>
-                <strong>Contato:</strong> {{ servico.contratante.contato }}<br>
+                <strong>Solicitado por:</strong> {{ servico.contratante.nome }}<br>
+                <strong>Contato:</strong> {{ servico.contratante.telefone }}<br>
             </li>
         {% endfor %}
     </ul>
