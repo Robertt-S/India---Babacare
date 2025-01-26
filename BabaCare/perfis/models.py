@@ -40,8 +40,7 @@ class Agenda(models.Model):
     fim_recorrencia = models.DateField(blank=True, null=True)  # Data de término da recorrência
 
     class Meta:
-        unique_together = ('baba', 'dia', 'periodo')
-        
+        unique_together = ('baba', 'dia', 'periodo')       
         
 class Perfil_Resp(models.Model):
     # saber de quem é página, deleta o perfil do resp junto com o user

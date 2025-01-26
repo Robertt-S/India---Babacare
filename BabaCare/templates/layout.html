@@ -45,9 +45,9 @@
                     <a href="{% url 'users:servicos_finalizados' %}" class="nav-link">Serviços</a>
                 {% endif %}
                 <span class="separator">|</span>
-                <a href="{% url 'users:logout' %}" class="nav-link">Logout</a>
+                <a href="{% url 'perfis:my_page' %}" class="nav-link">Sua página</a>
                 <span class="separator">|</span>
-                <a href="{% url 'perfis:my_page' %}" class="nav-link">Own page</a>
+                <a href="{% url 'users:logout' %}" class="nav-link">Logout</a>
             {% endif %}
         </div>
     </nav>
