@@ -71,6 +71,7 @@ urlpatterns = [
     #path('users/',include('django.contrib.auth.urls')),
     path('users/',include('users.urls')),
     path('perfis/',include('perfis.urls'), name= 'perfis'),
+    path('feedback/', include('feedback.urls'), name= 'feedback'),
     path('login/', v.login_view, name='login'),
     path('baba/cadastro/', v.cadastro_baba, name='cadastro_baba'),  #botao da linha azul
     path('responsavel/cadastro/', v.cadastro_responsavel, name='cadastro_responsavel'), #botao da linha azul

@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{%block title%}
+    {{ feedback.title }}
+{%endblock%}
+
+{%block content%}
+{% if user.is_authenticated %}
+
+    <section>
+        <h1>Avaliação</h1>
+        <p>Babá: {{ feedback.contract.baba.nome }}</p>
+        <p>Responsável: {{ feedback.contract.responsavel.nome }}</p>
+        <p>Nota: {{ feedback.score }}</p>
+        <p>Detalhes: {{ feedback.description }}</p>
+    </section>
+
+    {% else %}
+        <h2>Sorry! You must be logged in to view this page</h2>
+        <a href="{% url 'users:login'%}" style="font-size: 2rem">Login Here</a>
+    {% endif %}
+{%endblock%}

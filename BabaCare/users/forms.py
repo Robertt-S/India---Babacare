@@ -219,13 +219,6 @@ class CadastroFormsResponsavel(forms.Form):
         ),
     )
 
-
-class AvaliacaoForm(forms.ModelForm):
-    class Meta:
-        model = Avaliacao
-        fields = ['nota', 'comentario']
-
-
 class ServicoForm(forms.ModelForm):
     class Meta:
         model = Servico

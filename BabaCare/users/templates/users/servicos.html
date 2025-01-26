@@ -12,7 +12,7 @@
     {% for servico in servicos %}
         <p>Baba: {{ servico.baba.nome }}</p>
         {% if not servico.avaliacao_set.exists %}
-            <a href="{% url 'users:avaliar_servico' servico.id %}">Avaliar</a>
+            <a href="{% url 'feedback:give_feedback' servico.id %}">Avaliar</a>
         {% else %}
             <p>Avaliacao já realizada.</p>
         {% endif %}

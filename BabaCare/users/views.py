@@ -129,6 +129,7 @@ def cadastro_baba(request):
             usuario.save()
             usuario.updateSlug()
             usuario.save()
+
             messages.success(request, 'Cadastro efetuado com sucesso!')
             return redirect('login')
 
@@ -231,26 +232,6 @@ def servicos_finalizados(request):
     user_responsavel = request.user
     servicos = Servico.objects.filter(responsavel=user_responsavel, finalizado=True)
     return render(request, 'users/servicos.html', {'servicos': servicos})
-
-def avaliar_servico(request, servico_id):
-    servico = get_object_or_404(Servico, id=servico_id, responsavel=request.user)
-    
-    if Avaliacao.objects.filter(servico=servico).exists():
-        return redirect('users:servicos_finalizados')
-    
-    if request.method == 'POST':
-        form = AvaliacaoForm(request.POST)
-        if form.is_valid():
-            avaliacao = form.save(commit=False)
-            avaliacao.servico = servico
-            avaliacao.baba = servico.baba
-            avaliacao.responsavel = servico.responsavel
-            avaliacao.save()
-            return redirect('users:servicos_finalizados')
-    else:
-        form = AvaliacaoForm()
-    
-    return render(request, 'users/avaliar_servico.html', {'form': form, 'servico': servico})
 
 '''def verificaCPF(cpf):
     i = 1
