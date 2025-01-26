@@ -1,8 +1,8 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
-from users.forms import CadastroFormsBaba, CadastroFormsResponsavel, AvaliacaoForm, ServicoForm
+from users.forms import CadastroFormsBaba, CadastroFormsResponsavel, ServicoForm
 from users.models import Baba, Responsavel, Avaliacao, Servico
 from django.utils import timezone
 from datetime import datetime
