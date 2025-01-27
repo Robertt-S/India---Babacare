@@ -1,0 +1,43 @@
+{% extends 'layout.html' %}
+
+{% load static %}
+
+{% block content %}
+<h1>Seus Serviços</h1>
+
+{% if servicos_solicitados %}
+    <div class="servicos-container">
+        {% for servico in servicos_solicitados %}
+        <div class="servico-card">
+            <div class="servico-card-body">
+                <div class="card-header">
+                    {% if servico.baba.foto %}
+                    <img class="baba-photo" src="{{ servico.baba.foto.url }}" alt="Foto de {{ servico.baba.nome_completo }}">
+                    {% else %}
+                    <img class="baba-photo" src="{% static 'images/icone_avatar_padrao.jpg' %}" alt="Imagem padrão">
+                    {% endif %}
+                    <h2 class="baba-name">
+                        <a href="#" class="detalhes-link">{{ servico.baba.nome }}</a>
+                    </h2>
+                </div>
+                <p><strong>Data do Serviço:</strong> {{ servico.data_servico }}</p>
+                <p><strong>Período:</strong> {{ servico.get_periodo_display }}</p>
+                <p><strong>Status:</strong> 
+                    {% if servico.status == 'pendente' %}
+                        <span class="status-pendente">Pendente</span>
+                    {% elif servico.status == 'confirmado' %}
+                        <span class="status-confirmado">Confirmado</span>
+                    {% else %}
+                        <span class="status-cancelado">Cancelado</span>
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>Você ainda não solicitou nenhum serviço.</p>
+{% endif %}
+
+<a href="{% url 'home' %}" class="btn btn-primary">Voltar</a>
+{% endblock %}

@@ -1,9 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from users.forms import CadastroFormsBaba, CadastroFormsResponsavel, ServicoForm
-from users.models import Baba, Responsavel, Avaliacao, Servico
+from users.models import Baba, Responsavel, Avaliacao
+from perfis.models import Servico
 from django.utils import timezone
 from datetime import datetime
 from validate_docbr import CPF
@@ -228,40 +230,19 @@ def cadastro_responsavel(request):
 
     return render(request, 'users/register_responsavel.html', {'form': form})
 
-def servicos_finalizados(request):
-    user_responsavel = request.user
-    servicos = Servico.objects.filter(responsavel=user_responsavel, finalizado=True)
-    return render(request, 'users/servicos.html', {'servicos': servicos})
-
-'''def verificaCPF(cpf):
-    i = 1
-    sum = 0
-    digit1: int
-    digit2: int
-    for x in cpf:
-        if i == 10: break
-        sum = sum + (i * (ord(x) - ord('0')))
-        i = i + 1
-    digit1 = sum % 11
-    sum = 0
-    i = 0
-    for x in cpf:
-        if i == 10: break
-        sum = sum + (i * (ord(x) - ord('0')))
-        i = i + 1
-    digit2 = sum % 11
-    if (digit1 == 10): digit1 = 0
-    if (digit2 == 10): digit2 = 0
-    if (chr(digit1 + ord('0')) == cpf[-2] and chr(digit2 + ord('0')) == cpf[-1]): return True
-    else: return False'''
+@login_required
+def servicos_responsavel(request):
     
-'''def verificar_registros_mx(email):
-    try:
-        dominio = email.split('@')[-1]  
-        mx_records = dns.resolver.resolve(dominio, 'MX')
-        return True if mx_records else False
-    except (dns.resolver.NoAnswer, dns.resolver.NXDOMAIN, dns.exception.Timeout):
-        return False'''
+    responsavel = get_object_or_404(Responsavel, email=request.user.email)
+
+    
+    # servicos_solicitados = Servico.objects.filter(contratante=responsavel).order_by('-data_contratacao')
+    servicos_solicitados = Servico.objects.filter(contratante=responsavel).select_related('baba').order_by('-data_contratacao')
+    
+    return render(request, 'users/servicos_responsavel.html', {
+        'servicos_solicitados': servicos_solicitados,
+    })
+
     
 def home_baba(request):
     return render(request, 'users/home_baba.html')

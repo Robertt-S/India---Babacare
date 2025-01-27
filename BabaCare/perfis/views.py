@@ -332,3 +332,16 @@ def gerenciar_servicos(request):
         'servicos_pendentes': servicos_pendentes,
         'servicos_confirmados': servicos_confirmados,
     })
+    
+@login_required
+def servicos_responsavel(request):
+    
+    responsavel = get_object_or_404(Perfil_Responsavel, email=request.user.email)
+
+    
+    servicos_solicitados = Servico.objects.filter(contratante=responsavel).order_by('-data_contratacao')
+
+    
+    return render(request, 'perfis/servicos_responsavel.html', {
+        'servicos_solicitados': servicos_solicitados,
+    })
