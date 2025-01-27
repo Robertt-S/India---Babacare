@@ -23,7 +23,7 @@ from django.urls import reverse
 # Só responsáveis usam esse view
 def baba_list(request):
     perfil = request.user  
-    perfis = []
+    users = []
     data_servico = None
     periodo = None
     lista_pBabas= []
