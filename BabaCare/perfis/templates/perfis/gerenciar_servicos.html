@@ -1,8 +1,6 @@
 {% extends 'layout.html' %}
 
-{%block title%}
-    Gerenciamento
-{%endblock%}
+{% load static %}
 
 {% block content %}
 <h1>Gerenciamento de Serviços</h1>
@@ -10,22 +8,36 @@
 <!-- Serviços Pendentes -->
 <h2>Serviços Pendentes</h2>
 {% if servicos_pendentes %}
-    <ul>
+    <div class="servicos-container">
         {% for servico in servicos_pendentes %}
-            <li>
-                <strong>Data do Serviço:</strong> {{ servico.data_servico }}<br>
-                <strong>Período:</strong> {{ servico.get_periodo_display }}<br>
-                <strong>Solicitado por:</strong> {{ servico.contratante.nome }}<br>
-
-                <form method="post" style="display: inline;">
+        <div class="servico-card">
+            <div class="servico-card-body">
+                <div class="card-header">
+                    {% if servico.contratante.foto %}
+                    <img class="contratante-photo" src="{{ servico.contratante.foto.url }}" alt="Foto de {{ servico.contratante.nome }}">
+                    {% else %}
+                    <img class="contratante-photo" src="{% static 'images/icone_avatar_padrao.jpg' %}" alt="Imagem padrão">
+                    {% endif %}
+                    <h2 class="contratante-name">
+                        <a href="#" class="detalhes-link">{{ servico.contratante.nome }}</a>
+                    </h2>
+                </div>
+                <p><strong>Data do Serviço:</strong> {{ servico.data_servico }}</p>
+                <p><strong>Período:</strong> {{ servico.get_periodo_display }}</p>
+                <p><strong>Contato:</strong> {{ servico.contratante.telefone }}</p>
+                <p><strong>Biografia:</strong> {{ servico.contratante.biografia }}</p>
+            </div>
+            <div class="servico-card-actions">
+                <form method="post">
                     {% csrf_token %}
                     <input type="hidden" name="servico_id" value="{{ servico.id }}">
-                    <button type="submit" name="acao" value="aceitar" class="btn btn-success" href="{% url 'users:servicos_finalizados' %}">Aceitar</button>
-                    <button type="submit" name="acao" value="negar" class="btn btn-danger" href="{% url 'users:servicos_finalizados' %}">Negar</button>
+                    <button type="submit" name="acao" value="aceitar" class="btn btn-success">Aceitar</button>
+                    <button type="submit" name="acao" value="negar" class="btn btn-danger">Negar</button>
                 </form>
-            </li>
+            </div>
+        </div>
         {% endfor %}
-    </ul>
+    </div>
 {% else %}
     <p>Não há serviços pendentes.</p>
 {% endif %}
@@ -33,19 +45,31 @@
 <!-- Serviços Confirmados -->
 <h2>Serviços Confirmados</h2>
 {% if servicos_confirmados %}
-    <ul>
+    <div class="servicos-container">
         {% for servico in servicos_confirmados %}
-            <li>
-                <strong>Data do Serviço:</strong> {{ servico.data_servico }}<br>
-                <strong>Período:</strong> {{ servico.get_periodo_display }}<br>
-                <strong>Solicitado por:</strong> {{ servico.contratante.nome }}<br>
-<<<<<<< HEAD
-=======
-                <strong>Contato:</strong> {{ servico.contratante.telefone }}<br>
->>>>>>> 0ca138edbb7eda04d1348b3b04ac334feb7c1302
-            </li>
+        <div class="servico-card">
+            <div class="servico-card-body">
+                <div class="card-header">
+                    {% if servico.contratante.foto %}
+                    <img class="contratante-photo" src="{{ servico.contratante.foto.url }}" alt="Foto de {{ servico.contratante.nome }}">
+                    {% else %}
+                    <img class="contratante-photo" src="{% static 'images/icone_avatar_padrao.jpg' %}" alt="Imagem padrão">
+                    {% endif %}
+                    <h2 class="contratante-name">
+                        <a href="#" class="detalhes-link">{{ servico.contratante.nome }}</a>
+                    </h2>
+                </div>
+                <p><strong>Data do Serviço:</strong> {{ servico.data_servico }}</p>
+                <p><strong>Período:</strong> {{ servico.get_periodo_display }}</p>
+                <p><strong>Contato:</strong> {{ servico.contratante.telefone }}</p>
+                <p><strong>Biografia:</strong> {{ servico.contratante.biografia }}</p>
+            </div>
+            <div class="status-confirmado">
+                Confirmado
+            </div>
+        </div>
         {% endfor %}
-    </ul>
+    </div>
 {% else %}
     <p>Não há serviços confirmados.</p>
 {% endif %}

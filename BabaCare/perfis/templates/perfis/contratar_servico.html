@@ -1,28 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contratar Serviço</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
-</head>
-<body>
+{% extends 'layout.html' %}
+
+{% load static %}
+
+{% block title %}
+    Contrato de Serviço
+{% endblock %}
+
+{% block content %}
     <div class="container mt-5">
-        <h1>Contratar Serviço</h1>
-        <p>Babá: {{ baba.nome}}</p>
-        <form method="post">
+        <h1>Contrato de Serviço</h1>
+        <p><strong>Contratante:</strong> {{ user.nome }}</p>
+        <p><strong>Babá:</strong> {{ baba.nome }}</p>
+        <p><strong>Data do Serviço:</strong> {{ request.GET.data_servico }}</p>
+        <p><strong>Período:</strong> {{ request.GET.periodo }}</p>
+        <p><strong>Valor:</strong> (a definir com a babá)</p>
+        <p><strong>Contato da Babá:</strong> {{ baba.telefone }}</p>
+        <p><strong></p>
+        <p class="text-warning">Ao apertar em "Contratar", você confirma todas as informações acima relacionadas à contratação desse serviço.</p>
+
+        <form method="post" action="{% url 'perfis:contratar_servico' baba.id %}">
             {% csrf_token %}
-            <div class="mb-3">
-                {{ form.data_servico.label_tag }}
-                {{ form.data_servico }}
-            </div>
-            <div class="mb-3">
-                {{ form.periodo.label_tag }}
-                {{ form.periodo }}
-            </div>
-            <button type="submit" class="btn btn-primary" >Contratar</button>
+            <input type="hidden" name="baba_id" value="{{ baba.id }}">
+            <input type="hidden" name="data_servico" value="{{ request.GET.data_servico }}">
+            <input type="hidden" name="periodo" value="{{ request.GET.periodo }}">
+            <button type="submit" class="btn btn-primary">Contratar</button>
         </form>
-        <a href="{# URL de volta para a lista de babás ou outro contexto #}" class="btn btn-secondary mt-3">Voltar</a>
+
+        <a href="{% url 'perfis:lista_babas' %}" class="btn btn-secondary mt-3">Voltar</a>
     </div>
-</body>
-</html>
+{% endblock %}

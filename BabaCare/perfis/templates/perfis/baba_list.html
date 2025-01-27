@@ -5,7 +5,7 @@
 {% block title %}
     Lista de Babás
 {% endblock %}
-    
+
 {% block content %}
 
 {% if user.is_authenticated %}
@@ -50,19 +50,15 @@
                         <h2 class="baba-name">{{ baba.nome }}</h2>
                     </div>
                     {% if perfilBaba.id == baba.id %}
-
                         <p class="baba-bio"><strong>Biografia:</strong> {{ perfilBaba.bioBaba }}</p>
                     {% endif %}
-                    <button class="contratar-button" onclick="location.href='{% url 'perfis:contratar_servico' baba.id %}'">Contratar</button>
+                    <form method="get" action="{% url 'perfis:contratar_servico' baba.id %}">
+                        <input type="hidden" name="data_servico" value="{{ form.data_servico.value }}">
+                        <input type="hidden" name="periodo" value="{{ form.periodo.value }}">
+                        <button type="submit" class="contratar-button">Contratar</button>
+                    </form>
                 </div>
-<<<<<<< HEAD
-                <p class="baba-bio"><strong>Biografia:</strong> {{ baba.bioBaba }}</p>
-                <form action="{% url 'users:servicos_finalizados' %}" method="get">
-                    <button class="contratar-button" type="submit">Contratar</button>
-                </form>
-=======
                 {% endfor %}
->>>>>>> 0ca138edbb7eda04d1348b3b04ac334feb7c1302
             {% endfor %}
         </div>
     </section>

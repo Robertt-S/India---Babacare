@@ -14,8 +14,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import ContratacaoForm
 from .models import Baba, Servico
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
 from django.utils.timezone import now
 from django.urls import reverse
 # Create your views here.
@@ -227,47 +225,38 @@ def agenda_recorrente(request):
 
 
 @login_required
-
 def contratar_servico(request, id):
-    #baba = Baba.objects.filter(id=id).first()
-    baba = get_object_or_404(Perfil_Baba, id=id)  # Carrega a babá pela ID
+    # Carrega a babá pela ID
+    baba = get_object_or_404(Perfil_Baba, id=id)
 
     if request.method == 'POST':
-        print('1')
-        form = ContratacaoForm(request.POST)
-        print('2')
-        if form.is_valid():
-            print('3')
-            # Aqui estamos utilizando explicitamente o modelo Servico  
-            
+        # Obtém os dados enviados via POST
+        data_servico = request.POST.get('data_servico')
+        periodo = request.POST.get('periodo')
+
+        if data_servico and periodo:  # Garante que os dados foram enviados
             responsavel = get_object_or_404(Perfil_Responsavel, email=request.user.email)
-            # responsavel = get_object_or_404(Perfil_Responsavel, user=request.user)
-            baba=baba  # Associando a babá ao serviço
-            # contratante=request.user  # Associando o contratante ao serviço
-            data_servico=form.cleaned_data['data_servico']  # Obtendo os dados do formulário
-            periodo=form.cleaned_data['periodo']  # Obtendo os dados do formulário
-            data_contratacao=now()  # Definindo a data de contratação com o horário atual 
+            data_contratacao = now()  # Data atual da contratação
             
+            data_servico = datetime.strptime(data_servico, "%d/%m/%Y").date()
+            # Cria o serviço com os dados fornecidos
             Servico.objects.create(
-                    baba=baba,
-                    contratante=responsavel,
-                    data_servico=data_servico,
-                    periodo=periodo,
-                    data_contratacao=data_contratacao
+                baba=baba,
+                contratante=responsavel,
+                data_servico=data_servico,
+                periodo=periodo,
+                data_contratacao=data_contratacao
             )
-            
-            
-            print('primeirooo')
+
+            # Exibe mensagem de sucesso e redireciona para a página inicial
             messages.success(request, 'Contrato de serviço solicitado com sucesso!')
-            return redirect(reverse('home'), Servico.id)  # Redirecionando para a página de detalhes do serviço --> Criar página para visualizar o serviço
+            return redirect('home')  # Redireciona para uma página existente, ajuste conforme necessário
         else:
-            print('Formulário inválido', form.errors)  # Mostra os erros de validação
-    else:
-        print('segundoo')
-        form = ContratacaoForm()  # Cria um formulário vazio para GET
+            messages.error(request, 'Os dados de data ou período não foram fornecidos.')
+            return redirect('perfis:lista_babas')  # Redireciona para a lista de babás, ajuste conforme necessário
 
-    return render(request, 'perfis/contratar_servico.html', {'form': form, 'baba': baba})
-
+    # Renderiza a página com os detalhes da babá
+    return render(request, 'perfis/contratar_servico.html', {'baba': baba})
 
 
 ###--- Funções de utilidade ---###
@@ -282,12 +271,6 @@ def distancia_em_km(lat1, lon1, lat2, lon2):
 def dentro_do_raio(lat_baba, long_baba, lat_responsavel, long_responsavel, raio):
     return distancia_em_km(lat_baba, long_baba, lat_responsavel, long_responsavel) <= raio
 
-
-
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-from .models import Servico
 
 @login_required
 def gerenciar_servicos(request):
@@ -306,18 +289,46 @@ def gerenciar_servicos(request):
         servico = get_object_or_404(Servico, id=servico_id, baba=baba)
         
         if acao == 'aceitar':
-            servico.status = 'confirmado'
-            servico.save()
-            messages.success(request, f'Serviço no dia {servico.data_servico} foi aceito.')
+            # Busca a agenda correspondente
+            agenda = Agenda.objects.filter(
+                baba=baba,
+                dia=servico.data_servico,
+                periodo=servico.periodo
+            ).first()
+            
+            if agenda and agenda.disponibilidade:
+                # Atualiza o status do serviço para confirmado
+                servico.status = 'confirmado'
+                servico.save()
+
+                # Atualiza a disponibilidade da agenda
+                agenda.disponibilidade = False
+                agenda.save()
+
+                messages.success(
+                    request, f"Serviço no dia {servico.data_servico} foi aceito e a disponibilidade da agenda foi atualizada."
+                )
+            else:
+                # Agenda indisponível ou inexistente
+                servico.status = 'cancelado'
+                servico.save()
+                
+                messages.success(
+                    request, f"Serviço no dia {servico.data_servico} foi cancelado, pois a agenda não está disponível ou já foi preenchida. Verifique sua agenda."
+                )
+
         elif acao == 'negar':
+            # Negar o serviço
             servico.status = 'cancelado'
             servico.save()
-            messages.success(request, f'Serviço no dia {servico.data_servico} foi negado.')
-        return redirect('perfis:gerenciar_servicos') # Nome da url e não o enredeço (o URL)
+            
+            messages.success(
+                request, f"Serviço no dia {servico.data_servico} foi negado."
+            )
 
-   
+        return redirect('perfis:gerenciar_servicos')  # Nome da URL configurada no projeto
+
     return render(request, 'perfis/gerenciar_servicos.html', {
         'servicos_pendentes': servicos_pendentes,
         'servicos_confirmados': servicos_confirmados,
     })
-
