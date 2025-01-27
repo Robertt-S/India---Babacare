@@ -67,6 +67,8 @@
             <div class="status-confirmado">
                 Confirmado
             </div>
+            <a class="edit-button" href="{% url 'feedback:give_feedback' servico.id %}" style="padding: 10px 20px; background-color: #331d43; color: white; border: none; border-radius: 5px; text-decoration: none;">Editar Perfil</a>
+        
         </div>
         {% endfor %}
     </div>
