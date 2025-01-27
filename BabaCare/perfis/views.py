@@ -20,12 +20,13 @@ from django.utils.timezone import now
 from django.urls import reverse
 # Create your views here.
 
+# Só responsáveis usam esse view
 def baba_list(request):
-    perfil = request.user  # Supondo que o perfil do usuário logado contém lat/long
-    perfis = []
+    resp = request.user  # Supondo que o perfil do usuário logado contém lat/long
+    users = []
     data_servico = None
     periodo = None
-    lista_babas= []
+    lista_pBabas= []
     if request.method == 'POST':
         form = ContratacaoForm(request.POST)
         if form.is_valid():
@@ -38,17 +39,20 @@ def baba_list(request):
             # Filtra babás disponíveis dentro do raio
             for agenda in agendas_disponiveis:
                 baba = agenda.baba
-                perfis.append(baba)
-                #lista_babas.append(baba)
+                users.append(baba)
+                
+                # passando o perfil para pega a biografia da baba
+                perfil = Perfil_Baba.objects.get(pk=baba)
+                lista_pBabas.append(perfil)
             ''' 
             for i in lista_babas:
                 if dentro_do_raio(i.lat, i.long, perfil.lat, perfil.long, i.rangeTrabalho):
-                    perfis.append(i)
+                    users.append(i)
             '''
     else:
         form = ContratacaoForm()  # Formulário vazio para GET
 
-    return render(request, 'perfis/baba_list.html', {'perfis': perfis, 'form': form, 'data_servico': data_servico, 'periodo': periodo})
+    return render(request, 'perfis/baba_list.html', {'users': users, 'form': form, 'data_servico': data_servico, 'periodo': periodo, 'lista_pBabas':lista_pBabas})
 
 def buscar(request):
     perfis = Perfil_Baba.objects.all()

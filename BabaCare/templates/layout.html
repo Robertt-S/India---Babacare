@@ -17,10 +17,25 @@
 <body>
     <nav>
         <!-- Imagem e texto no lado superior esquerdo -->
-        <a href="{% url 'home' %}" class="logo-container">
-            <img src="{% static 'images/logo_babacare.png' %}" alt="Logo BabaCare" class="logo">
-            <span class="logo-text">BabaCare</span>
-        </a>
+        {% if user.is_authenticated %}
+            {% if user.isBaba == true %}
+                <a href="{% url 'users:home_baba' %}" class="logo-container">
+                    <img src="{% static 'images/logo_babacare.png' %}" alt="Logo BabaCare" class="logo">
+                    <span class="logo-text">BabaCare</span>
+                </a>
+            {% else %}
+                <a href="{% url 'users:home_responsavel' %}" class="logo-container">
+                    <img src="{% static 'images/logo_babacare.png' %}" alt="Logo BabaCare" class="logo">
+                    <span class="logo-text">BabaCare</span>
+                </a>
+            {% endif %}
+        {% else %}
+            <a href="{% url 'home' %}" class="logo-container">
+                <img src="{% static 'images/logo_babacare.png' %}" alt="Logo BabaCare" class="logo">
+                <span class="logo-text">BabaCare</span>
+            </a>
+        {% endif %}
+
 
         <!-- Links de navegação -->
         <div class="nav-links">
@@ -37,9 +52,7 @@
                 {% if user.isBaba == True %}
                     <a href="{% url 'perfis:gerenciar_servicos' %}" class="nav-link">Serviços</a>
                     <span class="separator">|</span>
-                {% else %}
-                    <a href="{% url 'users:home_responsavel' %}" class="nav-link"></a>
-                    
+                {% else %}                    
                     <a href="{% url 'perfis:lista_babas' %}" class="nav-link">Perfis</a>
                     <span class="separator">|</span>
                     <a href="{% url 'users:servicos_finalizados' %}" class="nav-link">Serviços</a>
