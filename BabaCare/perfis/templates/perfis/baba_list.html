@@ -47,7 +47,8 @@
                         {% else %}
                         <img class="baba-photo" src="{% static 'images/icone_avatar_padrao.jpg' %}" alt="Imagem padrão">
                         {% endif %}
-                        <h2 class="baba-name">{{ baba.nome }}</h2>
+                        <a class="baba-name">{{ baba.nome }}</a> 
+                        {% comment %} colocar um link no nome da baba pra averiguar o perfil e avaliações {% endcomment %}
                     </div>
                     {% if perfilBaba.id == baba.id %}
                         <p class="baba-bio"><strong>Biografia:</strong> {{ perfilBaba.bioBaba }}</p>
