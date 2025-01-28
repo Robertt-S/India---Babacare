@@ -39,7 +39,7 @@
 
         <!-- Links de navegação -->
         <div class="nav-links">
-            {% if user.isBaba == true %}
+            {% if user.is_authenticated == False %}
                 <a href="/about" class="nav-link">About</a>
                 <span class="separator">|</span>
                 <a href="{% url 'users:baba_page' %}" class="nav-link">Baba</a>
