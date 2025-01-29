@@ -6,12 +6,17 @@
 
 @font-face {
     font-family: myFont;
-    src: url(../fonts/LTMakeup-Regular.otf);
+    src: url('../fonts/onuava__.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: logoFont;
+    src: url('../fonts/Sauce_Barbe.otf') format('opentype');
 }
 
 @font-face {
     font-family: BasicFont;
-    src: url(../fonts/Mont-HeavyDEMO.otf);
+    src: url('../fonts/onuava__.ttf') format('truetype');
 }
 
 body {
@@ -22,11 +27,22 @@ body {
 }
 
 nav {
-    padding: 0.4em; /* em: tamanho da fonte do elemento pai */
-    background-color: #54b5be;
+    font-size: 10px; /* Melhor legibilidade */
+    font-family: BasicFont;
+    background-color: #54b5be; /* Apenas uma vez */
     color: white;
-    font-size: 1.75rem; /* rem: tamanho comparado à fonte do elemento pai */
-    text-align: right;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px; /* Mantém espaçamento lateral adequado */
+    
 }
 
 main {
@@ -263,7 +279,7 @@ a:hover {
 /* Estilo base dos botões */
 .custom-button {
     .custom-button {
-        font-family: Arial, sans-serif; /* Define a fonte Arial */
+        font-family: myFont;
         color: purple; /* Define o texto roxo */
         background: none; /* Remove o plano de fundo */
         border: none; /* Remove a borda */
@@ -493,21 +509,6 @@ a:hover {
 }
 
 /* Barra de navegação - flex container */
-/* Barra de navegação */
-nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 70px; /* Altura da barra */
-    background-color: #54b5be; /* Cor de fundo */
-    z-index: 1000; /* Garantir que esteja acima do conteúdo */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Opcional: sombra para destaque */
-    display: flex; /* Para alinhar itens horizontalmente */
-    justify-content: space-between; /* Espaço entre logo e links */
-    align-items: center; /* Alinhamento vertical dos itens */
-    padding: 0 20px; /* Espaçamento interno para as laterais */
-}
 
 /* Ajuste para o conteúdo principal */
 main {
@@ -518,14 +519,23 @@ main {
 /* Contêiner da logo */
 .logo-container {
     display: flex; /* Garante que o link da logo seja tratado como flex */
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
+    font-family: logoFont;
+    font-weight: 700;
+    font-size: 50px;
 }
 
 /* Logo */
 .logo {
-    height: 60px;  /* Ajuste de altura */
+    height: 65px;  /* Ajuste de altura */
     width: auto;
+    display: flex; /* Garante que o link da logo seja tratado como flex */
+    justify-content: center;
+    align-items: center;
+    /*position: absolute;*/
+    left: 50%;
+    transform: translateY(-10%);
 }
 
 /* Links de navegação */
@@ -533,28 +543,35 @@ main {
     display: flex; /* Alinhamento horizontal */
     gap: 15px; /* Espaço entre os links */
     align-items: center;
+    font-family: BasicFont;
 }
 
 /* Estilo dos links */
 .nav-link {
-    font-size: 24px; /* Ajuste do tamanho da fonte */
+    font-family: BasicFont;
+    font-size: 20px; /* Ajuste do tamanho da fonte */
     color: #331d43; /* Cor do texto */
     text-decoration: none; /* Remove o sublinhado */
     padding: 5px;
     transition: color 0.3s ease;
+    font-weight: bold;
 }
 
 .nav-link:hover {
+    font-family: BasicFont;
     color: #6a4c7a; /* Cor ao passar o mouse */
 }
 
 /* Separador entre os links */
 .separator {
+    font-family: BasicFont;
     color: #331d43;
     font-size: 18px;
     padding: 0 5px;
+    font-weight: bold;
 }
 .servicos-container {
+    font-family: BasicFont;
     display: flex;
     flex-wrap: wrap;
     gap: 1.5rem;

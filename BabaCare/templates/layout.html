@@ -40,9 +40,9 @@
         <!-- Links de navegação -->
         <div class="nav-links">
             {% if user.is_authenticated == False %}
-                <a href="/about" class="nav-link">About</a>
+                <a href="/about" class="nav-link">Sobre nós</a>
                 <span class="separator">|</span>
-                <a href="{% url 'users:baba_page' %}" class="nav-link">Baba</a>
+                <a href="{% url 'users:baba_page' %}" class="nav-link">Babás</a>
                 <span class="separator">|</span>
                 <a href="{% url 'users:responsaveis_page' %}" class="nav-link">Responsáveis</a>
             {% endif %}
