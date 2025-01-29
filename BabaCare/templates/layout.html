@@ -53,14 +53,14 @@
                     <a href="{% url 'perfis:gerenciar_servicos' %}" class="nav-link">Serviços</a>
                     <span class="separator">|</span>
                 {% else %}                    
-                    <a href="{% url 'perfis:lista_babas' %}" class="nav-link">Perfis</a>
+                    <a href="{% url 'perfis:lista_babas' %}" class="nav-link">Contratação</a>
                     <span class="separator">|</span>
                     <a href="{% url 'users:servicos_responsavel' %}" class="nav-link">Serviços</a>
                     <span class="separator">|</span>
                 {% endif %}
-                <a href="{% url 'perfis:my_page' %}" class="nav-link">Sua página</a>
+                <a href="{% url 'perfis:my_page' %}" class="nav-link">Perfil</a>
                 <span class="separator">|</span>
-                <a href="{% url 'users:logout' %}" class="nav-link">Logout</a>
+                <a href="{% url 'users:logout' %}" class="nav-link">Sair</a>
             {% endif %}
         </div>
     </nav>
