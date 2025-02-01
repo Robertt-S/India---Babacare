@@ -1,14 +1,17 @@
 {% extends 'layout.html' %}
+{% load static %}
 
-{%block title%}
+{% block title %}
     Home
-{%endblock%}
+{% endblock %}
 
-{%block content%}
-    <h1></h1>
-    <h1>Bem vindo!</h1>
-    <!--<img src="../static/images/Babacare.png" align="center">  --> 
-    <p>
-        Check out my <a href="/about">about</a> page.
-    </p>
-{%endblock%}
+{% block content %}
+    
+    <div class="rectangle">
+        {% load static %}
+        <img src="{% static 'images/olivia_arvore.jpg' %}" alt="Imagem não carregada" class="image">
+        <p class="text">Sua Família,<br>Nossa Felicidade!</p>
+    </div>
+
+    
+{% endblock %}

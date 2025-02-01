@@ -4,6 +4,7 @@
     box-sizing: border-box;
 }
 
+
 @font-face {
     font-family: myFont;
     src: url('../fonts/onuava__.ttf') format('truetype');
@@ -19,11 +20,11 @@
     src: url('../fonts/onuava__.ttf') format('truetype');
 }
 
-body {
-    min-height: 100vh; /*altura minima de um elemento*/
-    background-color: #fff ;
-    color: 	#0a1620;
-    font-size: 3rem;
+body { 
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden; /* Evita rolagem horizontal indesejada */
 }
 
 nav {
@@ -46,7 +47,7 @@ nav {
 }
 
 main {
-    padding: 2rem; /*distancia entre o conteudo e as bordas de conteudo */
+    padding: 0; /*distancia entre o conteudo e as bordas de conteudo */
     font-family: myFont;
 }
 
@@ -71,6 +72,45 @@ h2 {
 p {
     font-size: 2rem;
 }
+
+/* home.html */
+
+.rectangle {
+    width: 800px;
+    height: 500px;
+    background-color: #f3d584;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;  /* Empilha os elementos verticalmente */
+    justify-content: center;
+    align-items: center;  /* Centraliza os elementos horizontalmente */
+    padding: 10px;
+    overflow: hidden;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -40%);
+}
+
+.image {
+    width: 50%;  
+    height: auto;
+    border-radius: 10px;
+}
+
+.text {
+    position: relative; /* Agora acompanha o fluxo normal */
+    margin-bottom: 20px; /* Espaçamento entre o texto e a imagem */
+    color:  #331d43;
+    font-size: 40px; /* Fonte maior */
+    font-weight: bold;
+    text-align: center; /* Alinha o texto no centro */
+    padding: 8px 20px;
+    border-radius: 10px;
+    width: 100%; /* Faz o texto ocupar toda a largura disponível */
+}
+
+  
 
 /* Título da página */
 cadastro {
