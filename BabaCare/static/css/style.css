@@ -20,6 +20,11 @@
     src: url('../fonts/onuava__.ttf') format('truetype');
 }
 
+@font-face {
+    font-family: decoracao;
+    src: url('../fonts/Sauce_Barbe.otf') format('truetype');
+}
+
 body { 
     margin: 0;
     padding: 0;
@@ -76,39 +81,45 @@ p {
 /* home.html */
 
 .rectangle {
-    width: 800px;
-    height: 500px;
-    background-color: #f3d584;
-    border-radius: 20px;
-    display: flex;
-    flex-direction: column;  /* Empilha os elementos verticalmente */
-    justify-content: center;
-    align-items: center;  /* Centraliza os elementos horizontalmente */
-    padding: 10px;
-    overflow: hidden;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -40%);
+    width: 970px; /* Largura do contêiner */
+    height: 400px; /* Altura do contêiner */
+    background-color: #f3d584; /* Cor de fundo amarela */
+    border-radius: 20px; /* Cantos arredondados */
+    display: flex; /* Usa Flexbox para layout */
+    /*flex-direction: column;  /* Empilha os elementos verticalmente */
+    /*justify-content: center; /* Alinha os itens verticalmente no centro */
+    align-items: center;  /* Alinha os itens horizontalmente no centro */
+    padding: 30px 50px; /* Espaçamento interno ao redor do conteúdo */
+    /*overflow: hidden; /* Oculta qualquer conteúdo que ultrapasse o contêiner */
+    position: absolute; /* Posiciona o contêiner de forma absoluta */
+    top: 50%; /* Coloca o contêiner a 50% da altura da tela */
+    left: 50%; /* Coloca o contêiner a 50% da largura da tela */
+    transform: translate(-50%, -40%); /* Ajusta a posição para centralizar o contêiner */
 }
 
+/* Estilos para a imagem */
 .image {
-    width: 50%;  
-    height: auto;
-    border-radius: 10px;
+    width: 400px;  /* A largura da imagem será 50% do contêiner */
+    height: auto; /* Mantém a proporção original da imagem */
+    border-radius: 10px; /* Cantos arredondados na imagem */
 }
 
+/* Estilos para o texto */
 .text {
-    position: relative; /* Agora acompanha o fluxo normal */
-    margin-bottom: 20px; /* Espaçamento entre o texto e a imagem */
-    color:  #331d43;
-    font-size: 40px; /* Fonte maior */
-    font-weight: bold;
-    text-align: center; /* Alinha o texto no centro */
-    padding: 8px 20px;
-    border-radius: 10px;
-    width: 100%; /* Faz o texto ocupar toda a largura disponível */
+    position: relative;
+    color:  #331d43; /* Cor do texto (um tom de roxo escuro) */
+    font-size: 35px; /* Tamanho da fonte maior */
+    font-weight: bolder; /* Deixa o texto em negrito */
+    text-align: left; /* Alinha o texto ao centro */
+    padding: 8px; /* Espaçamento interno ao redor do texto */
+    padding-left: 40px;
+    padding-right: 0px; /*margem da direita*/
+    align-self: flex-start; /*nao segue oq o retangulo fala*/
+    width: 100%; /* O texto ocupa toda a largura disponível */
+    margin-top: -10px; 
 }
+
+
 
   
 
