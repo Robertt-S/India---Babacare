@@ -83,7 +83,7 @@ p {
 .rectangle {
     width: 970px; /* Largura do contêiner */
     height: 400px; /* Altura do contêiner */
-    background-color: #ebc250; /* Cor de fundo amarela */
+    background-color: #e4b041; /* Cor de fundo amarela */
     border-radius: 20px; /* Cantos arredondados */
     display: flex; /* Usa Flexbox para layout */
     /*flex-direction: column;  /* Empilha os elementos verticalmente */
@@ -99,7 +99,7 @@ p {
 
 /* Estilos para a imagem */
 .image {
-    width: 400px;  /* A largura da imagem será 50% do contêiner */
+    width: 420px;  
     height: auto; /* Mantém a proporção original da imagem */
     border-radius: 10px; /* Cantos arredondados na imagem */
 }
