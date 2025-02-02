@@ -83,7 +83,7 @@ p {
 .rectangle {
     width: 970px; /* Largura do contêiner */
     height: 400px; /* Altura do contêiner */
-    background-color: #f3d584; /* Cor de fundo amarela */
+    background-color: #ebc250; /* Cor de fundo amarela */
     border-radius: 20px; /* Cantos arredondados */
     display: flex; /* Usa Flexbox para layout */
     /*flex-direction: column;  /* Empilha os elementos verticalmente */
@@ -113,13 +113,59 @@ p {
     text-align: left; /* Alinha o texto ao centro */
     padding: 8px; /* Espaçamento interno ao redor do texto */
     padding-left: 40px;
-    padding-right: 0px; /*margem da direita*/
+    padding-right: 0px;
+    padding-top: 0px; 
+    padding-bottom: 0px;
     align-self: flex-start; /*nao segue oq o retangulo fala*/
     width: 100%; /* O texto ocupa toda a largura disponível */
-    margin-top: -10px; 
+    margin-top: -10px;
+    white-space: nowrap; /* Evita quebra de linha dentro dos itens */
 }
 
+.list{
+    color: #331d43;
+    font-size: 15px;
+    text-align: left;
+    width: 100%; /* Garante que a lista ocupe toda a largura do contêiner */
+    padding: 10px 0; /* Ajuste de espaçamento */
+    display: block; /* Impede o comportamento flex que estava causando problemas */
+    display: inline-block;
+    margin-right: 15px; /* Espaço entre os itens */
+    white-space: wrap; /* Evita quebra de linha dentro dos itens */
+    transform: translateY(25px);
+    margin-left: -330px;
+    padding-right: 10px;
+    font-weight: bold;
+    line-height: 1.8; /* Ajuste conforme necessário */
+}
 
+.list li {
+    display: block;
+    margin-bottom: 10px; /* Adiciona espaço entre os itens */
+}
+
+.subscribe-btn {
+    position: absolute; 
+    background-color: #331d43; /* Cor roxa escura */
+    color: #fff; /* Texto branco */
+    font-size: 13px;
+    font-weight: bold;
+    padding: 12px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    display: block;
+    width: fit-content;
+    display: inline-block;
+    transition: 0.3s;
+    text-align: center;
+    white-space: nowrap; /* Evita quebra de linha dentro dos itens */
+    left: 520px;
+    bottom: 30px;
+}
+
+.subscribe-btn:hover {
+    background-color: #5a2d6a; /* Cor mais clara ao passar o mouse */
+}
 
   
 
