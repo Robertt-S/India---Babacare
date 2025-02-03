@@ -81,6 +81,8 @@ urlpatterns = [
     path('perfis_doc/', include(User_doc.urls)),
     path('users_doc/', include(Perfil_doc.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    
+    path('chat/', include('rtchat.urls')),
 ]
 
 #urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

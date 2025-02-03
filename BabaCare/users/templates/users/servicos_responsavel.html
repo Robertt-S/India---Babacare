@@ -27,11 +27,12 @@
                         <span class="status-pendente">Pendente</span>
                     {% elif servico.status == 'confirmado' %}
                         <span class="status-confirmado">Confirmado</span>
-                        <a class="edit-button" href="{% url 'feedback:give_feedback' servico.id %}" style="padding: 10px 20px; background-color: #331d43; color: white; border: none; border-radius: 5px; text-decoration: none; 
-    font-size: 1.5rem;">Avaliar</a>
+                        <a class="rate-button" href="{% url 'feedback:give_feedback' servico.id %}">Avaliar</a>
                     {% else %}
                         <span class="status-cancelado">Cancelado</span>
                     {% endif %}
+
+                    <a class="chat-button" href="{% url 'rtchat:pv-chat' servico.baba.id servico.contratante.id %}">Chat</a>
                 </p>
             </div>
         </div>

@@ -37,12 +37,15 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'daphne',
     'django.contrib.staticfiles',
     'users',
     'perfis',
     'feedback',
    # 'rest_framework_swagger',
-    'drf_yasg'
+    'drf_yasg',
+    'rtchat',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -74,7 +77,13 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'setup.wsgi.application'
+ASGI_APPLICATION = 'setup.asgi.application'
 
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
