@@ -866,6 +866,9 @@ main {
     margin-right: 10px;
     margin-left: 0; /* Espaço entre a mensagem e a imagem */
 }
+.my-message .message {
+    background: #9ff09f;
+}
 
 .other-message {
     justify-content: right;
