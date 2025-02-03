@@ -22,18 +22,26 @@ class ChatConsumer(AsyncWebsocketConsumer):
         )
         
     # Ativada quando mandamos dados para o WebSocket
+    #JSON -> Dicionario
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message = text_data_json["message"]
         username = text_data_json["username"]
+        user_avatar = text_data_json["user_avatar"]
         await self.channel_layer.group_send(
             self.roomGroupName,{
                 "type" : "sendMessage" ,
                 "message" : message , 
-                "username" : username
+                "username" : username,
+                "user_avatar" : user_avatar
             })
     # Envia a mensagem e o username para todos no grupo como um JSON (dicionario)
     async def sendMessage(self , event) : 
         message = event["message"]
         username = event["username"]
-        await self.send(text_data = json.dumps({"message":message ,"username":username}))
+        user_avatar = event["user_avatar"]
+        await self.send(text_data = json.dumps({
+            "message":message ,
+            "username":username, 
+            "user_avatar":user_avatar
+        }))
