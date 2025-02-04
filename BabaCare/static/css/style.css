@@ -865,8 +865,8 @@ main {
 }
 
 .my-message .avatar {
-    margin-right: 10px;
-    margin-left: 0; /* Espaço entre a mensagem e a imagem */
+    margin-right: 0;
+    margin-left: 10px; /* Espaço entre a mensagem e a imagem */
 }
 .my-message .message {
     background: #9ff09f;

@@ -28,7 +28,9 @@
 
           {% for mensagem in mensagens %}
             <div class="message-container {% if mensagem.autor == request.user %}my-message{% else %}other-message{% endif %}">
+              {% if mensagem.autor != request.user %}
               <img src="{{ mensagem.autor.foto.url }}" alt="{{ mensagem.autor.nome }}" class="avatar">
+              {% endif %}
               <div class="message">
                 <b>{{ mensagem.autor.nome }}</b> </br>&emsp; &emsp;{{ mensagem.conteudo }}
               </div>
