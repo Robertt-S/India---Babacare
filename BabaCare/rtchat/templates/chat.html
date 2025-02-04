@@ -13,18 +13,30 @@
     {% if request.user.is_authenticated  %}
       
       {% if user.isBaba == True %}
-      <div><a href = "{% url 'perfis:gerenciar_servicos' %}">RETURN</a></div>
+        <div><a href = "{% url 'perfis:gerenciar_servicos' %}">RETURN</a></div>
       {% else %}
-      <div><a href = "{% url 'users:servicos_responsavel' %}">RETURN</a></div>
+        <div><a href = "{% url 'users:servicos_responsavel' %}">RETURN</a></div>
       {%endif%}
+      
     {% comment %} request.user é o base user {% endcomment %}
     {% endif %}
     <div class="chat_container">
       <br/>
-      {% comment %} Logo em cima da caixa {% endcomment %}
       <div class="chat_background">
-        {% comment %} dentro da caixa roxa {% endcomment %}
-        <div class="chat_message" id="id_chat_item_container" ></div>
+
+        <div class="chat_message" id="id_chat_item_container" >
+
+          {% for mensagem in mensagens %}
+            <div class="message-container {% if mensagem.autor == request.user %}my-message{% else %}other-message{% endif %}">
+              <img src="{{ mensagem.autor.foto.url }}" alt="{{ mensagem.autor.nome }}" class="avatar">
+              <div class="message">
+                <b>{{ mensagem.autor.nome }}</b> </br>&emsp; &emsp;{{ mensagem.conteudo }}
+              </div>
+            </div>
+          {%endfor%}
+
+        </div>
+
       </div>
       <div class="chat_input">
         <input type="text" id="id_message_send_input" />
@@ -34,8 +46,11 @@
 
 
     <script>
-      const chatSocket = new WebSocket("ws://" + window.location.host + "/");
+      const babaId = "{{ baba.id }}";
+      const respId = "{{ responsavel.id }}";
+      console.log('babaId:', babaId, 'respId:', respId);
 
+      const chatSocket = new WebSocket("ws://" + window.location.host + "/ws/chat/" + babaId + "/" + respId + "/");
 
       document.querySelector("#id_message_send_input").focus();
 
@@ -45,24 +60,30 @@
           document.querySelector("#id_message_send_button").click();
         }
       };
+
       document.querySelector("#id_message_send_button").onclick = function (e) {
-        var messageInput = document.querySelector(
-          "#id_message_send_input"
-        ).value;
-        chatSocket.send(JSON.stringify({ 
-          message: messageInput, 
-          username : "{{ request.user.nome }}",
-          user_avatar : "{{ request.user.foto.url }}"
-        }));
+        var messageInput = document.querySelector("#id_message_send_input").value;
+        if(messageInput !== "") {
+          chatSocket.send(JSON.stringify({ 
+            message: messageInput, 
+            username : "{{ request.user.nome }}",
+            user_avatar : "{{ request.user.foto.url }}"
+          }));
+
+          document.querySelector("#id_message_send_input").value = "";
+        }
+
       };
 
       // Quando uma mensagem é recebida
       chatSocket.onmessage = function (e) {
+
         // JSON -> objeto JavaScript
         const data = JSON.parse(e.data);
 
-        // O que aparece na caixa de mensagem_input
-        document.querySelector("#id_message_send_input").value = "";
+        // Adicionar alguma mensagem ao contêiner
+        var messageContainer = document.createElement("div");
+        messageContainer.classList.add("message-container");
 
         // Formato mensagem
         /*<div class="message">
@@ -73,18 +94,6 @@
         div.classList.add("message");
         div.innerHTML = data.username + "<br>" + "&emsp;&emsp;" + data.message;
 
-        // Adicionar alguma mensagem ao contêiner
-        var messageContainer = document.createElement("div");
-        messageContainer.classList.add("message-container");
-        messageContainer.appendChild(div);
-
-        if (data.username === "{{ request.user.nome }}") {
-          messageContainer.classList.add("my-message");
-        } 
-        else {
-            messageContainer.classList.add("other-message");
-        }
-
         // Criar a imagem do usuário
         var img = document.createElement("img");
         img.src = data.user_avatar;
@@ -92,14 +101,25 @@
         img.classList.add("avatar");
 
         // Adicionar a imagem e a mensagem ao contêiner
+        messageContainer.appendChild(div);
         messageContainer.appendChild(img);
 
+        if (data.username.trim() === "{{ request.user.nome|escapejs }}".trim()) {
+          messageContainer.classList.add("my-message");
+        } 
+        else {
+            messageContainer.classList.add("other-message");
+        }
 
         // Adicionar o contêiner ao chat
         var chatContainer = document.querySelector("#id_chat_item_container");
         chatContainer.appendChild(messageContainer);
 
         chatContainer.scrollTop = chatContainer.scrollHeight;
+      };
+
+      chatSocket.onclose = function (e) {
+        console.error('Chat socket closed unexpectedly');
       };
     </script>
 

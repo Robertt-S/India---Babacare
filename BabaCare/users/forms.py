@@ -111,7 +111,6 @@ class CadastroFormsBaba(forms.Form):
         ),
     )
 
-
 class CadastroFormsResponsavel(forms.Form):
     nome_cadastro=forms.CharField(
         label='Nome de Cadastro', 
