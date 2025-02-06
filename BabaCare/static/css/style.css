@@ -896,3 +896,63 @@ main {
     flex-grow: 0.5;
     margin-right: 0.3rem;
 }
+
+
+/* Container da barra de busca */
+/* Estiliza o contêiner da barra de busca */
+.nav-search {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centraliza horizontalmente */
+    flex-grow: 1; /* Faz a barra de pesquisa ocupar mais espaço disponível */
+    margin: 0 auto; /* Adiciona margem automática para centralizar */
+}
+
+/* Ajuste do formulário para manter o alinhamento */
+.search-form {
+    display: flex;
+    align-items: center;
+    background: white;
+    border-radius: 25px;
+    overflow: hidden;
+    border: 2px solid #ccc;
+    padding: 5px 10px;
+    width: 100%; /* Garante que ocupe um espaço razoável */
+    max-width: 400px; /* Define um tamanho máximo */
+}
+
+/* Campo de entrada */
+.busca__input {
+    flex-grow: 1;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    width: 100%;
+}
+
+/* Botão de busca */
+.busca__btn {
+    background: none;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Ícone */
+.busca__icone {
+    width: 18px;
+    height: 18px;
+    opacity: 0.7;
+}
+
+/* Melhor posicionamento do cabeçalho */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Ajusta o espaço entre elementos */
+    padding: 10px 20px;
+}

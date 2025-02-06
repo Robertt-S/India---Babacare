@@ -6,7 +6,7 @@ from users.models import Responsavel as Perfil_Responsavel
 from django.views.generic.edit import UpdateView
 from django.utils.timezone import now
 from .models import Agenda, Servico
-
+import datetime
 # "extends"
 
 class EditBabaForm(ModelForm):
@@ -87,5 +87,12 @@ class ContratacaoForm(forms.Form):
     ]
 
     # baba = forms.ModelChoiceField(queryset=Perfil_Baba.objects.all(), required=True)  # Campo obrigatório para selecionar a babá
-    data_servico = forms.DateField(widget=forms.SelectDateWidget(), required=True)  # Campo obrigatório para selecionar a data
+    # data_servico = forms.DateField(widget=forms.SelectDateWidget(), required=True)  # Campo obrigatório para selecionar a data
+    data_servico = forms.DateField(
+        widget=forms.DateInput(
+            attrs={'type': 'date', 'min': datetime.date.today().strftime('%Y-%m-%d')}
+        ),
+        required=True,
+        initial=datetime.date.today
+    )
     periodo = forms.ChoiceField(choices=PERIODOS, required=True)  # Campo obrigatório para selecionar o período

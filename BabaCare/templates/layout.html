@@ -17,26 +17,36 @@
 
 <body>
     <nav>
-        <!-- Imagem e texto no lado superior esquerdo -->
+
         {% if user.is_authenticated %}
-            {% if user.isBaba == true %}
-                <a href="{% url 'users:home_baba' %}" class="logo-container">
-                    <img src="{% static 'images/logo_babacare.png' %}" alt="Logo BabaCare" class="logo">
-                    <span class="logo-text">BabaCare</span>
-                </a>
-            {% else %}
-                <a href="{% url 'users:home_responsavel' %}" class="logo-container">
-                    <img src="{% static 'images/logo_babacare.png' %}" alt="Logo BabaCare" class="logo">
-                    <span class="logo-text">BabaCare</span>
-                </a>
-            {% endif %}
-        {% else %}
-            <a href="{% url 'home' %}" class="logo-container">
+        {% if user.isBaba %}
+            <a href="{% url 'users:home_baba' %}" class="logo-container">
                 <img src="{% static 'images/logo_babacare.png' %}" alt="Logo BabaCare" class="logo">
                 <span class="logo-text">BabaCare</span>
             </a>
-        {% endif %}
+        {% else %}
+            <a href="{% url 'users:home_responsavel' %}" class="logo-container">
+                <img src="{% static 'images/logo_babacare.png' %}" alt="Logo BabaCare" class="logo">
+                <span class="logo-text">BabaCare</span>
+                            <!-- Exibe a busca somente para responsáveis -->
 
+            </a>
+            <!-- Exibe a busca somente para responsáveis -->
+            <div class="nav-search">
+                <form action="{% url 'perfis:buscar' %}" method="get" class="search-form">
+                    <input class="busca__input" type="text" name="buscar" placeholder="Buscar babá">
+                    <button type="submit" class="busca__btn">
+                        <img class="busca__icone" src="{% static 'assets/icones/1x/search.png' %}" alt="ícone de busca">
+                    </button>
+                </form>
+            </div>
+        {% endif %}
+    {% else %}
+        <a href="{% url 'home' %}" class="logo-container">
+            <img src="{% static 'images/logo_babacare.png' %}" alt="Logo BabaCare" class="logo">
+            <span class="logo-text">BabaCare</span>
+        </a>
+    {% endif %}
 
         <!-- Links de navegação -->
         <div class="nav-links">
