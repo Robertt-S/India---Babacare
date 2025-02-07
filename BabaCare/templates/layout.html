@@ -61,12 +61,12 @@
             {% if user.is_authenticated %}
 
                 {% if user.isBaba == True %}
-                    <a href="{% url 'perfis:gerenciar_servicos' %}" class="nav-link">Serviços</a>
+                    <a href="{% url 'contrato:gerenciar_servicos' %}" class="nav-link">Serviços</a>
                     <span class="separator">|</span>
                 {% else %}                    
-                    <a href="{% url 'perfis:lista_babas' %}" class="nav-link">Contratação</a>
+                    <a href="{% url 'contrato:lista_babas' %}" class="nav-link">Contratação</a>
                     <span class="separator">|</span>
-                    <a href="{% url 'users:servicos_responsavel' %}" class="nav-link">Serviços</a>
+                    <a href="{% url 'contrato:servicos_responsavel' %}" class="nav-link">Serviços</a>
                     <span class="separator">|</span>
                 {% endif %}
                 <a href="{% url 'perfis:my_page' %}" class="nav-link">Sua página</a>

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'users',
     'perfis',
     'feedback',
+    'contrato',
    # 'rest_framework_swagger',
     'drf_yasg',
     'rtchat',

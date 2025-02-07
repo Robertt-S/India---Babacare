@@ -5,7 +5,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from users.forms import CadastroFormsBaba, CadastroFormsResponsavel, ServicoForm
 from users.models import Baba, Responsavel, Avaliacao
-from perfis.models import Servico
 from django.utils import timezone
 from datetime import datetime
 from validate_docbr import CPF
@@ -229,20 +228,6 @@ def cadastro_responsavel(request):
             return redirect('login')
 
     return render(request, 'users/register_responsavel.html', {'form': form})
-
-@login_required
-def servicos_responsavel(request):
-    
-    responsavel = get_object_or_404(Responsavel, email=request.user.email)
-
-    
-    # servicos_solicitados = Servico.objects.filter(contratante=responsavel).order_by('-data_contratacao')
-    servicos_solicitados = Servico.objects.filter(contratante=responsavel).select_related('baba').order_by('-data_contratacao')
-    
-    return render(request, 'users/servicos_responsavel.html', {
-        'servicos_solicitados': servicos_solicitados,
-    })
-
     
 def home_baba(request):
     return render(request, 'users/home_baba.html')

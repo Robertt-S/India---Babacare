@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from perfis.models import Servico
+from contrato.models import Servico
 from .models import Feedback
 from .forms import FeedbackForms
 from django.contrib import messages

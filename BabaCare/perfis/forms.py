@@ -3,10 +3,8 @@ from django import forms
 from users.models import Baba as Perfil_Baba
 from users.models import Responsavel as Perfil_Responsavel
 
-from django.views.generic.edit import UpdateView
-from django.utils.timezone import now
-from .models import Agenda, Servico
-import datetime
+
+
 # "extends"
 
 class EditBabaForm(ModelForm):
@@ -79,28 +77,28 @@ class AgendaRecorrenteForm(forms.Form):
     inicio_recorrencia = forms.DateField(widget=forms.SelectDateWidget())
     fim_recorrencia = forms.DateField(widget=forms.SelectDateWidget())
 
-class ContratacaoForm(forms.Form):
-    PERIODOS = [
-        ('manhã', 'Manhã'),
-        ('tarde', 'Tarde'),
-        ('noite', 'Noite'),
-    ]
-    data_servico = forms.DateField(
-        widget=forms.DateInput(
-            attrs={
-                'type': 'date',  # Faz o HTML renderizar um calendário
-                'class': 'form-control calendario-input',
-                'min': datetime.date.today().strftime('%Y-%m-%d')  # Impede datas passadas
-            }
-        ),
-        required=True,
-        input_formats=['%Y-%m-%d'],  # Aceita o formato do HTML5
-        initial=datetime.date.today  # Define a data inicial como hoje
-    )
+# class ContratacaoForm(forms.Form):
+#     PERIODOS = [
+#         ('manhã', 'Manhã'),
+#         ('tarde', 'Tarde'),
+#         ('noite', 'Noite'),
+#     ]
+#     data_servico = forms.DateField(
+#         widget=forms.DateInput(
+#             attrs={
+#                 'type': 'date',  # Faz o HTML renderizar um calendário
+#                 'class': 'form-control calendario-input',
+#                 'min': datetime.date.today().strftime('%Y-%m-%d')  # Impede datas passadas
+#             }
+#         ),
+#         required=True,
+#         input_formats=['%Y-%m-%d'],  # Aceita o formato do HTML5
+#         initial=datetime.date.today  # Define a data inicial como hoje
+#     )
 
-    # periodo = forms.ChoiceField(choices=PERIODOS, required=True)  # Campo obrigatório para selecionar o período
-    periodo = forms.ChoiceField(
-        choices=PERIODOS,
-        required=True,
-        widget=forms.Select(attrs={'class': 'form-control periodo-selecao'})
-    )
+#     # periodo = forms.ChoiceField(choices=PERIODOS, required=True)  # Campo obrigatório para selecionar o período
+#     periodo = forms.ChoiceField(
+#         choices=PERIODOS,
+#         required=True,
+#         widget=forms.Select(attrs={'class': 'form-control periodo-selecao'})
+#     )

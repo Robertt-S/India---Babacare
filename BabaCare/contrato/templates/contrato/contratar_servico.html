@@ -18,7 +18,7 @@
         <p><strong></p>
         <p class="text-warning">Ao apertar em "Contratar", você confirma todas as informações acima relacionadas à contratação desse serviço.</p>
 
-        <form method="post" action="{% url 'perfis:contratar_servico' baba.id %}">
+        <form method="post" action="{% url 'contrato:contratar_servico' baba.id %}">
             {% csrf_token %}
             <input type="hidden" name="baba_id" value="{{ baba.id }}">
             <input type="hidden" name="data_servico" value="{{ request.GET.data_servico }}">
@@ -26,6 +26,6 @@
             <button type="submit" class="btn btn-primary">Contratar</button>
         </form>
 
-        <a href="{% url 'perfis:lista_babas' %}" class="btn btn-secondary mt-3">Voltar</a>
+        <a href="{% url 'contrato:lista_babas' %}" class="btn btn-secondary mt-3">Voltar</a>
     </div>
 {% endblock %}

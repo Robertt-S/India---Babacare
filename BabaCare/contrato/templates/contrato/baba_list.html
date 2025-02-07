@@ -49,7 +49,7 @@
                             {% endif %}
                         {% endwith %}
                 
-                        <form method="get" action="{% url 'perfis:contratar_servico' baba.id %}">
+                        <form method="get" action="{% url 'contrato:contratar_servico' baba.id %}">
                             <input type="hidden" name="data_servico" value="{{ form.data_servico.value }}">
                             <input type="hidden" name="periodo" value="{{ form.periodo.value }}">
                             <button type="submit" class="contratar-button">Contratar</button>

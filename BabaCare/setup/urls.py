@@ -75,7 +75,7 @@ urlpatterns = [
     path('login/', v.login_view, name='login'),
     path('baba/cadastro/', v.cadastro_baba, name='cadastro_baba'),  #botao da linha azul
     path('responsavel/cadastro/', v.cadastro_responsavel, name='cadastro_responsavel'), #botao da linha azul
-    
+    path('contrato/', include('contrato.urls', namespace='contrato')),
     path('api_doc/', schema_view.with_ui('swagger',cache_timeout=0), name='schema-swagger-ui'),
     path('redoc', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('perfis_doc/', include(User_doc.urls)),

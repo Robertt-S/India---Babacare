@@ -13,9 +13,9 @@
     {% if request.user.is_authenticated  %}
       
       {% if user.isBaba == True %}
-        <div><a href = "{% url 'perfis:gerenciar_servicos' %}">RETURN</a></div>
+        <div><a href = "{% url 'contrato:gerenciar_servicos' %}">RETURN</a></div>
       {% else %}
-        <div><a href = "{% url 'users:servicos_responsavel' %}">RETURN</a></div>
+        <div><a href = "{% url 'contrato:servicos_responsavel' %}">RETURN</a></div>
       {%endif%}
       
     {% comment %} request.user é o base user {% endcomment %}

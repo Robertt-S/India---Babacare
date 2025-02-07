@@ -13,7 +13,7 @@ urlpatterns = [
     path('responsaveis/', views.responsaveis_page, name='responsaveis_page'),
     path('home_baba/', views.home_baba, name="home_baba"),
     path('home_responsavel/', views.home_responsavel, name="home_responsavel"),
-    path('servicos_responsavel/', views.servicos_responsavel, name='servicos_responsavel'),
+    
 ]
 
 if settings.DEBUG:
