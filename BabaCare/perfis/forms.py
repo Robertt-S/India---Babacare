@@ -85,14 +85,22 @@ class ContratacaoForm(forms.Form):
         ('tarde', 'Tarde'),
         ('noite', 'Noite'),
     ]
-
-    # baba = forms.ModelChoiceField(queryset=Perfil_Baba.objects.all(), required=True)  # Campo obrigatório para selecionar a babá
-    # data_servico = forms.DateField(widget=forms.SelectDateWidget(), required=True)  # Campo obrigatório para selecionar a data
     data_servico = forms.DateField(
         widget=forms.DateInput(
-            attrs={'type': 'date', 'min': datetime.date.today().strftime('%Y-%m-%d')}
+            attrs={
+                'type': 'date',  # Faz o HTML renderizar um calendário
+                'class': 'form-control calendario-input',
+                'min': datetime.date.today().strftime('%Y-%m-%d')  # Impede datas passadas
+            }
         ),
         required=True,
-        initial=datetime.date.today
+        input_formats=['%Y-%m-%d'],  # Aceita o formato do HTML5
+        initial=datetime.date.today  # Define a data inicial como hoje
     )
-    periodo = forms.ChoiceField(choices=PERIODOS, required=True)  # Campo obrigatório para selecionar o período
+
+    # periodo = forms.ChoiceField(choices=PERIODOS, required=True)  # Campo obrigatório para selecionar o período
+    periodo = forms.ChoiceField(
+        choices=PERIODOS,
+        required=True,
+        widget=forms.Select(attrs={'class': 'form-control periodo-selecao'})
+    )

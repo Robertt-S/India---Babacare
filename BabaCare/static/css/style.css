@@ -956,3 +956,70 @@ main {
     justify-content: space-between; /* Ajusta o espaço entre elementos */
     padding: 10px 20px;
 }
+
+.calendario-input {
+    width: 100%;
+    max-width: 250px;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #5D3EBC;
+    border-radius: 10px;
+    background: #fff;
+    color: #333;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+/* Para estilizar o calendário no Chrome, Edge e Safari */
+.calendario-input::-webkit-calendar-picker-indicator {
+    filter: invert(0.5);
+    cursor: pointer;
+}
+
+/* Melhorar a acessibilidade no foco */
+.calendario-input:focus {
+    outline: none;
+    border-color: #8A6EEB;
+    box-shadow: 0px 0px 8px rgba(138, 110, 235, 0.8);
+}
+
+
+
+.form-container {
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+    gap: 15px; /* Espaçamento entre os elementos */
+    flex-wrap: wrap; /* Permite que os elementos se ajustem se a tela for pequena */
+    margin-bottom: 20px;
+}
+
+.calendario-input, .periodo-selecao {
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #5D3EBC;
+    border-radius: 8px;
+    background: #fff;
+    color: #333;
+    cursor: pointer;
+    width: 180px;
+    text-align: center;
+}
+
+/* Melhorando o botão */
+.btn-confirmar {
+    padding: 12px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    background: #5D3EBC;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+.btn-confirmar:hover {
+    background: #8A6EEB;
+    transform: scale(1.05);
+}

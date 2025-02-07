@@ -17,7 +17,7 @@
                     <img class="baba-photo" src="{% static 'images/icone_avatar_padrao.jpg' %}" alt="Imagem padrão">
                     {% endif %}
                     <h2 class="baba-name">
-                        <a href="#" class="detalhes-link">{{ servico.baba.nome }}</a>
+                        <a href="{% url 'perfis:page_baba' slug=servico.baba.slug %}" class="detalhes-link">{{ servico.baba.nome }}</a>
                     </h2>
                 </div>
                 <p><strong>Data do Serviço:</strong> {{ servico.data_servico }}</p>
