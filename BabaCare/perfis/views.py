@@ -16,11 +16,16 @@ from .forms import ContratacaoForm
 from .models import Baba, Servico
 from django.utils.timezone import now
 from django.urls import reverse
+
+from huggingface_hub import InferenceClient
+from sentence_transformers import SentenceTransformer
+from sklearn.metrics.pairwise import cosine_similarity
+
 # Create your views here.
 
 # Só responsáveis usam esse view
 # def baba_list(request):
-#     perfil_responsavel = request.user  
+#     base_user_responsavel = request.user  
 #     users = []
 #     data_servico = None
 #     periodo = None
@@ -41,7 +46,7 @@ from django.urls import reverse
 #                 # passando o perfil para pega a biografia da baba
 #                 perfil_baba = Perfil_Baba.objects.get(pk=baba)
                 
-#                 if dentro_do_raio(perfil_baba.lat, perfil_baba.long, perfil_responsavel.lat, perfil_responsavel.long, perfil_baba.rangeTrabalho):
+#                 if dentro_do_raio(perfil_baba.lat, perfil_baba.long, base_user_responsavel.lat, base_user_responsavel.long, perfil_baba.rangeTrabalho):
 #                     lista_pBabas.append(perfil_baba)
 
 #     else:
@@ -51,11 +56,13 @@ from django.urls import reverse
 
 
 def baba_list(request):
-    perfil_responsavel = request.user  
+    base_user_responsavel = request.user
+    perfil_responsavel = Perfil_Responsavel.objects.get(id=base_user_responsavel.id)
     users = set()  # Usando um set para evitar duplicatas
     perfilBabas_dict = {}  # Novo dicionário para associar babás aos seus perfis
     data_servico = None
     periodo = None
+
 
     if request.method == 'POST':
         form = ContratacaoForm(request.POST)
@@ -70,21 +77,17 @@ def baba_list(request):
                 baba = agenda.baba
 
                 if baba not in users:  # Evita duplicação
-                    users.add(baba)
-
-                    try:
-                        perfil_baba = Perfil_Baba.objects.get(pk=baba.pk)
-                        
-                        if dentro_do_raio(perfil_baba.lat, perfil_baba.long, perfil_responsavel.lat, perfil_responsavel.long, perfil_baba.rangeTrabalho):
-                            perfilBabas_dict[baba.id] = perfil_baba  # Adiciona ao dicionário
-                    except Perfil_Baba.DoesNotExist:
-                        pass  # Evita erro caso não exista perfil para essa babá
-
+                    perfil_baba = Perfil_Baba.objects.get(pk=baba.pk)
+                    if dentro_do_raio(perfil_baba.lat, perfil_baba.long, base_user_responsavel.lat, base_user_responsavel.long, perfil_baba.rangeTrabalho):
+                        users.add(baba)
+                        perfilBabas_dict[baba.id] = perfil_baba  # Adiciona ao dicionário
     else:
         form = ContratacaoForm()  # Formulário vazio para GET
 
+    users, perfilBabas_dict = ordenar_babas_por_similaridade(perfil_responsavel, list(users), perfilBabas_dict)
+
     return render(request, 'perfis/baba_list.html', {
-        'users': list(users),  # Converte set para lista antes de passar ao template
+        'users': users,  # Converte set para lista antes de passar ao template
         'form': form,
         'data_servico': data_servico,
         'periodo': periodo,
@@ -308,23 +311,6 @@ def contratar_servico(request, id):
     return render(request, 'perfis/contratar_servico.html', {'baba': baba})
 
 
-
-
-
-
-###--- Funções de utilidade ---###
-
-def distancia_em_km(lat1, lon1, lat2, lon2):
-    raio_terra = 6371
-
-    return raio_terra * acos(sin(radians(lat1)) * sin(radians(lat2)) +
-                             cos(radians(lat1)) * cos(radians(lat2)) *
-                             cos(radians(lon1) - radians(lon2)))
-
-def dentro_do_raio(lat_baba, long_baba, lat_responsavel, long_responsavel, raio):
-    return distancia_em_km(lat_baba, long_baba, lat_responsavel, long_responsavel) <= raio
-
-
 @login_required
 def gerenciar_servicos(request):
     baba = request.user  # Babá autenticada
@@ -398,3 +384,62 @@ def servicos_responsavel(request):
     return render(request, 'perfis/servicos_responsavel.html', {
         'servicos_solicitados': servicos_solicitados,
     })
+
+
+
+
+###--- Classes e Funções de utilidade ---###
+
+def distancia_em_km(lat1, lon1, lat2, lon2):
+    raio_terra = 6371
+
+    return raio_terra * acos(sin(radians(lat1)) * sin(radians(lat2)) +
+                             cos(radians(lat1)) * cos(radians(lat2)) *
+                             cos(radians(lon1) - radians(lon2)))
+
+def dentro_do_raio(lat_baba, long_baba, lat_responsavel, long_responsavel, raio):
+    return distancia_em_km(lat_baba, long_baba, lat_responsavel, long_responsavel) <= raio
+
+
+
+
+class SentenceSimilarityWithAPI():
+    def __init__(self, model_name: str):
+        self.client = InferenceClient(model_name)
+
+    def sentence_similarity(self, sentence: str, other_sentences: list[str]) -> list[float]:
+        return self.client.sentence_similarity(sentence, other_sentences)
+
+
+class SentenceSimilarityWithLocalModel():
+    def __init__(self, model_name: str):
+        self.model = SentenceTransformer(model_name)
+
+    def sentence_similarity(self, sentence: str, other_sentences: list[str]) -> list[float]:
+        embeddings = self.model.encode([sentence] + other_sentences)
+        similarity = cosine_similarity(embeddings)
+
+        return similarity[0][1:]
+
+
+class SentenceSimilarityAdapter():
+    def __init__(self, model_name: str, use_api=True) -> None:
+        if use_api:
+            self.similarity_model = SentenceSimilarityWithAPI(model_name)
+        else:
+            self.similarity_model = SentenceSimilarityWithLocalModel(model_name)
+
+    def sentence_similarity(self, sentence: str, other_sentences: list[str]) -> list[float]:
+        return self.similarity_model.sentence_similarity(sentence, other_sentences)
+    
+
+def ordenar_babas_por_similaridade(perfil_responsavel, babas_users, perfilBabas_dict):
+    similaridades = perfil_responsavel.babasSimilares
+
+    # Ordena as babás por similaridade
+    babas_users = sorted(babas_users, key=lambda baba: similaridades[str(baba.id)] if str(baba.id) in similaridades else 0, reverse=True)
+
+    # Cria um novo dicionário ordenado
+    perfilBabas_dict = {baba.id: perfilBabas_dict[baba.id] for baba in babas_users}
+
+    return babas_users, perfilBabas_dict

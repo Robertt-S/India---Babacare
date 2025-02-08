@@ -1,7 +1,6 @@
 from django.db import models
 from django.conf import settings
 from autoslug import AutoSlugField
-from django.conf import settings
 from django.utils.timezone import now
 from users.models import Baba, Responsavel
 
