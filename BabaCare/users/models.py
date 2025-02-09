@@ -95,6 +95,7 @@ class Baba(BaseUser):
 class Responsavel(BaseUser):
     
     bioResp = models.TextField(null=False, blank=False)
+    babasSimilares = models.JSONField(default=dict)
     isBaba = False
     
     class Meta:

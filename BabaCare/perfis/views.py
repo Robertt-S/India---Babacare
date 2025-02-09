@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from users.models import Baba as Perfil_Baba
 from users.models import Responsavel as Perfil_Responsavel
+from contrato.forms import ContratacaoForm
 from .forms import EditBabaForm, EditRespForm, AgendaRecorrenteForm
 from datetime import datetime, timedelta
 
@@ -16,48 +17,51 @@ from django.contrib.auth.decorators import login_required
 
 from django.utils.timezone import now
 
-# Create your views here.
+from django.urls import reverse
 
-# def baba_list(request):
-#     perfil_responsavel = request.user  
-#     users = set()  # Usando um set para evitar duplicatas
-#     perfilBabas_dict = {}  # Novo dicionário para associar babás aos seus perfis
-#     data_servico = None
-#     periodo = None
+from huggingface_hub import InferenceClient
+from sentence_transformers import SentenceTransformer
+from sklearn.metrics.pairwise import cosine_similarity
 
-#     if request.method == 'POST':
-#         form = ContratacaoForm(request.POST)
-#         if form.is_valid():
-#             data_servico = form.cleaned_data['data_servico']
-#             periodo = form.cleaned_data['periodo']
 
-#             # Busca agendas disponíveis no dia e período escolhidos
-#             agendas_disponiveis = Agenda.objects.filter(dia=data_servico, periodo=periodo, disponibilidade=True)
+def baba_list(request):
+    base_user_responsavel = request.user
+    perfil_responsavel = Perfil_Responsavel.objects.get(id=base_user_responsavel.id)
+    users = set()  # Usando um set para evitar duplicatas
+    perfilBabas_dict = {}  # Novo dicionário para associar babás aos seus perfis
+    data_servico = None
+    periodo = None
 
-#             for agenda in agendas_disponiveis:
-#                 baba = agenda.baba
 
-#                 if baba not in users:  # Evita duplicação
-#                     users.add(baba)
+    if request.method == 'POST':
+        form = ContratacaoForm(request.POST)
+        if form.is_valid():
+            data_servico = form.cleaned_data['data_servico']
+            periodo = form.cleaned_data['periodo']
 
-#                     try:
-#                         perfil_baba = Perfil_Baba.objects.get(pk=baba.pk)
-                        
-#                         if dentro_do_raio(perfil_baba.lat, perfil_baba.long, perfil_responsavel.lat, perfil_responsavel.long, perfil_baba.rangeTrabalho):
-#                             perfilBabas_dict[baba.id] = perfil_baba  # Adiciona ao dicionário
-#                     except Perfil_Baba.DoesNotExist:
-#                         pass  # Evita erro caso não exista perfil para essa babá
+            # Busca agendas disponíveis no dia e período escolhidos
+            agendas_disponiveis = Agenda.objects.filter(dia=data_servico, periodo=periodo, disponibilidade=True)
 
-#     else:
-#         form = ContratacaoForm()  # Formulário vazio para GET
+            for agenda in agendas_disponiveis:
+                baba = agenda.baba
 
-#     return render(request, 'perfis/baba_list.html', {
-#         'users': list(users),  # Converte set para lista antes de passar ao template
-#         'form': form,
-#         'data_servico': data_servico,
-#         'periodo': periodo,
-#         'perfilBabas_dict': perfilBabas_dict  # Passa o dicionário atualizado
-#     })
+                if baba not in users:  # Evita duplicação
+                    perfil_baba = Perfil_Baba.objects.get(pk=baba.pk)
+                    if dentro_do_raio(perfil_baba.lat, perfil_baba.long, base_user_responsavel.lat, base_user_responsavel.long, perfil_baba.rangeTrabalho):
+                        users.add(baba)
+                        perfilBabas_dict[baba.id] = perfil_baba  # Adiciona ao dicionário
+    else:
+        form = ContratacaoForm()  # Formulário vazio para GET
+
+    users, perfilBabas_dict = ordenar_babas_por_similaridade(perfil_responsavel, list(users), perfilBabas_dict)
+
+    return render(request, 'perfis/baba_list.html', {
+        'users': users,  # Converte set para lista antes de passar ao template
+        'form': form,
+        'data_servico': data_servico,
+        'periodo': periodo,
+        'perfilBabas_dict': perfilBabas_dict  # Passa o dicionário atualizado
+    })
 
 
 def buscar(request):
@@ -237,132 +241,58 @@ def agenda_recorrente(request):
     return render(request, 'perfis/agenda_recorrente.html', context)
 
 
-# @login_required
-# def contratar_servico(request, id):
-#     # Carrega a babá pela ID
-#     baba = get_object_or_404(Perfil_Baba, id=id)
+###--- Classes e Funções de utilidade ---###
 
-#     if request.method == 'POST':
-#         # Obtém os dados enviados via POST
-#         data_servico = request.POST.get('data_servico')  # Formato recebido: YYYY-MM-DD
-#         periodo = request.POST.get('periodo')
+def distancia_em_km(lat1, lon1, lat2, lon2):
+    raio_terra = 6371
 
-#         if data_servico and periodo:  # Garante que os dados foram enviados
-#             responsavel = get_object_or_404(Perfil_Responsavel, email=request.user.email)
-#             data_contratacao = now()  # Data atual da contratação
+    return raio_terra * acos(sin(radians(lat1)) * sin(radians(lat2)) +
+                             cos(radians(lat1)) * cos(radians(lat2)) *
+                             cos(radians(lon1) - radians(lon2)))
 
-#             try:
-#                 data_servico = datetime.strptime(data_servico, "%Y-%m-%d").date()  # Correção do formato
-#             except ValueError:
-#                 messages.error(request, 'Formato de data inválido. Use o calendário do formulário.')
-#                 return redirect('perfis:lista_babas')
-
-#             # Cria o serviço com os dados fornecidos
-#             Servico.objects.create(
-#                 baba=baba,
-#                 contratante=responsavel,
-#                 data_servico=data_servico,
-#                 periodo=periodo,
-#                 data_contratacao=data_contratacao
-#             )
-
-#             messages.success(request, 'Contrato de serviço solicitado com sucesso!')
-#             return redirect('home')  # Redireciona para a página inicial
-#         else:
-#             messages.error(request, 'Os dados de data ou período não foram fornecidos.')
-#             return redirect('perfis:lista_babas')  # Redireciona para a lista de babás
-
-#     # Renderiza a página com os detalhes da babá
-#     return render(request, 'perfis/contratar_servico.html', {'baba': baba})
+def dentro_do_raio(lat_baba, long_baba, lat_responsavel, long_responsavel, raio):
+    return distancia_em_km(lat_baba, long_baba, lat_responsavel, long_responsavel) <= raio
 
 
 
 
+class SentenceSimilarityWithAPI():
+    def __init__(self, model_name: str):
+        self.client = InferenceClient(model_name)
+
+    def sentence_similarity(self, sentence: str, other_sentences: list[str]) -> list[float]:
+        return self.client.sentence_similarity(sentence, other_sentences)
 
 
-# ###--- Funções de utilidade ---###
+class SentenceSimilarityWithLocalModel():
+    def __init__(self, model_name: str):
+        self.model = SentenceTransformer(model_name)
 
-# def distancia_em_km(lat1, lon1, lat2, lon2):
-#     raio_terra = 6371
+    def sentence_similarity(self, sentence: str, other_sentences: list[str]) -> list[float]:
+        embeddings = self.model.encode([sentence] + other_sentences)
+        similarity = cosine_similarity(embeddings)
 
-#     return raio_terra * acos(sin(radians(lat1)) * sin(radians(lat2)) +
-#                              cos(radians(lat1)) * cos(radians(lat2)) *
-#                              cos(radians(lon1) - radians(lon2)))
-
-# def dentro_do_raio(lat_baba, long_baba, lat_responsavel, long_responsavel, raio):
-#     return distancia_em_km(lat_baba, long_baba, lat_responsavel, long_responsavel) <= raio
+        return similarity[0][1:]
 
 
-# @login_required
-# def gerenciar_servicos(request):
-#     baba = request.user  # Babá autenticada
-#     if not baba.isBaba:  # Verifica se o usuário é uma babá
-#         return redirect('home')
+class SentenceSimilarityAdapter():
+    def __init__(self, model_name: str, use_api=True) -> None:
+        if use_api:
+            self.similarity_model = SentenceSimilarityWithAPI(model_name)
+        else:
+            self.similarity_model = SentenceSimilarityWithLocalModel(model_name)
 
-#     # Filtra os serviços pendentes e confirmados
-#     servicos_pendentes = Servico.objects.filter(baba=baba, status='pendente').order_by('-data_contratacao')
-#     servicos_confirmados = Servico.objects.filter(baba=baba, status='confirmado').order_by('-data_contratacao')
+    def sentence_similarity(self, sentence: str, other_sentences: list[str]) -> list[float]:
+        return self.similarity_model.sentence_similarity(sentence, other_sentences)
     
-#     if request.method == 'POST':
-#         # Ações para aceitar ou negar um serviço
-#         servico_id = request.POST.get('servico_id')
-#         acao = request.POST.get('acao')
-#         servico = get_object_or_404(Servico, id=servico_id, baba=baba)
-        
-#         if acao == 'aceitar':
-#             # Busca a agenda correspondente
-#             agenda = Agenda.objects.filter(
-#                 baba=baba,
-#                 dia=servico.data_servico,
-#                 periodo=servico.periodo
-#             ).first()
-            
-#             if agenda and agenda.disponibilidade:
-#                 # Atualiza o status do serviço para confirmado
-#                 servico.status = 'confirmado'
-#                 servico.save()
 
-#                 # Atualiza a disponibilidade da agenda
-#                 agenda.disponibilidade = False
-#                 agenda.save()
+def ordenar_babas_por_similaridade(perfil_responsavel, babas_users, perfilBabas_dict):
+    similaridades = perfil_responsavel.babasSimilares
 
-#                 messages.success(
-#                     request, f"Serviço no dia {servico.data_servico} foi aceito e a disponibilidade da agenda foi atualizada."
-#                 )
-#             else:
-#                 # Agenda indisponível ou inexistente
-#                 servico.status = 'cancelado'
-#                 servico.save()
-                
-#                 messages.success(
-#                     request, f"Serviço no dia {servico.data_servico} foi cancelado, pois a agenda não está disponível ou já foi preenchida. Verifique sua agenda."
-#                 )
+    # Ordena as babás por similaridade
+    babas_users = sorted(babas_users, key=lambda baba: similaridades[str(baba.id)] if str(baba.id) in similaridades else 0, reverse=True)
 
-#         elif acao == 'negar':
-#             # Negar o serviço
-#             servico.status = 'cancelado'
-#             servico.save()
-            
-#             messages.success(
-#                 request, f"Serviço no dia {servico.data_servico} foi negado."
-#             )
+    # Cria um novo dicionário ordenado
+    perfilBabas_dict = {baba.id: perfilBabas_dict[baba.id] for baba in babas_users}
 
-#         return redirect('perfis:gerenciar_servicos')  # Nome da URL configurada no projeto
-
-#     return render(request, 'perfis/gerenciar_servicos.html', {
-#         'servicos_pendentes': servicos_pendentes,
-#         'servicos_confirmados': servicos_confirmados,
-#     })
-    
-# @login_required
-# def servicos_responsavel(request):
-    
-#     responsavel = get_object_or_404(Perfil_Responsavel, email=request.user.email)
-
-    
-#     servicos_solicitados = Servico.objects.filter(contratante=responsavel).order_by('-data_contratacao')
-
-    
-#     return render(request, 'perfis/servicos_responsavel.html', {
-#         'servicos_solicitados': servicos_solicitados,
-#     })
+    return babas_users, perfilBabas_dict
