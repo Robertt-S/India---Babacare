@@ -14,7 +14,7 @@ class PerfisConfig(AppConfig):
     def baba_match(self):
         """ Importa-se as bibliotecas aqui para evitar problemas de não carregamento de módulos """
         from users.models import Baba, Responsavel
-        from perfis.views import SentenceSimilarityAdapter
+        from contrato.views import SentenceSimilarityAdapter
 
         nome_modelo = "sentence-transformers/all-MiniLM-L6-v2"
         sentence_similarity_model = SentenceSimilarityAdapter(nome_modelo, use_api=True)
