@@ -34,7 +34,7 @@
             {% if users %}
                 <h1 class="text-primary" style="font-size: 35px;" >Babás Disponíveis</h1>
                 <div class="babas-container">
-                    {% for baba in users %}
+                    {% for baba in perfis %}
                     <div class="baba-card">
                         <div class="baba-card-header">
                             {% if baba.foto %}
@@ -44,7 +44,7 @@
                             {% endif %}
                             <a class="baba-name" style="font-size: 30px;" href="{% url 'perfis:page_baba' slug=baba.slug %}"><strong>{{ baba.nome }}</strong></a>
                         </div>
-                        <p class="baba-bio" style="font-size: 22px;"><strong>Biografia:</strong> {{ baba.bioBaba }}</p>
+                        <p class="baba-bio" style="font-size: 22px;"><strong>Biografia: </strong> {{ baba.bioBaba }}</p>
                         <form method="get" action="{% url 'contrato:contratar_servico' baba.id %}">
                             <input type="hidden" name="data_servico" value="{{ form.data_servico.value }}">
                             <input type="hidden" name="periodo" value="{{ form.periodo.value }}">

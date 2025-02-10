@@ -23,6 +23,7 @@ def baba_list(request):
     base_user_responsavel = request.user
     perfil_responsavel = Perfil_Responsavel.objects.get(id=base_user_responsavel.id)
     users = set()  # Usando um set para evitar duplicatas
+    perfis = Perfil_Baba.objects.all()
     perfilBabas_dict = {}  # Novo dicionário para associar babás aos seus perfis
     data_servico = None
     periodo = None
@@ -52,6 +53,7 @@ def baba_list(request):
 
     return render(request, 'contrato/baba_list.html', {
         'users': users,  # Converte set para lista antes de passar ao template
+        'perfis': perfis,
         'form': form,
         'data_servico': data_servico,
         'periodo': periodo,
