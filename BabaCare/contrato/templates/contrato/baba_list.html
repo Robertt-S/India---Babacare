@@ -31,7 +31,7 @@
 
         {% if form.data_servico.value and form.periodo.value %}  {# Exibe apenas se a pesquisa foi feita #}
         <br>
-            {% if users %}
+            {% if perfis %}
                 <h1 class="text-primary" style="font-size: 35px;" >Babás Disponíveis</h1>
                 <div class="babas-container">
                     {% for baba in perfis %}

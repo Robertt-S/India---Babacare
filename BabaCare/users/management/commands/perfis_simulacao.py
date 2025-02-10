@@ -191,7 +191,7 @@ class Command(BaseCommand):
 
             baba.bioBaba = lista_babas_bios[i]
             baba.habilidades = ""
-            baba.rangeTrabalho = 50
+            baba.rangeTrabalho = 100
             baba.lat = lista_babas_lat_long[i][0]
             baba.long = lista_babas_lat_long[i][1]
             baba.isBaba = True

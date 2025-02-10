@@ -22,9 +22,7 @@ from math import radians, sin, cos, acos
 def baba_list(request):
     base_user_responsavel = request.user
     perfil_responsavel = Perfil_Responsavel.objects.get(id=base_user_responsavel.id)
-    users = set()  # Usando um set para evitar duplicatas
-    perfis = Perfil_Baba.objects.all()
-    perfilBabas_dict = {}  # Novo dicionário para associar babás aos seus perfis
+    perfis_babas = []
     data_servico = None
     periodo = None
 
@@ -40,24 +38,23 @@ def baba_list(request):
 
             for agenda in agendas_disponiveis:
                 baba = agenda.baba
+                perfil_baba = Perfil_Baba.objects.get(pk=baba.pk)
+                if dentro_do_raio(perfil_baba.lat, perfil_baba.long, base_user_responsavel.lat, base_user_responsavel.long, perfil_baba.rangeTrabalho):
+                    perfis_babas.append(perfil_baba)
 
-                if baba not in users:  # Evita duplicação
-                    perfil_baba = Perfil_Baba.objects.get(pk=baba.pk)
-                    if dentro_do_raio(perfil_baba.lat, perfil_baba.long, base_user_responsavel.lat, base_user_responsavel.long, perfil_baba.rangeTrabalho):
-                        users.add(baba)
-                        perfilBabas_dict[baba.id] = perfil_baba  # Adiciona ao dicionário
+            
+            perfis_babas = ordenar_babas_por_similaridade(perfil_responsavel, perfis_babas)
+            # messages.info(request, f"users_ordenado: {users[1]}")
+            
     else:
         form = ContratacaoForm()  # Formulário vazio para GET
 
-    users, perfilBabas_dict = ordenar_babas_por_similaridade(perfil_responsavel, list(users), perfilBabas_dict)
 
     return render(request, 'contrato/baba_list.html', {
-        'users': users,  # Converte set para lista antes de passar ao template
-        'perfis': perfis,
+        'perfis': perfis_babas,
         'form': form,
         'data_servico': data_servico,
         'periodo': periodo,
-        'perfilBabas_dict': perfilBabas_dict  # Passa o dicionário atualizado
     })
     
 @login_required
@@ -218,13 +215,9 @@ class SentenceSimilarityAdapter():
         return self.similarity_model.sentence_similarity(sentence, other_sentences)
     
 
-def ordenar_babas_por_similaridade(perfil_responsavel, babas_users, perfilBabas_dict):
+def ordenar_babas_por_similaridade(perfil_responsavel, perfis_babas):
     similaridades = perfil_responsavel.babasSimilares
 
-    # Ordena as babás por similaridade
-    babas_users = sorted(babas_users, key=lambda baba: similaridades[str(baba.id)] if str(baba.id) in similaridades else 0, reverse=True)
+    perfis_babas = sorted(perfis_babas, key=lambda baba: similaridades[str(baba.id)] if str(baba.id) in similaridades else 0, reverse=True)
 
-    # Cria um novo dicionário ordenado
-    perfilBabas_dict = {baba.id: perfilBabas_dict[baba.id] for baba in babas_users}
-
-    return babas_users, perfilBabas_dict
+    return perfis_babas
