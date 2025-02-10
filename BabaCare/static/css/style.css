@@ -979,7 +979,7 @@ main {
 /* Melhorar a acessibilidade no foco */
 .calendario-input:focus {
     outline: none;
-    border-color: #8A6EEB;
+    border-color: #331d43;
     box-shadow: 0px 0px 8px rgba(138, 110, 235, 0.8);
 }
 
@@ -996,7 +996,7 @@ main {
 .calendario-input, .periodo-selecao {
     padding: 10px;
     font-size: 16px;
-    border: 2px solid #db3065;
+    border: 2px solid #331d43;
     border-radius: 8px;
     background: #fff;
     color: #333;

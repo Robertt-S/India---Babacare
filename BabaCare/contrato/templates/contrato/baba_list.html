@@ -12,7 +12,8 @@
 
     <section>
         <!-- Formulário de Data e Período -->
-        <h2>Selecione a Data e o Período</h2>
+        <br>
+        <h2 class="text-primary" style="font-size: 35px;" color: #9a9da0 >Selecione a Data e o Período</h2>
         <form method="post">
             {% csrf_token %}
             <div class="form-container">
@@ -29,26 +30,21 @@
         </form>
 
         {% if form.data_servico.value and form.periodo.value %}  {# Exibe apenas se a pesquisa foi feita #}
+        <br>
             {% if users %}
-                <h1>Babás Disponíveis</h1>
+                <h1 class="text-primary" style="font-size: 35px;" >Babás Disponíveis</h1>
                 <div class="babas-container">
                     {% for baba in users %}
                     <div class="baba-card">
                         <div class="baba-card-header">
                             {% if baba.foto %}
-                                <img class="baba-photo" src="{{ baba.foto.url }}" alt="Foto de {{ baba.nome }}">
+                            <img class="baba-photo" src="{{ baba.foto.url }}" alt="Foto de {{ baba.nome }}">
                             {% else %}
-                                <img class="baba-photo" src="{% static 'images/icone_avatar_padrao.jpg' %}" alt="Imagem padrão">
+                            <img class="baba-photo" src="{% static 'images/icone_avatar_padrao.jpg' %}" alt="Imagem padrão">
                             {% endif %}
-                            <a class="baba-name" href="{% url 'perfis:page_baba' slug=baba.slug %}">{{ baba.nome }}</a>
+                            <a class="baba-name" style="font-size: 30px;" href="{% url 'perfis:page_baba' slug=baba.slug %}"><strong>{{ baba.nome }}</strong></a>
                         </div>
-                
-                        {% with perfilBaba=perfilBabas_dict.baba.id %}
-                            {% if perfilBaba %}
-                                <p class="baba-bio"><strong>Biografia:</strong> {{ perfilBaba.bioBaba }}</p>
-                            {% endif %}
-                        {% endwith %}
-                
+                        <p class="baba-bio" style="font-size: 22px;"><strong>Biografia:</strong> {{ baba.bioBaba }}</p>
                         <form method="get" action="{% url 'contrato:contratar_servico' baba.id %}">
                             <input type="hidden" name="data_servico" value="{{ form.data_servico.value }}">
                             <input type="hidden" name="periodo" value="{{ form.periodo.value }}">
@@ -58,7 +54,7 @@
                 {% endfor %}
                 </div>
             {% else %}
-                <h3>Nenhuma babá disponível</h3>
+                <h3 style="font-size: 35px;" >Nenhuma babá disponível</h3>
             {% endif %}
         {% endif %}
 
