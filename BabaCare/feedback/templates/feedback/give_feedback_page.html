@@ -1,12 +1,28 @@
 {% extends 'layout.html' %}
+{% load static %}
+
+{% block title %}
+    Avaliar Serviço
+{% endblock %}
 
 {% block content %}
-  <h2>Avaliar Serviço</h2>
-  <p>Baba: {{ contract.baba.nome }}</p>
-
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Enviar Avaliação</button>
-  </form>
+    <div class="container mt-5 d-flex justify-content-center">
+        <div class="p-5 rounded shadow-lg" style="max-width: 650px; background-color: #e5e9ee; border-radius: 10px; text-align: left; border: 1px solid #e5e9ee;">
+            <h2 class="text-primary" style="font-size: 30px;">Avaliar Serviço</h2>
+            <br>
+            <p style="font-size: 20px;"><strong>Babá:</strong> {{ contract.baba.nome }}</p>
+            <br>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    {{ form.as_p }}
+                </div>
+                <div class="d-flex gap-3 mt-4">
+                  <br>
+                    <button type="submit" class="btn btn-primary flex-grow-1" style="background-color: #db3065; border-color: #db3065;">Enviar Avaliação</button>
+                    <a href="{% url 'home' %}" class="btn btn-secondary flex-grow-1">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
 {% endblock %}

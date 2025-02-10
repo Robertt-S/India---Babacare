@@ -11,6 +11,6 @@ class FeedbackForms (ModelForm):
         fields = ["title", "score", "description"]
         labels={
             "title": "Título da Avaliação",
-            "score": "Nota",
+            "score": "Nota (0 - 5)",
             "description": "Avaliação"
         }

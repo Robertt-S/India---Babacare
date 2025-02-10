@@ -43,7 +43,7 @@ def edit_feedback(request, contract):
         if form.is_valid():
             form.save()
             messages.success(request, 'Avaliação editada!')
-            return redirect('users:servicos_responsavel')
+            return redirect('contrato:servicos_responsavel')
         
         return render(request, 'feedback/give_feedback_page.html', {'form': form, 'contract': servico})
     #primeira avaliação

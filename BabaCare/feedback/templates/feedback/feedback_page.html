@@ -1,23 +1,30 @@
 {% extends 'layout.html' %}
 {% load static %}
 
-{%block title%}
-    {{ feedback.title }}
-{%endblock%}
+{% block title %}
+    Avaliação do Serviço
+{% endblock %}
 
-{%block content%}
-{% if user.is_authenticated %}
-
-    <section>
-        <h1>Avaliação</h1>
-        <p>Babá: {{ feedback.contract.baba.nome }}</p>
-        <p>Responsável: {{ feedback.contract.responsavel.nome }}</p>
-        <p>Nota: {{ feedback.score }}</p>
-        <p>Detalhes: {{ feedback.description }}</p>
-    </section>
-
+{% block content %}
+    {% if user.is_authenticated %}
+        <div class="container mt-5 d-flex justify-content-center">
+            <div class="p-5 rounded shadow-lg" style="max-width: 650px; background-color: #e5e9ee; border-radius: 10px; text-align: left; border: 1px solid #e5e9ee;">
+                <h2 class="text-primary" style="font-size: 30px;">Avaliação do Serviço</h2>
+                <br>
+                <p style="font-size: 20px;"><strong>Babá:</strong> {{ feedback.contract.baba.nome }}</p>
+                <p style="font-size: 20px;"><strong>Responsável:</strong> {{ feedback.contract.responsavel.nome }}</p>
+                <p style="font-size: 20px;"><strong>Nota(0 - 5):</strong> {{ feedback.score }} ⭐</p>
+                <p style="font-size: 20px;"><strong>Detalhes:</strong> {{ feedback.description }}</p>
+                <br>
+                <div class="d-flex gap-3 mt-4">
+                    <a href="{% url 'home' %}" class="btn btn-primary flex-grow-1" style="background-color: #db3065; border-color: #db3065;">Voltar</a>
+                </div>
+            </div>
+        </div>
     {% else %}
-        <h2>Sorry! You must be logged in to view this page</h2>
-        <a href="{% url 'users:login'%}" style="font-size: 2rem">Login Here</a>
+        <div class="container mt-5 text-center">
+            <h2 class="text-danger">Ops! Você precisa estar logado para visualizar essa página.</h2>
+            <a href="{% url 'users:login' %}" class="btn btn-primary mt-3" style="background-color: #db3065; border-color: #db3065; font-size: 20px;">Fazer Login</a>
+        </div>
     {% endif %}
-{%endblock%}
+{% endblock %}
