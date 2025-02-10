@@ -1,7 +1,7 @@
 import requests
 from django.shortcuts import render
 from django.http import JsonResponse
-from .models import Message  # Supondo que exista um modelo Message no banco de dados
+from .models import Mensagem  # Supondo que exista um modelo Message no banco de dados
 
 # Configurar a chave da API
 API_URL = "https://api-inference.huggingface.co/models/unitary/toxic-bert"

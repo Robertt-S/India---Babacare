@@ -35,7 +35,7 @@ from django.shortcuts import redirect, render
 from django.http import JsonResponse
 from rtchat.models import Mensagem
 from users.models import Baba, Responsavel
-from .moderador_mensagem import moderate_message  # Importando o moderador
+from .moderador_mensagens import moderate_message  # Importando o moderador
 
 # Página principal do chat
 def chatPage(request):
