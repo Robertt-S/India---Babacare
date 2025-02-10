@@ -1,0 +1,128 @@
+<!-- {% extends 'layout.html' %}
+{% load static %}
+
+{% block title %}
+    Chat
+{% endblock %}
+
+{% block content %}
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/chat.css' %}">
+  </head>
+  <body>
+
+    <center style="font-size: 1.5rem;">Olá {{ request.user.nome }}!</center>
+    <br>
+
+    {% if request.user.is_authenticated %}
+      {% if user.isBaba %}
+        <div><a href="{% url 'contrato:gerenciar_servicos' %}">RETURN</a></div>
+      {% else %}
+        <div><a href="{% url 'contrato:servicos_responsavel' %}">RETURN</a></div>
+      {% endif %}
+    {% endif %}
+
+    <div class="chat_container">
+      <br/>
+      <div class="chat_background">
+
+        <div class="chat_message" id="id_chat_item_container">
+
+          {% for mensagem in mensagens %}
+            <div class="message-container {% if mensagem.autor == request.user %}my-message{% else %}other-message{% endif %}">
+              {% if mensagem.autor != request.user %}
+                {% if perfil.foto %}
+                  <img class="avatar" src="{{ mensagem.autor.foto.url }}" alt="Foto de {{ mensagem.autor.nome }}">
+                {% else %}
+                  <img class="avatar" src="{% static 'images/icone_avatar_padrao.jpg' %}" alt="Imagem padrão">
+                {% endif %}
+              {% endif %}
+              <div class="message">
+                <b>{{ mensagem.autor.nome }}</b><br>&emsp;{{ mensagem.conteudo }}
+              </div>
+            </div>
+          {% endfor %}
+
+        </div>
+
+      </div>
+      <div class="chat_input">
+        <input type="text" id="id_message_send_input" />
+        <button type="submit" id="id_message_send_button">Send Message</button>
+      </div>  
+    </div>
+
+    <script>
+      const babaId = "{{ baba.id }}";
+      const respId = "{{ responsavel.id }}";
+      console.log('babaId:', babaId, 'respId:', respId);
+
+      const chatSocket = new WebSocket("ws://" + window.location.host + "/ws/chat/" + babaId + "/" + respId + "/");
+
+      document.querySelector("#id_message_send_input").focus();
+
+      // Quando o botão de submit é clicado ou Enter
+      document.querySelector("#id_message_send_input").onkeyup = function (e) {
+        if (e.keyCode == 13) {
+          document.querySelector("#id_message_send_button").click();
+        }
+      };
+
+      document.querySelector("#id_message_send_button").onclick = function (e) {
+        var messageInput = document.querySelector("#id_message_send_input").value.trim();
+        if (messageInput !== "") { 
+            {% if request.user.foto %}
+                var userAvatar = "{{ request.user.foto.url }}";
+            {% else %}
+                var userAvatar = "{% static 'images/icone_avatar_padrao.jpg' %}";
+            {% endif %}
+
+            chatSocket.send(JSON.stringify({ 
+                message: messageInput, 
+                username: "{{ request.user.nome }}",
+                user_avatar: userAvatar
+            }));
+        } else {
+            alert("Por favor, digite uma mensagem antes de enviar.");
+        }
+      };
+
+      // Quando uma mensagem é recebida
+      chatSocket.onmessage = function (e) {
+        const data = JSON.parse(e.data);
+
+        var messageContainer = document.createElement("div");
+        messageContainer.classList.add("message-container");
+
+        var div = document.createElement("div");
+        div.classList.add("message");
+        div.innerHTML = `<b>${data.username}</b><br>&emsp;${data.message}`;
+
+        var img = document.createElement("img");
+        img.src = data.user_avatar;
+        img.alt = data.username;
+        img.classList.add("avatar");
+
+        messageContainer.appendChild(img);
+        messageContainer.appendChild(div);
+
+        if (data.username.trim() === "{{ request.user.nome|escapejs }}".trim()) {
+          messageContainer.classList.add("my-message");
+        } else {
+          messageContainer.classList.add("other-message");
+        }
+
+        var chatContainer = document.querySelector("#id_chat_item_container");
+        chatContainer.appendChild(messageContainer);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+      };
+
+      chatSocket.onclose = function (e) {
+        console.error('Chat socket closed unexpectedly');
+      };
+    </script>
+
+  </body>
+</html>
+{% endblock %} -->
