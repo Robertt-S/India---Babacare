@@ -7,25 +7,29 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container mt-5">
-        <h1>Contrato de Serviço</h1>
-        <p><strong>Contratante:</strong> {{ user.nome }}</p>
-        <p><strong>Babá:</strong> {{ baba.nome }}</p>
-        <p><strong>Data do Serviço:</strong> {{ request.GET.data_servico }}</p>
-        <p><strong>Período:</strong> {{ request.GET.periodo }}</p>
-        <p><strong>Valor:</strong> (a definir com a babá)</p>
-        <p><strong>Contato da Babá:</strong> {{ baba.telefone }}</p>
-        <p><strong></p>
-        <p class="text-warning">Ao apertar em "Contratar", você confirma todas as informações acima relacionadas à contratação desse serviço.</p>
-
-        <form method="post" action="{% url 'contrato:contratar_servico' baba.id %}">
-            {% csrf_token %}
-            <input type="hidden" name="baba_id" value="{{ baba.id }}">
-            <input type="hidden" name="data_servico" value="{{ request.GET.data_servico }}">
-            <input type="hidden" name="periodo" value="{{ request.GET.periodo }}">
-            <button type="submit" class="btn btn-primary">Contratar</button>
-        </form>
-
-        <a href="{% url 'contrato:lista_babas' %}" class="btn btn-secondary mt-3">Voltar</a>
+    <div class="container mt-5" style="display: flex; justify-content: flex-start;">
+        <div class="p-5 rounded shadow-lg" style="max-width: 650px; background-color: #e5e9ee; border-radius: 10px; text-align: left; padding: 20px; border: 1px solid #e5e9ee;">
+            <h2 class="text-primary" style="font-size: 37px;" ">Contrato de Serviço</h2>
+            <br>
+            <p style="font-size: 20px;"> <strong>Contratante:</strong> {{ user.nome }}</p>
+            <p style="font-size: 20px;"> <strong>Babá:</strong> {{ baba.nome }}</p>
+            <p style="font-size: 20px;"> <strong>Data do Serviço:</strong> {{ request.GET.data_servico }}</p>
+            <p style="font-size: 20px;"> <strong>Período:</strong> {{ request.GET.periodo }}</p>
+            <p style="font-size: 20px;"> <strong>Valor:</strong> (a definir com a babá)</p>
+            <p style="font-size: 20px;"> <strong>Contato da Babá:</strong> {{ baba.telefone }}</p>
+            <br>
+            <p class="text-warning" style="font-size: 20px;" >Ao apertar em "Contratar", você confirma todas as informações acima relacionadas à contratação desse serviço.</p>
+            <br>
+            <form method="post" action="{% url 'contrato:contratar_servico' baba.id %}">
+                {% csrf_token %}
+                <input type="hidden" name="baba_id" value="{{ baba.id }}">
+                <input type="hidden" name="data_servico" value="{{ request.GET.data_servico }}">
+                <input type="hidden" name="periodo" value="{{ request.GET.periodo }}">
+                <div class="d-flex gap-3 mt-4">
+                    <button type="submit" class="btn btn-primary flex-grow-1" style="background-color: #db3065; border-color: #db3065;">Contratar</button>
+                    <a href="{% url 'contrato:lista_babas' %}" type="submit" class="btn btn-primary flex-grow-1" style="background-color: #db3065; border-color: #db3065;">Voltar</a>
+                </div>
+            </form>
+        </div>
     </div>
 {% endblock %}

@@ -952,7 +952,7 @@ main {
 /* Melhor posicionamento do cabeçalho */
 .navbar {
     display: flex;
-    align-items: center;
+    align-items: left;
     justify-content: space-between; /* Ajusta o espaço entre elementos */
     padding: 10px 20px;
 }
@@ -962,7 +962,7 @@ main {
     max-width: 250px;
     padding: 10px;
     font-size: 16px;
-    border: 2px solid #5D3EBC;
+    border: 2px solid #331d43;
     border-radius: 10px;
     background: #fff;
     color: #333;
@@ -984,7 +984,6 @@ main {
 }
 
 
-
 .form-container {
     display: flex;
     justify-content: center; /* Centraliza horizontalmente */
@@ -997,7 +996,7 @@ main {
 .calendario-input, .periodo-selecao {
     padding: 10px;
     font-size: 16px;
-    border: 2px solid #5D3EBC;
+    border: 2px solid #db3065;
     border-radius: 8px;
     background: #fff;
     color: #333;
@@ -1012,7 +1011,7 @@ main {
     font-size: 18px;
     font-weight: bold;
     color: white;
-    background: #5D3EBC;
+    background: #331d43;
     border: none;
     border-radius: 8px;
     cursor: pointer;
@@ -1020,6 +1019,53 @@ main {
 }
 
 .btn-confirmar:hover {
-    background: #8A6EEB;
+    background: #331d43;
     transform: scale(1.05);
 }
+
+.chat_message {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .message-container {
+    display: flex;
+    align-items: center;
+    max-width: 80%;
+  }
+  
+  .my-message {
+    justify-content: flex-end;
+    flex-direction: row-reverse;
+  }
+  
+  .other-message {
+    justify-content: flex-start;
+  }
+  
+  .message {
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 60%;
+    word-wrap: break-word;
+  }
+  
+  .my-message .message {
+    background-color: #a0e7a0;
+    text-align: right;
+  }
+  
+  .other-message .message {
+    background-color: #f0f0f0;
+    text-align: left;
+  }
+  
+  .avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 5px;
+  }
+  

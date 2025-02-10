@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.utils.timezone import now
+from django.utils import timezone
 
 from users.models import Baba as Perfil_Baba, Responsavel
 from users.models import Responsavel as Perfil_Responsavel
@@ -16,8 +17,6 @@ from huggingface_hub import InferenceClient
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 from math import radians, sin, cos, acos
-
-
 
 
 def baba_list(request):
@@ -171,10 +170,8 @@ def servicos_responsavel(request):
     
     return render(request, 'contrato/servicos_responsavel.html', {
         'servicos_solicitados': servicos_solicitados,
+        'today': timezone.now().date(),
     })
-
-
-
 
 ###--- Classes e Funções de utilidade ---###
 
@@ -187,8 +184,6 @@ def distancia_em_km(lat1, lon1, lat2, lon2):
 
 def dentro_do_raio(lat_baba, long_baba, lat_responsavel, long_responsavel, raio):
     return distancia_em_km(lat_baba, long_baba, lat_responsavel, long_responsavel) <= raio
-
-
 
 
 class SentenceSimilarityWithAPI():

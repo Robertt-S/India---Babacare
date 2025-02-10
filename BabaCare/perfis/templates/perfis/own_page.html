@@ -15,7 +15,7 @@
                         {% if perfil.foto %}
                             <img class="foto-perfil" src="{{ perfil.foto.url }}" alt="Foto de {{ perfil.nome }}" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
                         {% else %}
-                            <img class="foto-perfil" src="{% static 'media/white-square.png' %}" alt="Imagem padrão" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
+                            <img class="foto-perfil" src="{% static 'images/icone_avatar_padrao.jpg' %}" alt="Imagem padrão" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
                         {% endif %}
                         <h1 style="margin: 0; font-size: 2rem;">{{ perfil.nome }}</h1>
                     </div>

@@ -27,7 +27,9 @@
                         <span class="status-pendente">Pendente</span>
                     {% elif servico.status == 'confirmado' %}
                         <span class="status-confirmado">Confirmado</span>
-                        <a class="rate-button" href="{% url 'feedback:give_feedback' servico.id %}">Avaliar</a>
+                        {% if servico.data_servico <= today %}
+                            <a class="rate-button" href="{% url 'feedback:give_feedback' servico.id %}">Avaliar</a>
+                        {% endif %}
                     {% else %}
                         <span class="status-cancelado">Cancelado</span>
                     {% endif %}
